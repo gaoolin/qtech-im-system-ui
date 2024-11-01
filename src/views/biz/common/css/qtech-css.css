@@ -1,0 +1,58 @@
+/* qtech-css.css */
+/* 暂时无用 */
+
+.action-button i {
+  margin-right: 5px;
+}
+
+/* 刷新按钮样式 */
+.refresh-button {
+  background-color: #28a745; /* 绿色 */
+}
+
+/* 全屏按钮样式 */
+.fullscreen-button {
+  background-color: #17a2b8; /* 蓝色 */
+}
+
+/* 导出按钮样式 */
+.export-button {
+  background-color: #ffc107; /* 黄色 */
+}
+
+.action-button:hover {
+  opacity: 0.8;
+}
+
+.action-button:active {
+  transform: scale(0.98);
+}
+
+.alarm-button {
+  background-color: #f44336;  /* 红色背景，表示告警 */
+  color: white;               /* 白色文字 */
+  border: none;
+  padding: 7px 20px;
+  font-weight: bold;
+  cursor: pointer;
+  border-radius: 5px;
+  margin: 0 10px;
+}
+.alarm-button:hover {
+  background-color: #d32f2f;  /* 深红色 hover 效果 */
+}
+
+.warning-button {
+  background-color: #ff9800;  /* 橙色背景，表示警示 */
+  color: white;               /* 白色文字 */
+  border: none;
+  padding: 7px 20px;
+  font-weight: bold;
+  cursor: pointer;
+  border-radius: 5px;
+  margin: 0 10px;
+}
+.warning-button:hover {
+  background-color: #fb8c00;  /* 深橙色 hover 效果 */
+}
+

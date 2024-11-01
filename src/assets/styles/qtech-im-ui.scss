@@ -1,0 +1,84 @@
+/**
+ * 业务自定义样式
+ */
+
+
+/* 字典样式回显 红色字体 */
+.el-tag--redFont {
+  color: #ff0000;
+  background: none;
+  font-size: 14px;
+  font-weight: bolder;
+  display: inline-block;
+  border: none;
+}
+
+/* 自定义粉色  暂未成功*/
+.qtech-imd-ui.custom-pink {
+  background-color: #ffeded;
+  color: #ff66cc;
+}
+
+.el-tag--customPink {
+  background-color: #ffeded;
+  font-size: 14px;
+  font-weight: bolder;
+  border: #f4516c;
+  color: #ff66cc;
+}
+
+$sector-size: 30px;
+$base-color: #EEEEEE;
+$active-color: #4C84FF;
+.el-tag--sanXing {
+/*  margin: 1em auto;
+  padding: 0;
+
+  border-radius: 100%;
+  list-style: none;
+  overflow: hidden;
+
+  position: absolute;
+  top: 0;
+  right: 0;
+  width: 50%;
+  height: 50%;
+  transform-origin: 0% 100%;
+
+  transform: rotate(-36deg) skewY(-54deg);
+  background: #FF0088;*/
+
+/*  display: inline-block;
+  width: $sector-size;
+  height: $sector-size;
+  background-color: $base-color;
+
+  &::before {
+    display: inline-block;
+    content: '';
+    width: 100%;
+    height: 100%;
+    background-color: $active-color;
+    clip-path: polygon(50% 50%, 50% 0%, 100% 0%); // 3个点确定一个3角形
+  }
+
+  transform: rotate(45deg);
+  border-radius: 50%;
+  overflow: hidden;*/
+}
+
+// 10-15-2024 新增表格链接样式
+.table-hover a {
+  text-decoration: underline;
+}
+
+.table-hover a:hover {
+  font-size: 22px;
+  text-decoration: none;
+  color: #00afff;
+}
+
+.table-hover a:active {
+  text-decoration: none;
+  color: #e57373;
+}
