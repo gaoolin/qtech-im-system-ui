@@ -88,10 +88,10 @@ service.interceptors.response.use(res => {
           isRelogin.show = false;
           store.dispatch('LogOut').then(() => {
             /* 隐藏首页释放 */
-            location.href = '/index';
+            // location.href = '/index';
 
             /* 隐藏首页增加 */
-            // location.href = '/index';
+            location.href = this.$store.state.permission.indexPage;
           })
       }).catch(() => {
         isRelogin.show = false;

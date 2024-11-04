@@ -24,7 +24,7 @@ router.beforeEach((to, from, next) => {
       if (store.getters.roles.length === 0) {
         isRelogin.show = true
         // 判断当前用户是否已拉取完user_info信息
-        store.dispatch('GetInfo').then(() => {
+        store.dispatch('GetInfo').then((res) => {
 
           /* 方案2 隐藏首页增加 */
           // 拉取user_info

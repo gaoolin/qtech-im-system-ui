@@ -124,7 +124,7 @@
             eqId: scope.row.eqId,
             prodType: scope.row.prodType,
             flag: 'ok'} }">
-            <span>{{ scope.row.okCnt | numberToCurrency }}</span>
+            <span>{{ numberToCurrencyNo(scope.row.okCnt) }}</span>
           </router-link>
         </template>
       </el-table-column>
@@ -137,7 +137,7 @@
               eqId: scope.row.eqId,
               prodType: scope.row.prodType,
               flag: 'err'}}">
-            <span>{{ scope.row.errCnt > 0 ? (scope.row.errCnt | numberToCurrency) : '-' }}</span>
+            <span>{{ scope.row.errCnt > 0 ? numberToCurrencyNo((scope.row.errCnt)) : '-' }}</span>
           </router-link>
         </template>
       </el-table-column>
@@ -161,7 +161,7 @@
 <script>
 import { pickerOptionsSet1 } from '@/views/biz/common/js/pickerOptionsConfig'
 import { headerCellStyle, bodyCellStyle, tableStyle } from '@/views/biz/common/js/tableStyles';
-import { getBit, toPercent, dateToStr, checkDtRange, arraySpanMethod, mergeAction, rowMergeHandle } from '@/views/biz/common/js/utils';
+import { getBit, toPercent, numberToCurrencyNo, dateToStr, checkDtRange, arraySpanMethod, mergeAction, rowMergeHandle } from '@/views/biz/common/js/utils';
 import { listComparisonRatio } from '@/api/biz/wb/percentage'
 import { getFactoryNames, getGroupNames } from '@/api/biz/wb/index'
 
@@ -234,6 +234,8 @@ export default {
     tableStyle,
     toPercent,
     getBit,
+    numberToCurrencyNo,
+  
     getList() {
       this.$refs['queryForm'].validate(valid => {
         if (valid) {

@@ -80,12 +80,12 @@
       <el-table-column prop="groupName" label="车间" align="center" min-width="120" fit/>
       <el-table-column prop="ttlEqs" label="设备总数" align="center" min-width="60">
         <template slot-scope="scope">
-          <span v-if="scope.row.ttlEqs > 0">{{ scope.row.ttlEqs | numberToCurrency }}</span>
+          <span v-if="scope.row.ttlEqs > 0">{{ numberToCurrencyNo(scope.row.ttlEqs) }}</span>
         </template>
       </el-table-column>
       <el-table-column prop="onlineEqs" label="联网机台数" align="center" min-width="60">
         <template slot-scope="scope">
-          <span v-if="scope.row.onlineEqs > 0">{{ scope.row.onlineEqs | numberToCurrency }}</span>
+          <span v-if="scope.row.onlineEqs > 0">{{ numberToCurrencyNo(scope.row.onlineEqs) }}</span>
         </template>
       </el-table-column>
       <el-table-column prop="offlineEqs" label="未联网机台数" align="center" min-width="60">
@@ -97,14 +97,14 @@
             label: 1
           }}"
           >
-            <span v-if="scope.row.offlineEqs > 0">{{ scope.row.offlineEqs | numberToCurrency }}</span>
+            <span v-if="scope.row.offlineEqs > 0">{{ numberToCurrencyNo(scope.row.offlineEqs) }}</span>
           </router-link>
         </template>
       </el-table-column>
       <el-table-column prop="computeCnt" label="比对次数" align="center" min-width="80">
         <!-- 注意：router-link中链接如果是'/'开始就是从根路由开始，如果开始不带'/'，则从当前路由开始。 -->
         <template slot-scope="scope">
-          <span v-if="scope.row.computeCnt > 0">{{ scope.row.computeCnt | numberToCurrency }}</span>
+          <span v-if="scope.row.computeCnt > 0">{{ numberToCurrencyNo(scope.row.computeCnt) }}</span>
         </template>
       </el-table-column>
       <el-table-column prop="okCnt" label="正确次数" align="center" min-width="80">
@@ -115,7 +115,7 @@
             groupName: scope.row.groupName === '小计' ? '' : scope.row.groupName,
             flag: 'ok'} }"
           >
-            <span v-if="scope.row.okCnt > 0">{{ scope.row.okCnt | numberToCurrency }}</span>
+            <span v-if="scope.row.okCnt > 0">{{ numberToCurrencyNo(scope.row.okCnt) }}</span>
           </router-link>
         </template>
       </el-table-column>
@@ -128,7 +128,7 @@
               groupName: scope.row.groupName === '小计' ? '' : scope.row.groupName,
               flag: 'err' }}"
             >
-              <span v-if="scope.row.errCnt > 0">{{ scope.row.errCnt | numberToCurrency }}</span>
+              <span v-if="scope.row.errCnt > 0">{{ numberToCurrencyNo(scope.row.errCnt) }}</span>
             </router-link>
           </template>
         </el-table-column>
@@ -140,7 +140,7 @@
             groupName: scope.row.groupName === '小计' ? '' : scope.row.groupName,
             code: 1} }"
             >
-              <span v-if="scope.row.offsetCnt > 0">{{ scope.row.offsetCnt | numberToCurrency }}</span>
+              <span v-if="scope.row.offsetCnt > 0">{{ numberToCurrencyNo(scope.row.offsetCnt) }}</span>
             </router-link>
           </template>
         </el-table-column>
@@ -152,13 +152,13 @@
             groupName: scope.row.groupName === '小计' ? '' : scope.row.groupName,
             code: 3} }"
             >
-              <span v-if="scope.row.npCnt > 0">{{ scope.row.npCnt | numberToCurrency }}</span>
+              <span v-if="scope.row.npCnt > 0">{{ numberToCurrencyNo(scope.row.npCnt) }}</span>
             </router-link>
           </template>
         </el-table-column>
         <el-table-column label="少线/多线" align="center" fit>
           <template slot-scope="scope">
-            <span v-if="(scope.row.lackCnt + scope.row.overCnt) > 0">{{ scope.row.lackCnt + scope.row.overCnt | numberToCurrency }}</span>
+            <span v-if="(scope.row.lackCnt + scope.row.overCnt) > 0">{{ numberToCurrencyNo(scope.row.lackCnt + scope.row.overCnt) }}</span>
           </template>
           <template slot-scope="scope">
             <router-link :to="{ path: '/biz/wb/statistics/particulars', query: {
@@ -167,7 +167,7 @@
             groupName: scope.row.groupName === '小计' ? '' : scope.row.groupName,
             code: 5} }"
             >
-              <span v-if="(scope.row.lackCnt + scope.row.overCnt) > 0">{{ scope.row.lackCnt + scope.row.overCnt | numberToCurrency }}</span>
+              <span v-if="(scope.row.lackCnt + scope.row.overCnt) > 0">{{ numberToCurrencyNo(scope.row.lackCnt + scope.row.overCnt) }}</span>
             </router-link>
           </template>
         </el-table-column>
@@ -184,7 +184,7 @@
 
 <script>
 import { pickerOptionsSet1 } from '@/views/biz/common/js/pickerOptionsConfig'
-import { arraySpanMethod, checkDtRange, getBit, mergeAction, rowMergeHandle, toPercent, dateToStr } from '@/views/biz/common/js/utils'
+import { arraySpanMethod, checkDtRange, getBit, numberToCurrencyNo, mergeAction, rowMergeHandle, toPercent, dateToStr } from '@/views/biz/common/js/utils'
 import { getUpdateTime, listOverview } from '@/api/biz/wb/overview'
 import { getFactoryNames, getGroupNames } from '@/api/biz/wb/index'
 import { listEqInfo } from '@/api/biz/eqn/networking'
@@ -260,7 +260,7 @@ export default {
   },
 
   methods: {
-    getBit, toPercent, 
+    getBit, toPercent, numberToCurrencyNo,
     getList() {
       this.$refs['queryForm'].validate(valid => {
         if (valid) {

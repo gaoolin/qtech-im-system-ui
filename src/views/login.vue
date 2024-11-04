@@ -41,7 +41,7 @@
 </template>
 
 <script>
-import { getCodeImg } from "@/api/login";
+// import { getCodeImg } from "@/api/login";
 import Cookies from "js-cookie";
 import { encrypt, decrypt } from '@/utils/jsencrypt'
 import { Message } from 'element-ui'
@@ -50,8 +50,8 @@ export default {
   name: 'Login',
   data() {
     return {
-      username: 'admin',
-      password: 'admin123',
+      username: '',
+      password: '',
       rememberMe: false,
       errorMessage: '',
       loading: false,
@@ -94,7 +94,7 @@ export default {
           Cookies.remove('rememberMe');
         }
         // 登录请求
-        const res = await this.$store.dispatch('Login', {
+        await this.$store.dispatch('Login', {
           username: this.username,
           password: this.password
         }).then(() => {
