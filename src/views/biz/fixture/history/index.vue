@@ -92,6 +92,7 @@
 import { pickerOptionsSet2 } from '@/views/biz/common/js/pickerOptionsConfig'
 import { listHistory, getHistory, delHistory, addHistory, updateHistory } from "@/api/biz/fixture/history";
 import { bodyCellStyle, headerCellStyle, tableStyle } from '@/views/biz/common/js/tableStyles'
+import { dateToStr } from '@/views/biz/common/js/utils'
 export default {
   name: 'History',
   dicts: ['fixture_buckle_status', 'biz_fixture_project'],
@@ -107,7 +108,7 @@ export default {
       historyList: [],
       title: "",
       // 状态时间范围
-      dateRangeCreateDate: [this.$dateToStr(new Date(new Date().valueOf() - 1 * 1440 * 60 * 1000)), this.$dateToStr(new Date(new Date().valueOf()))],
+      dateRangeCreateDate: [dateToStr(new Date(new Date().valueOf() - 1 * 1440 * 60 * 1000)), dateToStr(new Date(new Date().valueOf()))],
       open: false,
       queryParams: {
         pageNum: 1,
@@ -129,6 +130,7 @@ export default {
     headerCellStyle,
     bodyCellStyle,
     tableStyle,
+    dateToStr,
 
     getList() {
       this.loading = true;
@@ -138,6 +140,7 @@ export default {
         this.queryParams.params['endCreateDate'] = this.dateRangeCreateDate[1]
       }
       listHistory(this.queryParams).then(res => {
+        console.log(res);
         this.historyList = res.rows;
         this.total = res.total;
         this.loading = false;
