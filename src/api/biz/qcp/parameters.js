@@ -25,3 +25,10 @@ export function getDataMaxTime() {
     method: 'get'
   })
 }
+
+export function fetchDataStatus() {
+  return request({
+    url: '/qcp/params/checkIotStatus',
+    method: 'get'
+  })
+}

@@ -1,56 +1,24 @@
 <template>
   <div class="app-container">
     <el-form :model="queryParams" ref="queryForm" size="small" :inline="true" v-show="showSearch" label-width="72px"
-             :rules="rules"
-    >
+      :rules="rules">
       <el-form-item label="厂区" prop="factoryName" label-width="40px">
-        <el-select
-          v-model="queryParams.factoryName"
-          placeholder="请输入厂区"
-          filterable
-          clearable
-          @change="selectionFilter(queryParams)"
-        >
-          <el-option
-            v-for="item in factoryOptions"
-            :key="item"
-            :label="item"
-            :value="item"
-          ></el-option>
+        <el-select v-model="queryParams.factoryName" placeholder="请输入厂区" filterable clearable
+          @change="selectionFilter(queryParams)">
+          <el-option v-for="item in factoryOptions" :key="item" :label="item" :value="item"></el-option>
         </el-select>
       </el-form-item>
       <el-form-item label="车间" prop="groupName">
-        <el-select
-          v-model="queryParams.groupName"
-          placeholder="请输入车间"
-          filterable
-          clearable
-          @change="selectionFilter(queryParams)"
-        >
-          <el-option
-            v-for="item in workshopOptions"
-            style="width: 240px"
-            :key="item"
-            :label="item"
-            :value="item"
-          >
+        <el-select v-model="queryParams.groupName" placeholder="请输入车间" filterable clearable
+          @change="selectionFilter(queryParams)">
+          <el-option v-for="item in workshopOptions" style="width: 240px" :key="item" :label="item" :value="item">
           </el-option>
         </el-select>
       </el-form-item>
       <el-form-item label="设备类型" prop="deviceType">
-        <el-select
-          v-model="queryParams.deviceType"
-          placeholder="请输入设备类型"
-          filterable
-          clearable
-          @change="selectionFilter(queryParams)"
-        >
-          <el-option
-            v-for="item in deviceTypeOptions"
-            :key="item"
-            :label="item"
-            :value="item"
-          >
+        <el-select v-model="queryParams.deviceType" placeholder="请输入设备类型" filterable clearable
+          @change="selectionFilter(queryParams)">
+          <el-option v-for="item in deviceTypeOptions" :key="item" :label="item" :value="item">
           </el-option>
         </el-select>
       </el-form-item>
@@ -61,35 +29,31 @@
         更新时间：<span class="highlight">{{ updateDt }}</span>
       </el-col>
       <el-col :span="12">
-        <right-tool-bar-download :showSearch.sync="showSearch" @queryTable="getList" @handleExport="handleExport"></right-tool-bar-download>
+        <right-tool-bar-download :showSearch.sync="showSearch" @queryTable="getList"
+          @handleExport="handleExport"></right-tool-bar-download>
       </el-col>
     </el-row>
 
-    <el-table
-      v-loading="loading"
-      :data="filterTableData"
-      ref="table"
-      id="table"
-      show-summary
-      border
-      :span-method="arraySpanMethod"
-      :cell-style="bodyCellStyle()"
-      :header-cell-style="headerCellStyle()"
-      :style="tableStyle()"
-      class="table-hover"
-    >
+    <!-- 警告框，数据不正常时显示，带渐显效果 -->
+    <transition name="fade">
+      <div v-if="showAlert" class="alert-box">数据异常：采集数据近10分钟无更新！</div>
+    </transition>
+
+    <el-table v-loading="loading" :data="filterTableData" ref="table" id="table" show-summary border
+      :span-method="arraySpanMethod" :cell-style="bodyCellStyle()" :header-cell-style="headerCellStyle()"
+      :style="tableStyle()" class="table-hover">
       <el-table-column prop="factoryName" label="厂区" align="center" min-width="120" fit></el-table-column>
       <el-table-column prop="groupName" label="车间" align="center" min-width="120" fit></el-table-column>
       <el-table-column prop="deviceType" label="设备类型" align="center" min-width="120" fit></el-table-column>
       <el-table-column prop="ttlEqs" align="center" min-width="120" fit>
         <template slot-scope="scope" slot="header">
           <span>设备总数</span>
-            <el-tooltip class="item" effect="dark" placement="top-start" content="设备总数 = [有qcp参数模版] + [无qcp参数模版] + [未联网]">
-              <i class="el-icon-question" style="color:#272728; margin-left:2px;'"> </i>
-            </el-tooltip>
+          <el-tooltip class="item" effect="dark" placement="top-start" content="设备总数 = [有qcp参数模版] + [无qcp参数模版] + [未联网]">
+            <i class="el-icon-question" style="color:#272728; margin-left:2px;'"> </i>
+          </el-tooltip>
         </template>
       </el-table-column>
-      <el-table-column >
+      <el-table-column>
         <template slot-scope="scope" slot="header">
           <span>已联网</span>
           <el-tooltip class="item" effect="dark" placement="top-start" content="已联网设备数 = [有qcp参数模版] + [无qcp参数模版]">
@@ -112,12 +76,14 @@
             </el-tooltip>
           </template>
           <template slot-scope="scope">
-            <router-link :to="{path: '/biz/qcp/detail', query: {
-              factoryName: scope.row.factoryName,
-              groupName: scope.row.groupName,
-              deviceType: scope.row.deviceType,
-              label: 1
-            }}">
+            <router-link :to="{
+              path: '/biz/qcp/detail', query: {
+                factoryName: scope.row.factoryName,
+                groupName: scope.row.groupName,
+                deviceType: scope.row.deviceType,
+                label: 1
+              }
+            }">
               <span>{{ scope.row.qcpParamsIsNull !== 0 ? scope.row.qcpParamsIsNull : '' }}</span>
             </router-link>
           </template>
@@ -130,13 +96,15 @@
             </el-tooltip>
           </template>
           <template slot-scope="scope">
-            <router-link :to="{path: '/biz/eqn/networking', query:{
-              factoryName: scope.row.factoryName,
-              groupName: scope.row.groupName,
-              deviceType: scope.row.deviceType,
-              status: 1,
-              label: 2
-            }}">
+            <router-link :to="{
+              path: '/biz/eqn/networking', query: {
+                factoryName: scope.row.factoryName,
+                groupName: scope.row.groupName,
+                deviceType: scope.row.deviceType,
+                status: 1,
+                label: 2
+              }
+            }">
               <span>{{ scope.row.remoteControlOff !== 0 ? scope.row.remoteControlOff : '' }}</span>
             </router-link>
           </template>
@@ -150,12 +118,14 @@
           </el-tooltip>
         </template>
         <template slot-scope="scope">
-          <router-link :to="{path: '/biz/eqn/networking', query: {
-            factoryName: scope.row.factoryName,
-            groupName: scope.row.groupName,
-            deviceType: scope.row.deviceType,
-            label: 1
-          }}">
+          <router-link :to="{
+            path: '/biz/eqn/networking', query: {
+              factoryName: scope.row.factoryName,
+              groupName: scope.row.groupName,
+              deviceType: scope.row.deviceType,
+              label: 1
+            }
+          }">
             <span>{{ scope.row.offlineEqs !== 0 ? scope.row.offlineEqs : '' }}</span>
           </router-link>
         </template>
@@ -168,7 +138,7 @@
 <script>
 import { headerCellStyle, bodyCellStyle, tableStyle } from '@/views/biz/common/js/tableStyles';
 import { arraySpanMethod, mergeAction, rowMergeHandle } from '@/views/biz/common/js/utils';
-import { listQcpOverview, getDataMaxTime } from '@/api/biz/qcp/parameters'
+import { listQcpOverview, fetchDataStatus, getDataMaxTime } from '@/api/biz/qcp/parameters'
 import RightToolBarDownload from '@/views/biz/common/RightToolBarDownload'
 
 export default {
@@ -205,6 +175,8 @@ export default {
         status: null,
         remoteControlOff: null,
       },
+      // 数据状态变量
+      showAlert: false,
       rules: {},
       // 需要合并项的列
       needMergeArr: [
@@ -226,7 +198,15 @@ export default {
     } else {
       this.getList()
       this.getDataMaxTime()
-    }
+    };
+  },
+
+  mounted() {
+    // 每隔5分钟检查数据状态
+    this.checkDataStatus();
+    setInterval(() => {
+      this.checkDataStatus();
+    }, 5000); // 5分钟（300,000毫秒）
   },
 
   methods: {
@@ -261,13 +241,27 @@ export default {
       })
     },
 
+    async checkDataStatus() {
+      // 发送请求检查数据状态的函数
+      const isDataNormal = await this.getDataStatus();
+      if (isDataNormal === 'true') {
+        his.showAlert = true // 数据不正常时显示红色提示框
+      }
+      this.showAlert = false
+    },
+    async getDataStatus() {
+      // 请求逻辑
+      const response = await fetchDataStatus(); /* API 请求逻辑 */;
+      return response.data;
+    },
+
     async selectionFilter(val) {
       await this.tableDataFilter(val)
       await this.updateSelectionElements(this.filterTableData)
     },
 
     tableDataFilter(val) {
-      this.filterTableData = this.tableData.filter(function(data) {
+      this.filterTableData = this.tableData.filter(function (data) {
         let a = false
         let b = false
         let c = false
@@ -396,12 +390,17 @@ export default {
   margin-bottom: 5px !important;
 }
 
-::v-deep .el-table .el-table__header-wrapper th, .el-table .el-table__fixed-header-wrapper th {
+::v-deep .el-table .el-table__header-wrapper th,
+.el-table .el-table__fixed-header-wrapper th {
   padding: 0;
   height: 20px !important;
 }
 
-::v-deep .el-table .el-table__body-wrapper td, .el-table .el-table__fixed-body-wrapper td, .el-table .el-table__footer-wrapper td, .el-table .el-table__fixed-footer-wrapper td, .el-table .el-table__body el-table__row {
+::v-deep .el-table .el-table__body-wrapper td,
+.el-table .el-table__fixed-body-wrapper td,
+.el-table .el-table__footer-wrapper td,
+.el-table .el-table__fixed-footer-wrapper td,
+.el-table .el-table__body el-table__row {
   padding: 1px !important;
 }
 
@@ -409,7 +408,8 @@ export default {
   display: flex;
   align-items: flex-end;
   justify-content: flex-start;
-  line-height: 28px;  /* 统一行高为28px，与第二个el-col一致 */
+  line-height: 28px;
+  /* 统一行高为28px，与第二个el-col一致 */
 }
 
 .highlight {
@@ -419,4 +419,26 @@ export default {
   color: red;
 }
 
+.fade-enter-active,
+.fade-leave-active {
+  transition: opacity 1s;
+}
+
+.fade-enter,
+.fade-leave-to
+
+/* .fade-leave-active in <2.1.8 */
+  {
+  opacity: 0;
+}
+
+.alert-box {
+  background-color: #ffdddd;
+  color: #d8000c;
+  padding: 8px;
+  margin: 8px 0;
+  border: 1px solid #d8000c;
+  text-align: center;
+  font-weight: bold;
+}
 </style>
