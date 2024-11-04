@@ -1,112 +1,71 @@
 <template>
-<div class="app-container">
-  <div style="text-align:center;">
-    <h1 style="margin-top: 0; padding-top: 0; font-weight: bolder" v-if="queryParams.label === '0'">qcp参数为空机台明细</h1>
+  <div class="app-container">
+    <div style="text-align:center;">
+      <h1 style="margin-top: 0; padding-top: 0; font-weight: bolder" v-if="queryParams.label === '0'">qcp参数为空机台明细</h1>
+    </div>
+
+    <el-form :model="queryParams" ref="queryForm" size="small" :inline="true" v-show="showSearch" label-width="72px"
+      :rules="rules">
+      <el-form-item label="厂区" prop="factoryName">
+        <el-select v-model="queryParams.factoryName" placeholder="请输入厂区" clearable @change="handleQuery">
+          <el-option v-for="item in factoryOptions" :key="item.key" :label="item.label" :value="item.label"
+            :disabled="item.disabled">
+          </el-option>
+        </el-select>
+      </el-form-item>
+      <el-form-item label="车间" prop="groupName">
+        <el-select v-model="queryParams.groupName" placeholder="请输入车间" clearable @focus="getGroupNames"
+          @change="handleQuery">
+          <el-option v-for="item in workshopOptions" :key="item" :label="item" :value="item">
+          </el-option>
+        </el-select>
+      </el-form-item>
+      <el-form-item label="设备类型" prop="deviceType">
+        <el-select v-model="queryParams.deviceType" placeholder="请输入设备类型" clearable @change="handleQuery">
+          <el-option v-for="item in deviceTypeOptions" :key="item" :label="item" :value="item">
+          </el-option>
+        </el-select>
+      </el-form-item>
+      <el-form-item>
+        <el-button type="primary" icon="el-icon-search" size="mini" @click="handleQuery">搜索</el-button>
+        <el-button icon="el-icon-refresh" size="mini" @click="restQuery">重置</el-button>
+      </el-form-item>
+    </el-form>
+
+    <el-row :gutter="10" class="mb8">
+      <el-col :span="16">
+        <el-button type="warning" plain icon="el-icon-download" size="mini" @click="handleExport">导出
+        </el-button>
+      </el-col>
+      <el-col :span="8">
+        <right-tool-bar-u-d-f :showSearch.sync="showSearch" @queryTable="getList" :back="back"></right-tool-bar-u-d-f>
+      </el-col>
+    </el-row>
+
+    <!-- 警告框，数据不正常时显示，带渐显效果 -->
+    <transition name="fade">
+      <div v-if="showAlert" class="alert-box">数据异常：采集数据近10分钟无更新！</div>
+    </transition>
+
+    <el-table v-loading="loading" :data="tableData" border :cell-style="bodyCellStyle()"
+      :header-cell-style="headerCellStyle()" :style="tableStyle()">
+      <el-table-column prop="factoryName" label="厂区" align="center" min-width="100" fit></el-table-column>
+      <el-table-column prop="groupName" label="车间" align="center" min-width="100" fit></el-table-column>
+      <el-table-column prop="deviceType" label="设备类型" align="center" min-width="60" fit></el-table-column>
+      <el-table-column prop="eqId" label="设备编码" align="center" min-width="120" fit></el-table-column>
+      <el-table-column prop="mcId" label="机台号" align="center" min-width="110" fit></el-table-column>
+      <el-table-column prop="prodType" label="机型" align="center" min-width="80" fit></el-table-column>
+      <el-table-column prop="description" label="描述" align="center" min-width="100" fit></el-table-column>
+    </el-table>
+
+    <pagination v-show="total > 0" :total="total" :page.sync="queryParams.pageNum" :limit.sync="queryParams.pageSize"
+      @pagination="getList" />
   </div>
-
-  <el-form :model="queryParams" ref="queryForm" size="small" :inline="true" v-show="showSearch" label-width="72px" :rules="rules">
-    <el-form-item label="厂区" prop="factoryName">
-      <el-select
-        v-model="queryParams.factoryName"
-        placeholder="请输入厂区"
-        clearable
-        @change="handleQuery"
-      >
-        <el-option
-          v-for="item in factoryOptions"
-          :key="item.key"
-          :label="item.label"
-          :value="item.label"
-          :disabled="item.disabled"
-        >
-        </el-option>
-      </el-select>
-    </el-form-item>
-    <el-form-item label="车间" prop="groupName">
-      <el-select
-        v-model="queryParams.groupName"
-        placeholder="请输入车间"
-        clearable
-        @focus="getGroupNames"
-        @change="handleQuery"
-      >
-        <el-option
-          v-for="item in workshopOptions"
-          :key="item"
-          :label="item"
-          :value="item"
-        >
-        </el-option>
-      </el-select>
-    </el-form-item>
-    <el-form-item label="设备类型" prop="deviceType">
-      <el-select
-        v-model="queryParams.deviceType"
-        placeholder="请输入设备类型"
-        clearable
-        @change="handleQuery"
-      >
-        <el-option
-          v-for="item in deviceTypeOptions"
-          :key="item"
-          :label="item"
-          :value="item"
-        >
-        </el-option>
-      </el-select>
-    </el-form-item>
-    <el-form-item>
-      <el-button type="primary" icon="el-icon-search" size="mini" @click="handleQuery">搜索</el-button>
-      <el-button icon="el-icon-refresh" size="mini" @click="restQuery">重置</el-button>
-    </el-form-item>
-  </el-form>
-
-  <el-row :gutter="10" class="mb8">
-    <el-col :span="16">
-      <el-button
-        type="warning"
-        plain
-        icon="el-icon-download"
-        size="mini"
-        @click="handleExport"
-      >导出
-      </el-button>
-    </el-col>
-    <el-col :span="8">
-      <right-tool-bar-u-d-f :showSearch.sync="showSearch" @queryTable="getList" :back="back"></right-tool-bar-u-d-f>
-    </el-col>
-  </el-row>
-
-  <el-table
-    v-loading="loading"
-    :data="tableData"
-    border
-    :cell-style="bodyCellStyle()"
-    :header-cell-style="headerCellStyle()"
-    :style="tableStyle()"
-  >
-    <el-table-column prop="factoryName" label="厂区" align="center" min-width="100" fit></el-table-column>
-    <el-table-column prop="groupName" label="车间" align="center" min-width="100" fit></el-table-column>
-    <el-table-column prop="deviceType" label="设备类型" align="center" min-width="60" fit></el-table-column>
-    <el-table-column prop="eqId" label="设备编码" align="center" min-width="120" fit></el-table-column>
-    <el-table-column prop="mcId" label="机台号" align="center" min-width="110" fit></el-table-column>
-    <el-table-column prop="prodType" label="机型" align="center" min-width="80" fit></el-table-column>
-    <el-table-column prop="description" label="描述" align="center" min-width="100" fit></el-table-column>
-  </el-table>
-
-  <pagination
-    v-show="total>0"
-    :total="total"
-    :page.sync="queryParams.pageNum"
-    :limit.sync="queryParams.pageSize"
-    @pagination="getList"
-  />
-</div>
 </template>
 
 <script>
 import { headerCellStyle, bodyCellStyle, tableStyle } from '@/views/biz/common/js/tableStyles';
-import { listQcpParams } from '@/api/biz/qcp/parameters'
+import { listQcpParams, fetchDataStatus } from '@/api/biz/qcp/parameters'
 import { getFactoryNames, getGroupNames } from '@/api/biz/eqn/networking'
 import RightToolBarUDF from '@/views/biz/common/RightToolBarGoBack'
 
@@ -162,6 +121,12 @@ export default {
   mounted() {
     this.getList()
     this.getFactoryNames()
+
+    // 每隔5秒检查数据状态
+    this.checkDataStatus();
+    setInterval(() => {
+      this.checkDataStatus();
+    }, 5000); // 5秒（300,000毫秒）
   },
 
   methods: {
@@ -204,6 +169,21 @@ export default {
       })
     },
 
+
+    async checkDataStatus() {
+      // 发送请求检查数据状态的函数
+      const isDataNormal = await this.getDataStatus();
+      if (isDataNormal === 'true') {
+        his.showAlert = true // 数据不正常时显示红色提示框
+      }
+      this.showAlert = false
+    },
+    async getDataStatus() {
+      // 请求逻辑
+      const response = await fetchDataStatus(); /* API 请求逻辑 */;
+      return response.data;
+    },
+
     /** 搜索按钮操作 */
     handleQuery() {
       this.queryParams.pageNum = 1
@@ -222,12 +202,12 @@ export default {
     reset() {
       this.queryParams = {
         pageNum: 1,
-          pageSize: 10,
-          factoryName: '',
-          groupName: '',
-          deviceType: '',
-          eqId: null,
-          mcId: null,
+        pageSize: 10,
+        factoryName: '',
+        groupName: '',
+        deviceType: '',
+        eqId: null,
+        mcId: null,
       }
     },
 
@@ -331,4 +311,38 @@ export default {
   margin-bottom: 5px !important;
 }
 
+
+.fade-enter-active,
+.fade-leave-active {
+  transition: opacity 1s;
+}
+
+.fade-enter,
+.fade-leave-to {
+  opacity: 0;
+}
+
+.alert-box {
+  background-color: #ffdddd;
+  color: #d8000c;
+  padding: 8px;
+  margin: 8px 0;
+  border: 1px solid #d8000c;
+  text-align: center;
+  font-weight: bold;
+  animation: flash 1s infinite;
+  /* 添加闪动效果 */
+}
+
+@keyframes flash {
+
+  0%,
+  100% {
+    opacity: 1;
+  }
+
+  50% {
+    opacity: 0.5;
+  }
+}
 </style>

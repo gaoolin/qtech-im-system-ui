@@ -202,11 +202,11 @@ export default {
   },
 
   mounted() {
-    // 每隔5分钟检查数据状态
+    // 每隔5秒检查数据状态
     this.checkDataStatus();
     setInterval(() => {
       this.checkDataStatus();
-    }, 5000); // 5分钟（300,000毫秒）
+    }, 5000); // 5秒（300,000毫秒）
   },
 
   methods: {
@@ -425,10 +425,7 @@ export default {
 }
 
 .fade-enter,
-.fade-leave-to
-
-/* .fade-leave-active in <2.1.8 */
-  {
+.fade-leave-to {
   opacity: 0;
 }
 
@@ -440,5 +437,19 @@ export default {
   border: 1px solid #d8000c;
   text-align: center;
   font-weight: bold;
+  animation: flash 1s infinite;
+  /* 添加闪动效果 */
+}
+
+@keyframes flash {
+
+  0%,
+  100% {
+    opacity: 1;
+  }
+
+  50% {
+    opacity: 0.5;
+  }
 }
 </style>
