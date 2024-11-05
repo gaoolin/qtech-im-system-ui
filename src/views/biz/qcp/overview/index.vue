@@ -138,7 +138,8 @@
 <script>
 import { headerCellStyle, bodyCellStyle, tableStyle } from '@/views/biz/common/js/tableStyles';
 import { arraySpanMethod, mergeAction, rowMergeHandle } from '@/views/biz/common/js/utils';
-import { listQcpOverview, fetchDataStatus, getDataMaxTime } from '@/api/biz/qcp/parameters'
+import { listQcpOverview, getDataMaxTime } from '@/api/biz/qcp/parameters'
+import { fetchDataStatus } from '@/api/biz/common/eqRelated'
 import RightToolBarDownload from '@/views/biz/common/RightToolBarDownload'
 
 export default {
@@ -251,7 +252,7 @@ export default {
     },
     async getDataStatus() {
       // 请求逻辑
-      const response = await fetchDataStatus(); /* API 请求逻辑 */;
+      const response = await fetchDataStatus(null); /* API 请求逻辑 */;
       return response.data;
     },
 

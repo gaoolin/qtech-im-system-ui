@@ -92,7 +92,7 @@
 <script>
 import { headerCellStyle, bodyCellStyle, tableStyle } from '@/views/biz/common/js/tableStyles';
 import { getFactoryNames, getGroupNames, listEqStatus, listOfflineEqs } from '@/api/biz/eqn/networking'
-import { fetchDataStatus } from '@/api/biz/qcp/parameters'
+import { fetchDataStatus } from '@/api/biz/common/eqRelated'
 import RightToolBarGoBack from '@/views/biz/common/RightToolBarGoBack'
 
 export default {
@@ -204,7 +204,7 @@ export default {
     },
     async getDataStatus() {
       // 请求逻辑
-      const response = await fetchDataStatus(); /* API 请求逻辑 */;
+      const response = await fetchDataStatus(null); /* API 请求逻辑 */;
       return response.data;
     },
 

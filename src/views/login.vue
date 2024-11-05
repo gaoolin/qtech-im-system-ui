@@ -31,14 +31,35 @@
           </button>
           <div class="options">
             <label><input type="checkbox" v-model="rememberMe" /> 记住我</label>
-            <a href="#" class="forgot-password">忘记密码？</a>
+            <!-- <a href="#" class="forgot-password" @click="showForgotPasswordDialog">忘记密码？</a> -->
+            <a href="#" class="forgot-password" @click.prevent="openDialog">忘记密码？</a>
           </div>
         </form>
         <p v-if="errorMessage" class="error-message">{{ errorMessage }}</p>
       </div>
     </div>
+
+    <!-- 忘记密码对话框 -->
+    <div v-if="showDialog" class="custom-dialog-overlay">
+      <div class="custom-dialog">
+        <h2 class="dialog-title">提示</h2>
+        <p class="dialog-message">账号、密码、权限问题钉钉联系高志林！</p>
+        <button @click="closeDialog" class="dialog-button">关闭</button>
+      </div>
+    </div>
+
+    <div class="contact-info">
+      <i class="icon info-icon"></i> 系统问题联系人：高志林
+    </div>
+
+    <!-- Copyright 信息 -->
+    <div class="copyright-info">
+      © 2024 智能制造管理系统. All rights reserved.
+    </div>
+
   </div>
 </template>
+
 
 <script>
 // import { getCodeImg } from "@/api/login";
@@ -55,7 +76,8 @@ export default {
       rememberMe: false,
       errorMessage: '',
       loading: false,
-      redirect: undefined
+      redirect: undefined,
+      showDialog: false, // 控制忘记密码对话框显示状态
     };
   },
   watch: {
@@ -130,7 +152,14 @@ export default {
         this.loading = false;
         this.errorMessage = error.message;
       };
+    },
+    openDialog() {
+      this.showDialog = true;
+    },
+    closeDialog() {
+      this.showDialog = false;
     }
+
   }
 };
 </script>
@@ -275,5 +304,97 @@ input[type="password"]:focus {
   color: #d32f2f;
   font-size: 14px;
   margin-top: 15px;
+}
+
+.custom-dialog-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  background-color: rgba(0, 0, 0, 0.5);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 1000;
+}
+
+.custom-dialog {
+  width: 300px;
+  padding: 20px;
+  background-color: #ffffff;
+  border-radius: 8px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+  text-align: center;
+  animation: fadeIn 0.3s ease;
+}
+
+.dialog-title {
+  font-size: 18px;
+  font-weight: bold;
+  color: #00796b;
+  margin-bottom: 10px;
+}
+
+.dialog-message {
+  font-size: 15px;
+  font-weight: bold;
+  color: #333333;
+  margin-bottom: 20px;
+}
+
+.dialog-button {
+  padding: 10px 20px;
+  background-color: #4fc3f7;
+  color: white;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  transition: background 0.3s ease;
+}
+
+.dialog-button:hover {
+  background-color: #0097a7;
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+  }
+
+  to {
+    opacity: 1;
+  }
+}
+
+.contact-info {
+  position: absolute;
+  bottom: 20px;
+  left: 20px;
+  font-size: 16px;
+  color: #00796b;
+  background-color: rgba(224, 247, 250, 0.8);
+  /* 浅色背景框 */
+  padding: 8px 12px;
+  border-radius: 4px;
+  display: flex;
+  align-items: center;
+  font-weight: bold;
+}
+
+.contact-info .icon {
+  margin-right: 8px;
+  color: #4fc3f7;
+  font-size: 18px;
+}
+
+.copyright-info {
+  position: absolute;
+  bottom: 10px;
+  left: 50%;
+  transform: translateX(-50%);
+  font-size: 12px;
+  color: #888888;
+  text-align: center;
 }
 </style>

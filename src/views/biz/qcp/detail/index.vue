@@ -65,7 +65,8 @@
 
 <script>
 import { headerCellStyle, bodyCellStyle, tableStyle } from '@/views/biz/common/js/tableStyles';
-import { listQcpParams, fetchDataStatus } from '@/api/biz/qcp/parameters'
+import { fetchDataStatus } from '@/api/biz/common/eqRelated'
+import { listQcpParams } from '@/api/biz/qcp/parameters'
 import { getFactoryNames, getGroupNames } from '@/api/biz/eqn/networking'
 import RightToolBarUDF from '@/views/biz/common/RightToolBarGoBack'
 
@@ -180,7 +181,7 @@ export default {
     },
     async getDataStatus() {
       // 请求逻辑
-      const response = await fetchDataStatus(); /* API 请求逻辑 */;
+      const response = await fetchDataStatus(null); /* API 请求逻辑 */;
       return response.data;
     },
 
