@@ -1,84 +1,45 @@
 <template>
   <div class="app-container">
-    <el-form :model="queryParams" ref="queryForm" size="small" :inline="true" v-show="showSearch" label-width="68px" :rules="rules">
-      <el-form-item label="时段" prop="dtRange">
-        <el-date-picker
-          v-model="queryParams.dtRange"
-          style="width: 350px"
-          value-format="yyyy-MM-dd HH:mm:ss"
-          type="datetimerange"
-          range-separator="至"
-          start-placeholder="开始日期"
-          end-placeholder="结束日期"
-          :picker-options="pickerOptions"
-          @change="handleQuery"
-        ></el-date-picker>
-      </el-form-item>
+    <el-form :model="queryParams" ref="queryForm" size="small" :inline="true" v-show="showSearch" label-width="68px"
+      :rules="rules">
       <el-form-item label="厂区" prop="factoryName">
-        <el-select
-          v-model="queryParams.factoryName"
-          placeholder="请输入厂区"
-          clearable
-          @change="handleQuery"
-        >
-          <el-option
-            v-for="item in factoryOptions"
-            :key="item"
-            :label="item"
-            :value="item"
-          ></el-option>
+        <el-select v-model="queryParams.factoryName" placeholder="请输入厂区" clearable @change="handleFactoryChange">
+          <el-option v-for="factory in factoryNameOptions" :key="factory.id" :label="factory.name"
+            :value="factory.name"></el-option>
         </el-select>
       </el-form-item>
       <el-form-item label="车间" prop="groupName">
-        <el-select
-          v-model="queryParams.groupName"
-          placeholder="请输入车间"
-          clearable
-          @focus="getGroupNames"
-          @change="handleQuery"
-        >
-          <el-option
-            v-for="item in workshopOptions"
-            style="width: 240px"
-            :key="item"
-            :label="item"
-            :value="item">
-          </el-option>
+        <el-select v-model="queryParams.groupName" placeholder="请输入车间" clearable @focus="getGroupNames"
+          @change="handleQuery">
+          <el-option v-for="groupName in groupNameOptions" :key="groupName.id" :label="groupName.name"
+            :value="groupName.name"></el-option>
         </el-select>
       </el-form-item>
+      <el-form-item label="机型" prop="prodType">
+        <el-input v-model="queryParams.prodType" placeholder="请输入机型" clearable />
+      </el-form-item>
       <el-form-item label="机台号" prop="mcId">
-        <el-input
-          v-model="queryParams.mcId"
-          placeholder="请输入机台号"
-          clearable
-          @keyup.enter.native="handleQuery"
+        <el-input v-model="queryParams.mcId" placeholder="请输入机台号" clearable @keyup.enter.native="handleQuery"
           @input="handleQuery" />
       </el-form-item>
       <el-form-item label="设备编号" prop="eqId">
-        <el-input
-          v-model="queryParams.eqId"
-          placeholder="请输入设备编号"
-          clearable
-          @keyup.enter.native="handleQuery"
+        <el-input v-model="queryParams.eqId" placeholder="请输入设备编号" clearable @keyup.enter.native="handleQuery"
           @input="handleQuery" />
       </el-form-item>
       <el-form-item label="机型" prop="prodType">
-        <el-input
-          v-model="queryParams.prodType"
-          placeholder="请输入机型"
-          clearable/>
+        <el-input v-model="queryParams.prodType" placeholder="请输入机型" clearable />
       </el-form-item>
       <el-form-item label="状态" prop="status">
-        <el-select v-model="queryParams.status" placeholder="请输入比对状态" clearable
-                   :key="queryParams.category" @change="handleQuery"
-        >
-          <el-option
-            v-for="dict in dict.type.comparison_result_code"
-            :key="dict.value"
-            :label="dict.label"
-            :value="dict.value"
-          />
+        <el-select v-model="queryParams.status" placeholder="请输入比对状态" clearable :key="queryParams.category"
+          @change="handleQuery">
+          <el-option v-for="dict in dict.type.comparison_result_code" :key="dict.value" :label="dict.label"
+            :value="dict.value" />
         </el-select>
+      </el-form-item>
+      <el-form-item label="时段" prop="dtRange">
+        <el-date-picker v-model="queryParams.dtRange" style="width: 340px" value-format="yyyy-MM-dd HH:mm:ss"
+          type="datetimerange" range-separator="至" start-placeholder="开始日期" end-placeholder="结束日期"
+          :picker-options="pickerOptions" @change="handleQuery"></el-date-picker>
       </el-form-item>
       <el-form-item>
         <el-button type="primary" icon="el-icon-search" size="mini" @click="handleQuery">搜索</el-button>
@@ -87,28 +48,15 @@
     </el-form>
     <el-row :gutter="10" class="mb8">
       <el-col :span="12">
-        <el-button
-          type="warning"
-          plain
-          icon="el-icon-download"
-          size="mini"
-          @click="handleExport"
-        >导出</el-button>
+        <el-button type="warning" plain icon="el-icon-download" size="mini" @click="handleExport">导出</el-button>
       </el-col>
       <el-col :span="12">
         <right-toolbar :showSearch.sync="showSearch" @queryTable="getList"></right-toolbar>
       </el-col>
     </el-row>
 
-    <el-table
-      v-loading="loading"
-      :data="tableData"
-      :span-method="arraySpanMethod"
-      :cell-style="bodyCellStyle()"
-      :header-cell-style="headerCellStyle()"
-      :style="tableStyle()"
-      class="table-hover"
-    >
+    <el-table v-loading="loading" :data="tableData" :span-method="arraySpanMethod" :cell-style="bodyCellStyle()"
+      :header-cell-style="headerCellStyle()" :style="tableStyle()" class="table-hover">
       <el-table-column prop="factoryName" label="厂区" align="center" min-width="120" fit></el-table-column>
       <el-table-column prop="groupName" label="车间" align="center" min-width="160" fit></el-table-column>
       <el-table-column prop="eqId" label="设备编号" align="center" min-width="160" fit></el-table-column>
@@ -117,44 +65,45 @@
       <el-table-column prop="computeCnt" label="比对次数" align="center" min-width="120" fit></el-table-column>
       <el-table-column prop="okCnt" label="正确次数" align="center" min-width="120" fit>
         <template slot-scope="scope">
-          <router-link :to="{ path: '/biz/wb/statistics/particulars', query: {
-            dtRange: queryParams.dtRange,
-            factoryName: scope.row.factoryName,
-            groupName: scope.row.groupName,
-            eqId: scope.row.eqId,
-            prodType: scope.row.prodType,
-            flag: 'ok'} }">
+          <router-link :to="{
+            path: '/biz/wb/statistics/particulars', query: {
+              dtRange: queryParams.dtRange,
+              factoryName: scope.row.factoryName,
+              groupName: scope.row.groupName,
+              eqId: scope.row.eqId,
+              prodType: scope.row.prodType,
+              flag: 'ok'
+            }
+          }">
             <span>{{ numberToCurrencyNo(scope.row.okCnt) }}</span>
           </router-link>
         </template>
       </el-table-column>
       <el-table-column prop="errCnt" label="错误次数" align="center" min-width="120" fit>
         <template slot-scope="scope">
-          <router-link :to="{ path: '/biz/wb/statistics/particulars', query: {
+          <router-link :to="{
+            path: '/biz/wb/statistics/particulars', query: {
               dtRange: queryParams.dtRange,
               factoryName: scope.row.factoryName === '总计' ? '' : scope.row.factoryName,
               groupName: scope.row.groupName === '小计' ? '' : scope.row.groupName,
               eqId: scope.row.eqId,
               prodType: scope.row.prodType,
-              flag: 'err'}}">
+              flag: 'err'
+            }
+          }">
             <span>{{ scope.row.errCnt > 0 ? numberToCurrencyNo((scope.row.errCnt)) : '-' }}</span>
           </router-link>
         </template>
       </el-table-column>
       <el-table-column prop="errRatio" label="错误率" align="center" min-width="120" fit>
         <template slot-scope="scope">
-            <span>{{ toPercent(getBit(scope.row.errRatio, 6), 2) }}</span>
+          <span>{{ toPercent(getBit(scope.row.errRatio, 6), 2) }}</span>
         </template>
       </el-table-column>
     </el-table>
 
-    <pagination
-      v-show="total>0"
-      :total="total"
-      :page.sync="queryParams.pageNum"
-      :limit.sync="queryParams.pageSize"
-      @pagination="getList"
-    />
+    <pagination v-show="total > 0" :total="total" :page.sync="queryParams.pageNum" :limit.sync="queryParams.pageSize"
+      @pagination="getList" />
   </div>
 </template>
 
@@ -163,7 +112,7 @@ import { pickerOptionsSet1 } from '@/views/biz/common/js/pickerOptionsConfig'
 import { headerCellStyle, bodyCellStyle, tableStyle } from '@/views/biz/common/js/tableStyles';
 import { getBit, toPercent, numberToCurrencyNo, dateToStr, checkDtRange, arraySpanMethod, mergeAction, rowMergeHandle } from '@/views/biz/common/js/utils';
 import { listComparisonRatio } from '@/api/biz/wb/percentage'
-import { getFactoryNames, getGroupNames } from '@/api/biz/wb/index'
+import { fetchWbOlpOverviewFactoryNames, fetchWbOlpOverviewGroupNames } from '@/api/biz/common/factoryAndGroupNames'
 
 export default {
   name: 'index',
@@ -179,9 +128,9 @@ export default {
       tableData: null,
       pickerOptions: pickerOptionsSet1,
       // 厂选择器
-      factoryOptions: [],
+      factoryNameOptions: [],
       // 区选择器
-      workshopOptions: [],
+      groupNameOptions: [],
       queryParams: {
         pageNum: 1,
         pageSize: 10,
@@ -235,7 +184,7 @@ export default {
     toPercent,
     getBit,
     numberToCurrencyNo,
-  
+
     getList() {
       this.$refs['queryForm'].validate(valid => {
         if (valid) {
@@ -261,7 +210,7 @@ export default {
     },
     /** 重置按钮操作 */
     restQuery() {
-      if (this.$route.query.dtRange === undefined || this.$route.query.dtRange === null || this.$route.query.dtRange === '') {
+      if (!this.$route.query.dtRange) {
         this.resetForm("queryForm");
       } else {
         this.reset();
@@ -281,18 +230,78 @@ export default {
       }
     },
 
+    /** 选取厂区列表时 */
+    async handleFactoryChange() {
+      if (this.queryParams.factoryName) {
+        // 加载车间数据
+        await this.getGroupNames()
+      }
+      this.queryParams.groupName = null
+      this.handleQuery()
+    },
+
     getFactoryNames() {
-      getFactoryNames().then(response => {
-        for (const i in response.data) {
-          this.factoryOptions.push(response.data[i]['factoryName'])
+      this.$refs['queryForm'].validate(valid => {
+        if (valid) {
+          this.factoryNameOptions = []
+          this.queryParams.params = {}
+          this.queryParams.params['beginTime'] = this.queryParams.dtRange[0]
+          this.queryParams.params['endTime'] = this.queryParams.dtRange[1]
+          fetchWbOlpOverviewFactoryNames(this.queryParams).then(response => {
+            if (!response.data || response.data.length === 0) {
+              return
+            }
+            for (let index = 0; index < response.data.length; index++) {
+              const factory = response.data[index]
+              const option = {
+                id: index + 1,
+                name: factory['factoryName']
+              }
+              if (option.name === this.queryParams.factoryName) {
+                // 将该项目插入到 factoryNameOptions 数组的最前面
+                this.factoryNameOptions.unshift(option)
+              } else {
+                this.factoryNameOptions.push(option)
+              }
+            }
+          }).catch(error => {
+            console.error('获取厂区列表失败:', error)
+          })
         }
       })
     },
+
     getGroupNames() {
-      this.workshopOptions = []
-      getGroupNames(this.queryParams).then(response => {
-        for (const i in response.data) {
-          this.workshopOptions.push(response.data[i]['groupName'])
+      this.groupNameOptions = []
+      if (!this.queryParams.factoryName) {
+        this.$message.error('请先选择厂区')
+        return
+      }
+      this.$refs['queryForm'].validate(valid => {
+        if (valid) {
+          this.queryParams.params = {}
+          this.queryParams.params['beginTime'] = this.queryParams.dtRange[0]
+          this.queryParams.params['endTime'] = this.queryParams.dtRange[1]
+          fetchWbOlpOverviewGroupNames(this.queryParams).then(response => {
+            if (!response.data || response.data.length === 0) {
+              return
+            }
+            for (let index = 0; index < response.data.length; index++) {
+              const group = response.data[index]
+              const option = {
+                id: index + 1,
+                name: group['groupName']
+              }
+              if (option.name === this.queryParams.groupName) {
+                // 将该项目插入到 groupNameOptions 数组的最前面
+                this.groupNameOptions.unshift(option)
+              } else {
+                this.groupNameOptions.push(option)
+              }
+            }
+          }).catch(error => {
+            console.error('获取组名列表失败:', error)
+          })
         }
       })
     },
@@ -305,28 +314,33 @@ export default {
     },
     /** 重置按钮操作 */
     resetQuery() {
-      this.resetForm("queryForm");
+      if (!this.$route.query) {
+        this.resetForm("queryForm");
+      } else {
+        this.reset();
+      }
       this.handleQuery();
     },
   },
 
   created() {
     // 日期区间回显
-    if (this.$route.query.dtRange === undefined || this.$route.query.dtRange === null || this.$route.query.dtRange === '') {
-      // this.$set(this.queryParams, 'dtRange', [this.$dateToStr(new Date(new Date().setHours(0, 0, 0).valueOf())), this.$dateToStr(new Date(new Date().valueOf()))]);
-      this.$set(this.queryParams, 'dtRange', [dateToStr(new Date(new Date().setHours(0, 0, 0).valueOf())), dateToStr(new Date(new Date().setHours(23, 59, 59).valueOf()))])
+    const dtRange = this.$route.query.dtRange
+    if (dtRange) {
+      this.queryParams.dtRange = dtRange
     } else {
-      this.queryParams.dtRange = this.$route.query.dtRange
-      this.queryParams.factoryName = this.$route.query.factoryName
-      this.queryParams.groupName = this.$route.query.groupName
-      this.queryParams.flag = this.$route.query.flag
+      this.$set(this.queryParams, 'dtRange', [dateToStr(new Date(new Date().setHours(0, 0, 0).valueOf())), dateToStr(new Date(new Date().setHours(23, 59, 59).valueOf()))])
     }
+    this.queryParams.factoryName = this.$route.query.factoryName
+    this.queryParams.groupName = this.$route.query.groupName
+    this.queryParams.eqId = this.$route.query.eqId
+    this.queryParams.prodType = this.$route.query.prodType
+    this.queryParams.flag = this.$route.query.flag
   },
 
   mounted() {
-    this.getList();
-    // overview.methods.getFactoryNames()
-    this.getFactoryNames();
+    this.getList()
+    this.getFactoryNames(this.queryParams)
   },
 
   computed: {

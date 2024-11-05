@@ -2,53 +2,24 @@
   <div class="app-container center">
     <h1 style="text-align:center; margin-top: 0; padding-top: 0; font-weight: bolder">打线图比对数据概览</h1>
     <el-form :model="queryParams" ref="queryForm" size="small" :inline="true" v-show="showSearch" label-width="68px"
-             :rules="rules"
-    >
-      <el-form-item label="时段" prop="dtRange" label-width="50px">
-        <el-date-picker
-            v-model="queryParams.dtRange"
-            style="width: 340px"
-            value-format="yyyy-MM-dd HH:mm:ss"
-            type="datetimerange"
-            range-separator="至"
-            start-placeholder="开始日期"
-            end-placeholder="结束日期"
-            :picker-options="pickerOptions"
-        ></el-date-picker>
-      </el-form-item>
+      :rules="rules">
       <el-form-item label="厂区" prop="factoryName">
-        <el-select
-            v-model="queryParams.factoryName"
-            placeholder="请输入厂区"
-            clearable
-            @change="handleQuery"
-        >
-          <el-option
-              v-for="item in factoryOptions"
-              :key="item"
-              :label="item"
-              :value="item"
-          >
-          </el-option>
+        <el-select v-model="queryParams.factoryName" placeholder="请输入厂区" clearable @change="handleFactoryChange">
+          <el-option v-for="factory in factoryNameOptions" :key="factory.id" :label="factory.name"
+            :value="factory.name"></el-option>
         </el-select>
       </el-form-item>
       <el-form-item label="车间" prop="groupName">
-        <el-select
-            v-model="queryParams.groupName"
-            placeholder="请输入车间"
-            clearable
-            @focus="getGroupNames"
-            @change="handleQuery"
-        >
-          <el-option
-              v-for="item in workshopOptions"
-              style="width: 240px"
-              :key="item"
-              :label="item"
-              :value="item"
-          >
-          </el-option>
+        <el-select v-model="queryParams.groupName" placeholder="请输入车间" clearable  @focus="getGroupNames"
+          @change="handleQuery">
+          <el-option v-for="groupName in groupNameOptions" :key="groupName.id" :label="groupName.name"
+            :value="groupName.name"></el-option>
         </el-select>
+      </el-form-item>
+      <el-form-item label="时段" prop="dtRange" label-width="50px">
+        <el-date-picker v-model="queryParams.dtRange" style="width: 340px" value-format="yyyy-MM-dd HH:mm:ss"
+          type="datetimerange" range-separator="至" start-placeholder="开始日期" end-placeholder="结束日期"
+          :picker-options="pickerOptions" @change="handleQuery"></el-date-picker>
       </el-form-item>
       <el-form-item>
         <el-button type="primary" icon="el-icon-search" size="mini" @click="handleQuery">搜索</el-button>
@@ -62,22 +33,15 @@
       </el-col>
 
       <el-col :span="12">
-        <right-tool-bar-download :showSearch.sync="showSearch" @queryTable="getList" @handleExport="handleExport"></right-tool-bar-download>
+        <right-tool-bar-download :showSearch.sync="showSearch" @queryTable="getList"
+          @handleExport="handleExport"></right-tool-bar-download>
       </el-col>
     </el-row>
 
-    <el-table
-        v-loading="loading"
-        :data="tableData"
-        border
-        :span-method="arraySpanMethod"
-        :cell-style="tableBodyCellStyle"
-        :header-cell-style="tableHeaderCellStyle"
-        :row-style="{height: '25px'}"
-        style="width: 100%; color: #363636"
-    >
-      <el-table-column prop="factoryName" label="厂区" align="center" min-width="100" fit/>
-      <el-table-column prop="groupName" label="车间" align="center" min-width="120" fit/>
+    <el-table v-loading="loading" :data="tableData" border :span-method="arraySpanMethod" :cell-style="tableBodyCellStyle"
+      :header-cell-style="tableHeaderCellStyle" :row-style="{ height: '25px' }" style="width: 100%; color: #363636">
+      <el-table-column prop="factoryName" label="厂区" align="center" min-width="100" fit />
+      <el-table-column prop="groupName" label="车间" align="center" min-width="120" fit />
       <el-table-column prop="ttlEqs" label="设备总数" align="center" min-width="60">
         <template slot-scope="scope">
           <span v-if="scope.row.ttlEqs > 0">{{ numberToCurrencyNo(scope.row.ttlEqs) }}</span>
@@ -90,13 +54,14 @@
       </el-table-column>
       <el-table-column prop="offlineEqs" label="未联网机台数" align="center" min-width="60">
         <template slot-scope="scope">
-          <router-link :to="{path: '/biz/eqn/networking', query: {
-            factoryName: scope.row.factoryName === '总计' ? '' : scope.row.factoryName,
-            groupName: scope.row.groupName === '小计' ? '' : scope.row.groupName,
-            deviceType: 'WB',
-            label: 1
-          }}"
-          >
+          <router-link :to="{
+            path: '/biz/eqn/networking', query: {
+              factoryName: scope.row.factoryName === '总计' ? '' : scope.row.factoryName,
+              groupName: scope.row.groupName === '小计' ? '' : scope.row.groupName,
+              deviceType: 'WB',
+              label: 1
+            }
+          }">
             <span v-if="scope.row.offlineEqs > 0">{{ numberToCurrencyNo(scope.row.offlineEqs) }}</span>
           </router-link>
         </template>
@@ -109,12 +74,14 @@
       </el-table-column>
       <el-table-column prop="okCnt" label="正确次数" align="center" min-width="80">
         <template slot-scope="scope">
-          <router-link :to="{ path: '/biz/wb/statistics/percentage', query: {
-            dtRange: queryParams.dtRange,
-            factoryName: scope.row.factoryName === '总计' ? '' : scope.row.factoryName,
-            groupName: scope.row.groupName === '小计' ? '' : scope.row.groupName,
-            flag: 'ok'} }"
-          >
+          <router-link :to="{
+            path: '/biz/wb/statistics/percentage', query: {
+              dtRange: queryParams.dtRange,
+              factoryName: scope.row.factoryName === '总计' ? '' : scope.row.factoryName,
+              groupName: scope.row.groupName === '小计' ? '' : scope.row.groupName,
+              flag: 'ok'
+            }
+          }">
             <span v-if="scope.row.okCnt > 0">{{ numberToCurrencyNo(scope.row.okCnt) }}</span>
           </router-link>
         </template>
@@ -122,52 +89,62 @@
       <el-table-column label="异常信息" align="center">
         <el-table-column prop="errCnt" label="错误次数" align="center">
           <template slot-scope="scope">
-            <router-link :to="{ path: '/biz/wb/statistics/percentage', query: {
-              dtRange: queryParams.dtRange,
-              factoryName: scope.row.factoryName === '总计' ? '' : scope.row.factoryName,
-              groupName: scope.row.groupName === '小计' ? '' : scope.row.groupName,
-              flag: 'err' }}"
-            >
+            <router-link :to="{
+              path: '/biz/wb/statistics/percentage', query: {
+                dtRange: queryParams.dtRange,
+                factoryName: scope.row.factoryName === '总计' ? '' : scope.row.factoryName,
+                groupName: scope.row.groupName === '小计' ? '' : scope.row.groupName,
+                flag: 'err'
+              }
+            }">
               <span v-if="scope.row.errCnt > 0">{{ numberToCurrencyNo(scope.row.errCnt) }}</span>
             </router-link>
           </template>
         </el-table-column>
         <el-table-column prop="offsetCnt" label="金线偏移" align="center" fit>
           <template slot-scope="scope">
-            <router-link :to="{ path: '/biz/wb/statistics/particulars', query: {
-            dtRange: queryParams.dtRange,
-            factoryName: scope.row.factoryName === '总计' ? '' : scope.row.factoryName,
-            groupName: scope.row.groupName === '小计' ? '' : scope.row.groupName,
-            code: 1} }"
-            >
+            <router-link :to="{
+              path: '/biz/wb/statistics/particulars', query: {
+                dtRange: queryParams.dtRange,
+                factoryName: scope.row.factoryName === '总计' ? '' : scope.row.factoryName,
+                groupName: scope.row.groupName === '小计' ? '' : scope.row.groupName,
+                code: 1
+              }
+            }">
               <span v-if="scope.row.offsetCnt > 0">{{ numberToCurrencyNo(scope.row.offsetCnt) }}</span>
             </router-link>
           </template>
         </el-table-column>
         <el-table-column prop="npCnt" label="无线图模版" align="center" fit>
           <template slot-scope="scope">
-            <router-link :to="{ path: '/biz/wb/statistics/particulars', query: {
-            dtRange: queryParams.dtRange,
-            factoryName: scope.row.factoryName === '总计' ? '' : scope.row.factoryName,
-            groupName: scope.row.groupName === '小计' ? '' : scope.row.groupName,
-            code: 3} }"
-            >
+            <router-link :to="{
+              path: '/biz/wb/statistics/particulars', query: {
+                dtRange: queryParams.dtRange,
+                factoryName: scope.row.factoryName === '总计' ? '' : scope.row.factoryName,
+                groupName: scope.row.groupName === '小计' ? '' : scope.row.groupName,
+                code: 3
+              }
+            }">
               <span v-if="scope.row.npCnt > 0">{{ numberToCurrencyNo(scope.row.npCnt) }}</span>
             </router-link>
           </template>
         </el-table-column>
         <el-table-column label="少线/多线" align="center" fit>
           <template slot-scope="scope">
-            <span v-if="(scope.row.lackCnt + scope.row.overCnt) > 0">{{ numberToCurrencyNo(scope.row.lackCnt + scope.row.overCnt) }}</span>
+            <span v-if="(scope.row.lackCnt + scope.row.overCnt) > 0">{{ numberToCurrencyNo(scope.row.lackCnt +
+              scope.row.overCnt) }}</span>
           </template>
           <template slot-scope="scope">
-            <router-link :to="{ path: '/biz/wb/statistics/particulars', query: {
-            dtRange: queryParams.dtRange,
-            factoryName: scope.row.factoryName === '总计' ? '' : scope.row.factoryName,
-            groupName: scope.row.groupName === '小计' ? '' : scope.row.groupName,
-            code: 5} }"
-            >
-              <span v-if="(scope.row.lackCnt + scope.row.overCnt) > 0">{{ numberToCurrencyNo(scope.row.lackCnt + scope.row.overCnt) }}</span>
+            <router-link :to="{
+              path: '/biz/wb/statistics/particulars', query: {
+                dtRange: queryParams.dtRange,
+                factoryName: scope.row.factoryName === '总计' ? '' : scope.row.factoryName,
+                groupName: scope.row.groupName === '小计' ? '' : scope.row.groupName,
+                code: 5
+              }
+            }">
+              <span v-if="(scope.row.lackCnt + scope.row.overCnt) > 0">{{ numberToCurrencyNo(scope.row.lackCnt +
+                scope.row.overCnt) }}</span>
             </router-link>
           </template>
         </el-table-column>
@@ -186,9 +163,8 @@
 import { pickerOptionsSet1 } from '@/views/biz/common/js/pickerOptionsConfig'
 import { arraySpanMethod, checkDtRange, getBit, numberToCurrencyNo, mergeAction, rowMergeHandle, toPercent, dateToStr } from '@/views/biz/common/js/utils'
 import { getUpdateTime, listOverview } from '@/api/biz/wb/overview'
-import { getFactoryNames, getGroupNames } from '@/api/biz/wb/index'
 import { listEqInfo } from '@/api/biz/eqn/networking'
-
+import { fetchWbOlpOverviewFactoryNames, fetchWbOlpOverviewGroupNames } from '@/api/biz/common/factoryAndGroupNames'
 import RightToolBarDownload from '@/views/biz/common/RightToolBarDownload'
 
 export default {
@@ -204,9 +180,9 @@ export default {
       pickerOptions: pickerOptionsSet1,
       open: false,
       // 厂选择器
-      factoryOptions: [],
+      factoryNameOptions: [],
       // 区选择器
-      workshopOptions: [],
+      groupNameOptions: [],
       queryParams: {
         factoryName: null,
         groupName: null,
@@ -256,7 +232,7 @@ export default {
 
   mounted() {
     this.getList()
-    this.getFactoryNames()
+    this.getFactoryNames(this.queryParams)
   },
 
   methods: {
@@ -270,7 +246,7 @@ export default {
             this.queryParams.params['beginDate'] = this.queryParams.dtRange[0]
             this.queryParams.params['endDate'] = this.queryParams.dtRange[1]
 
-            const fetchData = async() => {
+            const fetchData = async () => {
               try {
                 const [overviewData, eqInfoData] = await Promise.all([
                   listOverview(this.queryParams),
@@ -309,21 +285,71 @@ export default {
     },
 
     getFactoryNames() {
-      getFactoryNames().then(response => {
-        for (const i in response.data) {
-          this.factoryOptions.push(response.data[i]['factoryName'])
+      this.$refs['queryForm'].validate(valid => {
+        if (valid) {
+          this.factoryNameOptions = []
+          this.queryParams.params = {}
+          this.queryParams.params['beginTime'] = this.queryParams.dtRange[0]
+          this.queryParams.params['endTime'] = this.queryParams.dtRange[1]
+          fetchWbOlpOverviewFactoryNames(this.queryParams).then(response => {
+            if (!response.data || response.data.length === 0) {
+              return
+            }
+            for (let index = 0; index < response.data.length; index++) {
+              const factory = response.data[index]
+              const option = {
+                id: index + 1,
+                name: factory['factoryName']
+              }
+              if (option.name === this.queryParams.factoryName) {
+                // 将该项目插入到 factoryNameOptions 数组的最前面
+                this.factoryNameOptions.unshift(option)
+              } else {
+                this.factoryNameOptions.push(option)
+              }
+            }
+          }).catch(error => {
+            console.error('获取厂区列表失败:', error)
+          })
         }
       })
     },
 
     getGroupNames() {
-      this.workshopOptions = []
-      getGroupNames(this.queryParams).then(response => {
-        for (const i in response.data) {
-          this.workshopOptions.push(response.data[i]['groupName'])
+      this.groupNameOptions = []
+      console.log(this.queryParams);
+      if (!this.queryParams.factoryName) {
+        this.$message.error('请先选择厂区')
+        return
+      }
+      this.$refs['queryForm'].validate(valid => {
+        if (valid) {
+          this.queryParams.params = {}
+          this.queryParams.params['beginTime'] = this.queryParams.dtRange[0]
+          this.queryParams.params['endTime'] = this.queryParams.dtRange[1]
+          fetchWbOlpOverviewGroupNames(this.queryParams).then(response => {
+            if (!response.data || response.data.length === 0) {
+              return
+            }
+            for (let index = 0; index < response.data.length; index++) {
+              const group = response.data[index]
+              const option = {
+                id: index + 1,
+                name: group['groupName']
+              }
+              if (option.name === this.queryParams.groupName) {
+                // 将该项目插入到 groupNameOptions 数组的最前面
+                this.groupNameOptions.unshift(option)
+              } else {
+                this.groupNameOptions.push(option)
+              }
+            }
+          }).catch(error => {
+            console.error('获取组名列表失败:', error)
+          })
         }
       })
-    },
+    },    
 
     getUpdateTime() {
       getUpdateTime().then(response => {
@@ -370,6 +396,16 @@ export default {
       if (rowIndex === 0) {
         return cellStyle2
       }
+    },
+
+    /** 选取厂区列表时 */
+    async handleFactoryChange() {
+      if (this.queryParams.factoryName) {
+        // 加载车间数据
+        await this.getGroupNames()
+      }
+      this.queryParams.groupName = null
+      this.handleQuery()
     },
 
     /** 搜索按钮操作 */
@@ -452,5 +488,4 @@ a:active {
   /*text-decoration: none;*/
   color: black;
 }
-
 </style>

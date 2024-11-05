@@ -1,58 +1,27 @@
 <template>
   <div class="app-container">
-    <el-form :model="queryParams" ref="queryForm" size="small" :inline="true" v-show="showSearch" label-width="68px" :rules="rules">
-      <el-form-item label="时段" prop="dtRange">
-        <el-date-picker
-          v-model="queryParams.dtRange"
-          style="width: 350px"
-          value-format="yyyy-MM-dd HH:mm:ss"
-          type="datetimerange"
-          range-separator="至"
-          start-placeholder="开始日期"
-          end-placeholder="结束日期"
-          :picker-options="pickerOptions"
-          @change="handleQuery"
-        ></el-date-picker>
-      </el-form-item>
+    <el-form :model="queryParams" ref="queryForm" size="small" :inline="true" v-show="showSearch" label-width="68px"
+      :rules="rules">
       <el-form-item label="厂区" prop="factoryName">
-        <el-select
-          v-model="queryParams.factoryName"
-          placeholder="请输入厂区"
-          clearable
-          @change="handleQuery"
-        >
-          <el-option
-            v-for="item in factoryOptions"
-            :key="item"
-            :label="item"
-            :value="item"
-          ></el-option>
+        <el-select v-model="queryParams.factoryName" placeholder="请输入厂区" clearable @change="handleFactoryChange">
+          <el-option v-for="factory in factoryNameOptions" :key="factory.id" :label="factory.name"
+            :value="factory.name"></el-option>
         </el-select>
       </el-form-item>
       <el-form-item label="车间" prop="groupName">
-        <el-select
-          v-model="queryParams.groupName"
-          placeholder="请输入车间"
-          clearable
-          @focus="getGroupNames"
-          @change="handleQuery"
-        >
-          <el-option
-            v-for="item in workshopOptions"
-            style="width: 240px"
-            :key="item"
-            :label="item"
-            :value="item"
-          >
-          </el-option>
+        <el-select v-model="queryParams.groupName" placeholder="请输入车间" clearable @focus="getGroupNames"
+          @change="handleQuery">
+          <el-option v-for="groupName in groupNameOptions" :key="groupName.id" :label="groupName.name"
+            :value="groupName.name"></el-option>
         </el-select>
       </el-form-item>
       <el-form-item label="机型" prop="prodType">
-        <el-input
-          v-model="queryParams.prodType"
-          placeholder="请输入机型"
-          clearable
-        />
+        <el-input v-model="queryParams.prodType" placeholder="请输入机型" clearable />
+      </el-form-item>
+      <el-form-item label="时段" prop="dtRange">
+        <el-date-picker v-model="queryParams.dtRange" style="width: 340px" value-format="yyyy-MM-dd HH:mm:ss"
+          type="datetimerange" range-separator="至" start-placeholder="开始日期" end-placeholder="结束日期"
+          :picker-options="pickerOptions" @change="handleQuery"></el-date-picker>
       </el-form-item>
       <el-form-item>
         <el-button type="primary" icon="el-icon-search" size="mini" @click="handleQuery">搜索</el-button>
@@ -61,13 +30,7 @@
     </el-form>
     <el-row :gutter="10" class="mb8">
       <el-col :span="12">
-        <el-button
-          type="warning"
-          plain
-          icon="el-icon-download"
-          size="mini"
-          @click="handleExport"
-        >导出
+        <el-button type="warning" plain icon="el-icon-download" size="mini" @click="handleExport">导出
         </el-button>
       </el-col>
       <el-col :span="12">
@@ -75,14 +38,8 @@
       </el-col>
     </el-row>
 
-    <el-table
-      v-loading="loading"
-      :data="tableData"
-      :span-method="arraySpanMethod"
-      :cell-style="mergeCellStyles"
-      :header-cell-style="headerCellStyle()"
-      :style="tableStyle()"
-    >
+    <el-table v-loading="loading" :data="tableData" :span-method="arraySpanMethod" :cell-style="mergeCellStyles"
+      :header-cell-style="headerCellStyle()" :style="tableStyle()">
       <el-table-column prop="factoryName" label="厂区" align="center" min-width="120" fit></el-table-column>
       <el-table-column prop="groupName" label="车间" align="center" min-width="160" fit></el-table-column>
       <el-table-column prop="eqId" label="设备编号" align="center" min-width="160" fit></el-table-column>
@@ -90,17 +47,12 @@
       <el-table-column prop="prodType" label="机种" align="center" min-width="120" fit></el-table-column>
       <el-table-column prop="dt" label="时间" align="center" min-width="160" fit></el-table-column>
       <el-table-column prop="code" label="状态码" align="center" min-width="120" fit></el-table-column>
-      <el-table-column prop="description" label="描述" align="center" min-width="120" show-overflow-tooltip
-      ></el-table-column>
+      <el-table-column prop="description" label="描述" align="center" min-width="120"
+        show-overflow-tooltip></el-table-column>
     </el-table>
 
-    <pagination
-      v-show="total>0"
-      :total="total"
-      :page.sync="queryParams.pageNum"
-      :limit.sync="queryParams.pageSize"
-      @pagination="getList"
-    />
+    <pagination v-show="total > 0" :total="total" :page.sync="queryParams.pageNum" :limit.sync="queryParams.pageSize"
+      @pagination="getList" />
   </div>
 </template>
 
@@ -109,7 +61,7 @@ import { pickerOptionsSet1 } from '@/views/biz/common/js/pickerOptionsConfig'
 import { bodyCellStyle, headerCellStyle, tableStyle } from '@/views/biz/common/js/tableStyles'
 import { getBit, toPercent, dateToStr, checkDtRange, arraySpanMethod, mergeAction, rowMergeHandle } from '@/views/biz/common/js/utils';
 import { listComparisonDetail } from '@/api/biz/wb/percentage'
-import { getFactoryNames, getGroupNames } from '@/api/biz/wb/index'
+import { fetchWbOlpOverviewFactoryNames, fetchWbOlpOverviewGroupNames } from '@/api/biz/common/factoryAndGroupNames'
 
 export default {
   name: 'index',
@@ -123,9 +75,9 @@ export default {
       tableData: null,
       pickerOptions: pickerOptionsSet1,
       // 厂选择器
-      factoryOptions: [],
+      factoryNameOptions: [],
       // 区选择器
-      workshopOptions: [],
+      groupNameOptions: [],
       queryParams: {
         pageNum: 1,
         pageSize: 10,
@@ -164,40 +116,39 @@ export default {
           }, {
             validator: (rule, value, callback) => {
               // 调用 checkDtRange 方法并指定 intervalDays 的值
-              checkDtRange(rule, value, callback); // 指定 intervalDays 为 60 天
-            }, trigger: 'blur',
+              checkDtRange(rule, value, callback, 60, 'day') // 指定 intervalDays 为 60 天
+            }, trigger: 'blur'
           }]
-      }
+      },
     }
   },
 
   created() {
     // 日期区间回显
-    if (this.$route.query.dtRange === undefined || this.$route.query.dtRange === null || this.$route.query.dtRange === '') {
-      this.$set(this.queryParams, 'dtRange', [dateToStr(new Date(new Date().setHours(0, 0, 0).valueOf())), dateToStr(new Date(new Date().setHours(23, 59, 59).valueOf()))])
+    const dtRange = this.$route.query.dtRange
+    if (dtRange) {
+      this.queryParams.dtRange = dtRange
     } else {
-      this.queryParams.dtRange = this.$route.query.dtRange
-      this.queryParams.factoryName = this.$route.query.factoryName
-      this.queryParams.groupName = this.$route.query.groupName
-      this.queryParams.eqId = this.$route.query.eqId
-      this.queryParams.prodType = this.$route.query.prodType
-      this.queryParams.flag = this.$route.query.flag
-      this.queryParams.code = this.$route.query.code
+      this.$set(this.queryParams, 'dtRange', [dateToStr(new Date(new Date().setHours(0, 0, 0).valueOf())), dateToStr(new Date(new Date().setHours(23, 59, 59).valueOf()))])
     }
-
+    this.queryParams.factoryName = this.$route.query.factoryName
+    this.queryParams.groupName = this.$route.query.groupName
+    this.queryParams.eqId = this.$route.query.eqId
+    this.queryParams.prodType = this.$route.query.prodType
+    this.queryParams.flag = this.$route.query.flag
+    this.queryParams.code = this.$route.query.code
   },
 
   mounted() {
     this.getList()
-    // overview.methods.getFactoryNames()
-    this.getFactoryNames()
+    this.getFactoryNames(this.queryParams)
   },
 
   methods: {
     headerCellStyle,
     bodyCellStyle,
     tableStyle,
-    getBit, toPercent, 
+    getBit, toPercent,
     getList() {
       this.$refs['queryForm'].validate(valid => {
         if (valid) {
@@ -215,24 +166,79 @@ export default {
         }
       })
     },
-    /** 搜索按钮操作 */
-    handleQuery() {
-      this.queryParams.pageNum = 1
-      this.getList()
-    },
-    /** 重置按钮操作 */
-    resetQuery() {
-      if (this.$route.query.dtRange === undefined || this.$route.query.dtRange === null || this.$route.query.dtRange === '') {
-        this.resetForm('queryForm')
-      } else {
-        this.reset()
+
+    /** 选取厂区列表时 */
+    async handleFactoryChange() {
+      if (this.queryParams.factoryName) {
+        // 加载车间数据
+        await this.getGroupNames()
       }
+      this.queryParams.groupName = null
       this.handleQuery()
     },
+
     getFactoryNames() {
-      getFactoryNames().then(response => {
-        for (const i in response.data) {
-          this.factoryOptions.push(response.data[i]['factoryName'])
+      this.$refs['queryForm'].validate(valid => {
+        if (valid) {
+          this.factoryNameOptions = []
+          this.queryParams.params = {}
+          this.queryParams.params['beginTime'] = this.queryParams.dtRange[0]
+          this.queryParams.params['endTime'] = this.queryParams.dtRange[1]
+          fetchWbOlpOverviewFactoryNames(this.queryParams).then(response => {
+            if (!response.data || response.data.length === 0) {
+              return
+            }
+            for (let index = 0; index < response.data.length; index++) {
+              const factory = response.data[index]
+              const option = {
+                id: index + 1,
+                name: factory['factoryName']
+              }
+              if (option.name === this.queryParams.factoryName) {
+                // 将该项目插入到 factoryNameOptions 数组的最前面
+                this.factoryNameOptions.unshift(option)
+              } else {
+                this.factoryNameOptions.push(option)
+              }
+            }
+          }).catch(error => {
+            console.error('获取厂区列表失败:', error)
+          })
+        }
+      })
+    },
+
+    getGroupNames() {
+      this.groupNameOptions = []
+      if (!this.queryParams.factoryName) {
+        this.$message.error('请先选择厂区')
+        return
+      }
+      this.$refs['queryForm'].validate(valid => {
+        if (valid) {
+          this.queryParams.params = {}
+          this.queryParams.params['beginTime'] = this.queryParams.dtRange[0]
+          this.queryParams.params['endTime'] = this.queryParams.dtRange[1]
+          fetchWbOlpOverviewGroupNames(this.queryParams).then(response => {
+            if (!response.data || response.data.length === 0) {
+              return
+            }
+            for (let index = 0; index < response.data.length; index++) {
+              const group = response.data[index]
+              const option = {
+                id: index + 1,
+                name: group['groupName']
+              }
+              if (option.name === this.queryParams.groupName) {
+                // 将该项目插入到 groupNameOptions 数组的最前面
+                this.groupNameOptions.unshift(option)
+              } else {
+                this.groupNameOptions.push(option)
+              }
+            }
+          }).catch(error => {
+            console.error('获取组名列表失败:', error)
+          })
         }
       })
     },
@@ -249,15 +255,22 @@ export default {
         code: null
       }
     },
-    getGroupNames() {
-      this.workshopOptions = []
-      getGroupNames(this.queryParams).then(response => {
-        for (const i in response.data) {
-          this.workshopOptions.push(response.data[i]['groupName'])
-        }
-      })
+
+    /** 重置按钮操作 */
+    resetQuery() {
+      if (!this.$route.query) {
+        this.resetForm("queryForm");
+      } else {
+        this.reset();
+      }
+      this.handleQuery();
     },
 
+    /** 搜索按钮操作 */
+    handleQuery() {
+      this.queryParams.pageNum = 1;
+      this.getList()
+    },
     /** 导出 */
     handleExport() {
       this.download('wb/olp/particulars/export', {

@@ -1,16 +1,15 @@
 <template>
   <div class="navbar">
-    <hamburger id="hamburger-container" :is-active="sidebar.opened" class="hamburger-container" @toggleClick="toggleSideBar" />
+    <hamburger id="hamburger-container" :is-active="sidebar.opened" class="hamburger-container"
+      @toggleClick="toggleSideBar" />
 
-    <breadcrumb id="breadcrumb-container" class="breadcrumb-container" v-if="!topNav"/>
-    <top-nav id="topmenu-container" class="topmenu-container" v-if="topNav"/>
+    <breadcrumb id="breadcrumb-container" class="breadcrumb-container" v-if="!topNav" />
+    <top-nav id="topmenu-container" class="topmenu-container" v-if="topNav" />
 
     <div class="right-menu">
-      <template v-if="device!=='mobile'">
+      <template v-if="device !== 'mobile'">
         <search id="header-search" class="right-menu-item" />
-
         <screenfull id="screenfull" class="right-menu-item hover-effect" />
-
         <el-tooltip content="布局大小" effect="dark" placement="bottom">
           <size-select id="size-select" class="right-menu-item hover-effect" />
         </el-tooltip>
@@ -20,8 +19,8 @@
       <el-dropdown class="avatar-container right-menu-item hover-effect" trigger="click">
         <div class="avatar-wrapper">
           <!-- <img :src="avatar" class="user-avatar"> -->
-          <span class="user-name">登入用户：{{ nickName }}</span>
-          <i class="el-icon-caret-bottom" />
+          <span class="user-name">登入用户: {{ nickName }}</span>
+          <!-- <i class="el-icon-caret-bottom" /> -->
         </div>
         <el-dropdown-menu slot="dropdown">
           <router-link to="/user/profile">
@@ -52,7 +51,7 @@ import Search from '@/components/HeaderSearch'
 export default {
   data() {
     return {
-      nickName : this.$store.state.user.nickName,
+      nickName: this.$store.state.user.nickName,
     }
   },
   components: {
@@ -99,7 +98,7 @@ export default {
         this.$store.dispatch('LogOut').then(() => {
           location.href = '/index';
         })
-      }).catch(() => {});
+      }).catch(() => { });
     }
   }
 }
@@ -111,7 +110,7 @@ export default {
   overflow: hidden;
   position: relative;
   background: #fff;
-  box-shadow: 0 1px 4px rgba(0,21,41,.08);
+  box-shadow: 0 1px 4px rgba(0, 21, 41, .08);
 
   .hamburger-container {
     line-height: 46px;
@@ -119,7 +118,7 @@ export default {
     float: left;
     cursor: pointer;
     transition: background .3s;
-    -webkit-tap-highlight-color:transparent;
+    -webkit-tap-highlight-color: transparent;
 
     &:hover {
       background: rgba(0, 0, 0, .025)
@@ -168,13 +167,14 @@ export default {
     }
 
     .avatar-container {
-      margin-right: 30px;
-    
+      // margin-right: 30px;
+      // margin-right: 10px;
+
       .user-name {
         // margin-left: 5px;
+        // font-size: 14px;
         vertical-align: middle;
         display: inline-block;
-
       }
 
       .avatar-wrapper {

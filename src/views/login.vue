@@ -31,7 +31,6 @@
           </button>
           <div class="options">
             <label><input type="checkbox" v-model="rememberMe" /> 记住我</label>
-            <!-- <a href="#" class="forgot-password" @click="showForgotPasswordDialog">忘记密码？</a> -->
             <a href="#" class="forgot-password" @click.prevent="openDialog">忘记密码？</a>
           </div>
         </form>
@@ -43,7 +42,7 @@
     <div v-if="showDialog" class="custom-dialog-overlay">
       <div class="custom-dialog">
         <h2 class="dialog-title">提示</h2>
-        <p class="dialog-message">账号、密码、权限问题钉钉联系高志林！</p>
+        <p class="dialog-message">账号、密码、权限等问题钉钉联系高志林。</p>
         <button @click="closeDialog" class="dialog-button">关闭</button>
       </div>
     </div>
@@ -320,7 +319,7 @@ input[type="password"]:focus {
 }
 
 .custom-dialog {
-  width: 300px;
+  width: 350px;
   padding: 20px;
   background-color: #ffffff;
   border-radius: 8px;
@@ -341,6 +340,8 @@ input[type="password"]:focus {
   font-weight: bold;
   color: #333333;
   margin-bottom: 20px;
+  vertical-align: middle;
+  display: inline-block;
 }
 
 .dialog-button {

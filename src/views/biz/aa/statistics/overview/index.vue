@@ -386,7 +386,6 @@ export default {
       }
       this.queryParams.groupName = null
       this.handleQuery()
-      this.loadOverviewChart()
     },
 
     /** 样式控制方法 */
