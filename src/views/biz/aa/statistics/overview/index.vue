@@ -2,7 +2,7 @@
   <div class="app-container">
     <h1 style="text-align:center; margin-top: 0; padding-top: 0; font-weight: bolder">AA List参数点检概览</h1>
     <el-form ref="queryForm" :model="queryParams" :inline="true" v-show="showSearch" label-width="68px" label-position="right">
-      <el-form-item label="时段" prop="dtRange" label-width="50px">
+      <el-form-item label="时段" prop="dtRange">
         <el-date-picker
             v-model="queryParams.dtRange"
             style="width: 370px"

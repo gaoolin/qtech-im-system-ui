@@ -16,7 +16,7 @@
             :value="groupName.name"></el-option>
         </el-select>
       </el-form-item>
-      <el-form-item label="时段" prop="dtRange" label-width="50px">
+      <el-form-item label="时段" prop="dtRange">
         <el-date-picker v-model="queryParams.dtRange" style="width: 340px" value-format="yyyy-MM-dd HH:mm:ss"
           type="datetimerange" range-separator="至" start-placeholder="开始日期" end-placeholder="结束日期"
           :picker-options="pickerOptions" @change="handleQuery"></el-date-picker>

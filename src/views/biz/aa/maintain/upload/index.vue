@@ -75,7 +75,7 @@
             />
           </el-form-item>
 
-          <el-form-item label="时段" prop="dtRange" label-width="50px">
+          <el-form-item label="时段" prop="dtRange">
             <el-date-picker
                 v-model="queryParams.dtRange"
                 style="width: 350px"

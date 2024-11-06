@@ -24,7 +24,7 @@
           </el-select>
         </el-form-item>
 
-        <el-form-item label="时间" prop="dtRange" label-width="50px">
+        <el-form-item label="时间" prop="dtRange">
           <el-date-picker
             v-model="queryParams.dtRange"
             style="width: 340px"

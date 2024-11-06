@@ -23,7 +23,7 @@
             />
           </el-form-item>
 
-          <el-form-item label="时段" prop="dtRange" label-width="50px">
+          <el-form-item label="时段" prop="dtRange">
             <date-time-range-picker
               v-model="queryParams.dtRange"
               label="时段"
