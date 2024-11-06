@@ -8,7 +8,7 @@ export function listEqInfo(query) {
   })
 }
 
-export function listWbComparison(query) {
+export function listWbOlpChkResult(query) {
   return request({
     url: '/wb/olp/chk/list/wbOlp',
     method: 'get',

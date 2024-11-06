@@ -498,6 +498,30 @@
                     <el-descriptions-item label="Lr">
                       {{ convertNull(scope.row.aa1RoiLr) }}
                     </el-descriptions-item>
+                    <el-descriptions-item label="'AA'模式">
+                      {{ convertNull(scope.row.aa1Target) }}
+                    </el-descriptions-item>
+                    <el-descriptions-item label="场曲上限">
+                      {{ convertNull(scope.row.aa1CcToCornerLimit) }}
+                    </el-descriptions-item>
+                    <el-descriptions-item label="场曲下限">
+                      {{ convertNull(scope.row.aa1CcToCornerLimitMin) }}
+                    </el-descriptions-item>
+                    <el-descriptions-item label="四角均匀性">
+                      {{ convertNull(scope.row.aa1CornerScoreDifferenceRejectValue) }}
+                    </el-descriptions-item>
+                    <el-descriptions-item label="'AA'Z的位置">
+                      {{ convertNull(scope.row.aa1ZRef) }}
+                    </el-descriptions-item>
+                    <el-descriptions-item label="步距">
+                      {{ convertNull(scope.row.aa1SrchStep) }}
+                    </el-descriptions-item>
+                    <el-descriptions-item label="胶厚上限">
+                      {{ convertNull(scope.row.aa1GoldenGlueThicknessMax) }}
+                    </el-descriptions-item>
+                    <el-descriptions-item label="胶厚下限">
+                      {{ convertNull(scope.row.aa1GoldenGlueThicknessMin) }}
+                    </el-descriptions-item>
                     <el-descriptions-item label="MtfOffAxisCheck1">
                       {{ convertNull(scope.row.aa1MtfOffAxisCheck1) }}
                     </el-descriptions-item>
@@ -506,30 +530,6 @@
                     </el-descriptions-item>
                     <el-descriptions-item label="MtfOffAxisCheck3">
                       {{ convertNull(scope.row.aa1MtfOffAxisCheck3) }}
-                    </el-descriptions-item>
-                    <el-descriptions-item label="Target">
-                      {{ convertNull(scope.row.aa1Target) }}
-                    </el-descriptions-item>
-                    <el-descriptions-item label="CcToCornerLimit">
-                      {{ convertNull(scope.row.aa1CcToCornerLimit) }}
-                    </el-descriptions-item>
-                    <el-descriptions-item label="CcToCornerLimitMin">
-                      {{ convertNull(scope.row.aa1CcToCornerLimitMin) }}
-                    </el-descriptions-item>
-                    <el-descriptions-item label="CornerScoreDifferenceRejectValue">
-                      {{ convertNull(scope.row.aa1CornerScoreDifferenceRejectValue) }}
-                    </el-descriptions-item>
-                    <el-descriptions-item label="ZRef">
-                      {{ convertNull(scope.row.aa1ZRef) }}
-                    </el-descriptions-item>
-                    <el-descriptions-item label="SrchStep">
-                      {{ convertNull(scope.row.aa1SrchStep) }}
-                    </el-descriptions-item>
-                    <el-descriptions-item label="GoldenGlueThicknessMin">
-                      {{ convertNull(scope.row.aa1GoldenGlueThicknessMin) }}
-                    </el-descriptions-item>
-                    <el-descriptions-item label="GoldenGlueThicknessMax">
-                      {{ convertNull(scope.row.aa1GoldenGlueThicknessMax) }}
                     </el-descriptions-item>
                   </el-descriptions>
                 </el-collapse-item>
@@ -550,6 +550,30 @@
                     <el-descriptions-item label="Lr">
                       {{ convertNull(scope.row.aa2RoiLr) }}
                     </el-descriptions-item>
+                    <el-descriptions-item label="'AA'模式">
+                      {{ convertNull(scope.row.aa2Target) }}
+                    </el-descriptions-item>
+                    <el-descriptions-item label="场曲上限">
+                      {{ convertNull(scope.row.aa2CcToCornerLimit) }}
+                    </el-descriptions-item>
+                    <el-descriptions-item label="场曲下限">
+                      {{ convertNull(scope.row.aa2CcToCornerLimitMin) }}
+                    </el-descriptions-item>
+                    <el-descriptions-item label="四角均匀性">
+                      {{ convertNull(scope.row.aa2CornerScoreDifferenceRejectValue) }}
+                    </el-descriptions-item>
+                    <el-descriptions-item label="'AA'Z的位置">
+                      {{ convertNull(scope.row.aa2ZRef) }}
+                    </el-descriptions-item>
+                    <el-descriptions-item label="步距">
+                      {{ convertNull(scope.row.aa2SrchStep) }}
+                    </el-descriptions-item>
+                    <el-descriptions-item label="胶厚上限">
+                      {{ convertNull(scope.row.aa2GoldenGlueThicknessMax) }}
+                    </el-descriptions-item>
+                    <el-descriptions-item label="胶厚下限">
+                      {{ convertNull(scope.row.aa2GoldenGlueThicknessMin) }}
+                    </el-descriptions-item>
                     <el-descriptions-item label="MtfOffAxisCheck1">
                       {{ convertNull(scope.row.aa2MtfOffAxisCheck1) }}
                     </el-descriptions-item>
@@ -558,30 +582,6 @@
                     </el-descriptions-item>
                     <el-descriptions-item label="MtfOffAxisCheck3">
                       {{ convertNull(scope.row.aa2MtfOffAxisCheck3) }}
-                    </el-descriptions-item>
-                    <el-descriptions-item label="Target">
-                      {{ convertNull(scope.row.aa2Target) }}
-                    </el-descriptions-item>
-                    <el-descriptions-item label="CcToCornerLimit">
-                      {{ convertNull(scope.row.aa2CcToCornerLimit) }}
-                    </el-descriptions-item>
-                    <el-descriptions-item label="CcToCornerLimitMin">
-                      {{ convertNull(scope.row.aa2CcToCornerLimitMin) }}
-                    </el-descriptions-item>
-                    <el-descriptions-item label="CornerScoreDifferenceRejectValue">
-                      {{ convertNull(scope.row.aa2CornerScoreDifferenceRejectValue) }}
-                    </el-descriptions-item>
-                    <el-descriptions-item label="ZRef">
-                      {{ convertNull(scope.row.aa2ZRef) }}
-                    </el-descriptions-item>
-                    <el-descriptions-item label="SrchStep">
-                      {{ convertNull(scope.row.aa2SrchStep) }}
-                    </el-descriptions-item>
-                    <el-descriptions-item label="GoldenGlueThicknessMin">
-                      {{ convertNull(scope.row.aa2GoldenGlueThicknessMin) }}
-                    </el-descriptions-item>
-                    <el-descriptions-item label="GoldenGlueThicknessMax">
-                      {{ convertNull(scope.row.aa2GoldenGlueThicknessMax) }}
                     </el-descriptions-item>
                   </el-descriptions>
                 </el-collapse-item>
@@ -602,6 +602,30 @@
                     <el-descriptions-item label="Lr">
                       {{ convertNull(scope.row.aa3RoiLr) }}
                     </el-descriptions-item>
+                    <el-descriptions-item label="'AA'模式">
+                      {{ convertNull(scope.row.aa3Target) }}
+                    </el-descriptions-item>
+                    <el-descriptions-item label="场曲上限">
+                      {{ convertNull(scope.row.aa3CcToCornerLimit) }}
+                    </el-descriptions-item>
+                    <el-descriptions-item label="场曲下限">
+                      {{ convertNull(scope.row.aa3CcToCornerLimitMin) }}
+                    </el-descriptions-item>
+                    <el-descriptions-item label="四角均匀性">
+                      {{ convertNull(scope.row.aa3CornerScoreDifferenceRejectValue) }}
+                    </el-descriptions-item>
+                    <el-descriptions-item label="'AA'Z的位置">
+                      {{ convertNull(scope.row.aa3ZRef) }}
+                    </el-descriptions-item>
+                    <el-descriptions-item label="步距">
+                      {{ convertNull(scope.row.aa3SrchStep) }}
+                    </el-descriptions-item>
+                    <el-descriptions-item label="胶厚上限">
+                      {{ convertNull(scope.row.aa3GoldenGlueThicknessMax) }}
+                    </el-descriptions-item>
+                    <el-descriptions-item label="胶厚下限">
+                      {{ convertNull(scope.row.aa3GoldenGlueThicknessMin) }}
+                    </el-descriptions-item>
                     <el-descriptions-item label="MtfOffAxisCheck1">
                       {{ convertNull(scope.row.aa3MtfOffAxisCheck1) }}
                     </el-descriptions-item>
@@ -610,30 +634,6 @@
                     </el-descriptions-item>
                     <el-descriptions-item label="MtfOffAxisCheck3">
                       {{ convertNull(scope.row.aa3MtfOffAxisCheck3) }}
-                    </el-descriptions-item>
-                    <el-descriptions-item label="Target">
-                      {{ convertNull(scope.row.aa3Target) }}
-                    </el-descriptions-item>
-                    <el-descriptions-item label="CcToCornerLimit">
-                      {{ convertNull(scope.row.aa3CcToCornerLimit) }}
-                    </el-descriptions-item>
-                    <el-descriptions-item label="CcToCornerLimitMin">
-                      {{ convertNull(scope.row.aa3CcToCornerLimitMin) }}
-                    </el-descriptions-item>
-                    <el-descriptions-item label="CornerScoreDifferenceRejectValue">
-                      {{ convertNull(scope.row.aa3CornerScoreDifferenceRejectValue) }}
-                    </el-descriptions-item>
-                    <el-descriptions-item label="ZRef">
-                      {{ convertNull(scope.row.aa3ZRef) }}
-                    </el-descriptions-item>
-                    <el-descriptions-item label="SrchStep">
-                      {{ convertNull(scope.row.aa3SrchStep) }}
-                    </el-descriptions-item>
-                    <el-descriptions-item label="GoldenGlueThicknessMin">
-                      {{ convertNull(scope.row.aa3GoldenGlueThicknessMin) }}
-                    </el-descriptions-item>
-                    <el-descriptions-item label="GoldenGlueThicknessMax">
-                      {{ convertNull(scope.row.aa3GoldenGlueThicknessMax) }}
                     </el-descriptions-item>
                   </el-descriptions>
                 </el-collapse-item>
@@ -761,7 +761,7 @@
                 </el-collapse-item>
                 <el-collapse-item class="prop-label" title="EpoxyInspectionAuto" name="12">
                   <el-descriptions :column="1" border>
-                    <el-descriptions-item label="EpoxyInspection">
+                    <el-descriptions-item label="胶检测频率">
                       {{ convertNull(scope.row.epoxyInspectionInterval) }}
                     </el-descriptions-item>
                   </el-descriptions>
@@ -1099,29 +1099,29 @@
                     <el-form-item label="RoiLr" prop="aa1RoiLr">
                       <el-input v-model="editForm.aa1RoiLr" @input="handleInputChange('aa1RoiLr')"></el-input>
                     </el-form-item>
-                    <el-form-item label="Target" prop="aa1Target">
+                    <el-form-item label="'AA'模式" prop="aa1Target">
                       <el-input v-model="editForm.aa1Target" @input="handleInputChange('aa1Target')"></el-input>
                     </el-form-item>
-                    <el-form-item label="CcToCornerLimit" prop="aa1CcToCornerLimit">
+                    <el-form-item label="场曲上限" prop="aa1CcToCornerLimit">
                       <el-input v-model="editForm.aa1CcToCornerLimit" @input="handleInputChange('aa1CcToCornerLimit')"></el-input>
                     </el-form-item>
-                    <el-form-item label="CcToCornerLimitMin" prop="aa1CcToCornerLimitMin">
+                    <el-form-item label="场曲下限" prop="aa1CcToCornerLimitMin">
                       <el-input v-model="editForm.aa1CcToCornerLimitMin" @input="handleInputChange('aa1CcToCornerLimitMin')"></el-input>
                     </el-form-item>
-                    <el-form-item label="CornerScoreDifferenceRejectValue" prop="aa1CornerScoreDifferenceRejectValue">
+                    <el-form-item label="四角均匀性" prop="aa1CornerScoreDifferenceRejectValue">
                       <el-input v-model="editForm.aa1CornerScoreDifferenceRejectValue" @input="handleInputChange('aa1CornerScoreDifferenceRejectValue')"></el-input>
                     </el-form-item>
-                    <el-form-item label="ZRef" prop="aa1ZRef">
+                    <el-form-item label="'AA'Z的位置" prop="aa1ZRef">
                       <el-input v-model="editForm.aa1ZRef" @input="handleInputChange('aa1ZRef')"></el-input>
                     </el-form-item>
-                    <el-form-item label="SrchStep" prop="aa1SrchStep">
+                    <el-form-item label="步距" prop="aa1SrchStep">
                       <el-input v-model="editForm.aa1SrchStep" @input="handleInputChange('aa1SrchStep')"></el-input>
                     </el-form-item>
-                    <el-form-item label="GoldenGlueThicknessMin" prop="aa1GoldenGlueThicknessMin">
-                      <el-input v-model="editForm.aa1GoldenGlueThicknessMin" @input="handleInputChange('aa1GoldenGlueThicknessMin')"></el-input>
-                    </el-form-item>
-                    <el-form-item label="GoldenGlueThicknessMax" prop="aa1GoldenGlueThicknessMax">
+                    <el-form-item label="胶厚上限" prop="aa1GoldenGlueThicknessMax">
                       <el-input v-model="editForm.aa1GoldenGlueThicknessMax" @input="handleInputChange('aa1GoldenGlueThicknessMax')"></el-input>
+                    </el-form-item>
+                    <el-form-item label="胶厚下限" prop="aa1GoldenGlueThicknessMin">
+                      <el-input v-model="editForm.aa1GoldenGlueThicknessMin" @input="handleInputChange('aa1GoldenGlueThicknessMin')"></el-input>
                     </el-form-item>
                   </el-collapse-item>
                   <el-collapse-item class="sub-item" title="AA2" name="8">
@@ -1140,29 +1140,29 @@
                     <el-form-item label="RoiLr" prop="aa2RoiLr">
                       <el-input v-model="editForm.aa2RoiLr" @input="handleInputChange('aa2RoiLr')"></el-input>
                     </el-form-item>
-                    <el-form-item label="Target" prop="aa2Target">
+                    <el-form-item label="'AA'模式" prop="aa2Target">
                       <el-input v-model="editForm.aa2Target" @input="handleInputChange('aa2Target')"></el-input>
                     </el-form-item>
-                    <el-form-item label="CcToCornerLimit" prop="aa2CcToCornerLimit">
+                    <el-form-item label="场曲上限" prop="aa2CcToCornerLimit">
                       <el-input v-model="editForm.aa2CcToCornerLimit" @input="handleInputChange('aa2CcToCornerLimit')"></el-input>
                     </el-form-item>
-                    <el-form-item label="CcToCornerLimitMin" prop="aa2CcToCornerLimitMin">
+                    <el-form-item label="场曲下限" prop="aa2CcToCornerLimitMin">
                       <el-input v-model="editForm.aa2CcToCornerLimitMin" @input="handleInputChange('aa2CcToCornerLimitMin')"></el-input>
                     </el-form-item>
-                    <el-form-item label="CornerScoreDifferenceRejectValue" prop="aa2CornerScoreDifferenceRejectValue">
+                    <el-form-item label="四角均匀性" prop="aa2CornerScoreDifferenceRejectValue">
                       <el-input v-model="editForm.aa2CornerScoreDifferenceRejectValue" @input="handleInputChange('aa2CornerScoreDifferenceRejectValue')"></el-input>
                     </el-form-item>
-                    <el-form-item label="ZRef" prop="aa2ZRef">
+                    <el-form-item label="'AA'Z的位置" prop="aa2ZRef">
                       <el-input v-model="editForm.aa2ZRef" @input="handleInputChange('aa2ZRef')"></el-input>
                     </el-form-item>
-                    <el-form-item label="SrchStep" prop="aa2SrchStep">
+                    <el-form-item label="步距" prop="aa2SrchStep">
                       <el-input v-model="editForm.aa2SrchStep" @input="handleInputChange('aa2SrchStep')"></el-input>
                     </el-form-item>
-                    <el-form-item label="GoldenGlueThicknessMin" prop="aa2GoldenGlueThicknessMin">
-                      <el-input v-model="editForm.aa2GoldenGlueThicknessMin" @input="handleInputChange('aa2GoldenGlueThicknessMin')"></el-input>
-                    </el-form-item>
-                    <el-form-item label="GoldenGlueThicknessMax" prop="aa2GoldenGlueThicknessMax">
+                    <el-form-item label="胶厚上限" prop="aa2GoldenGlueThicknessMax">
                       <el-input v-model="editForm.aa2GoldenGlueThicknessMax" @input="handleInputChange('aa2GoldenGlueThicknessMax')"></el-input>
+                    </el-form-item>
+                    <el-form-item label="胶厚下限" prop="aa2GoldenGlueThicknessMin">
+                      <el-input v-model="editForm.aa2GoldenGlueThicknessMin" @input="handleInputChange('aa2GoldenGlueThicknessMin')"></el-input>
                     </el-form-item>
                   </el-collapse-item>
                   <el-collapse-item class="sub-item" title="AA3" name="9">
@@ -1181,29 +1181,29 @@
                     <el-form-item label="RoiLr" prop="aa3RoiLr">
                       <el-input v-model="editForm.aa3RoiLr" @input="handleInputChange('aa3RoiLr')"></el-input>
                     </el-form-item>
-                    <el-form-item label="Target" prop="aa3Target">
+                    <el-form-item label="'AA'模式" prop="aa3Target">
                       <el-input v-model="editForm.aa3Target" @input="handleInputChange('aa3Target')"></el-input>
                     </el-form-item>
-                    <el-form-item label="CcToCornerLimit" prop="aa3CcToCornerLimit">
+                    <el-form-item label="场曲上限" prop="aa3CcToCornerLimit">
                       <el-input v-model="editForm.aa3CcToCornerLimit" @input="handleInputChange('aa3CcToCornerLimit')"></el-input>
                     </el-form-item>
-                    <el-form-item label="CcToCornerLimitMin" prop="aa3CcToCornerLimitMin">
+                    <el-form-item label="场曲下限" prop="aa3CcToCornerLimitMin">
                       <el-input v-model="editForm.aa3CcToCornerLimitMin" @input="handleInputChange('aa3CcToCornerLimitMin')"></el-input>
                     </el-form-item>
-                    <el-form-item label="CornerScoreDifferenceRejectValue" prop="aa3CornerScoreDifferenceRejectValue">
+                    <el-form-item label="四角均匀性" prop="aa3CornerScoreDifferenceRejectValue">
                       <el-input v-model="editForm.aa3CornerScoreDifferenceRejectValue" @input="handleInputChange('aa3CornerScoreDifferenceRejectValue')"></el-input>
                     </el-form-item>
-                    <el-form-item label="ZRef" prop="aa3ZRef">
+                    <el-form-item label="'AA'Z的位置" prop="aa3ZRef">
                       <el-input v-model="editForm.aa3ZRef" @input="handleInputChange('aa3ZRef')"></el-input>
                     </el-form-item>
-                    <el-form-item label="SrchStep" prop="aa3SrchStep">
+                    <el-form-item label="步距" prop="aa3SrchStep">
                       <el-input v-model="editForm.aa3SrchStep" @input="handleInputChange('aa3SrchStep')"></el-input>
                     </el-form-item>
-                    <el-form-item label="GoldenGlueThicknessMin" prop="aa3GoldenGlueThicknessMin">
-                      <el-input v-model="editForm.aa3GoldenGlueThicknessMin" @input="handleInputChange('aa3GoldenGlueThicknessMin')"></el-input>
-                    </el-form-item>
-                    <el-form-item label="GoldenGlueThicknessMax" prop="aa3GoldenGlueThicknessMax">
+                    <el-form-item label="胶厚上限" prop="aa3GoldenGlueThicknessMax">
                       <el-input v-model="editForm.aa3GoldenGlueThicknessMax" @input="handleInputChange('aa3GoldenGlueThicknessMax')"></el-input>
+                    </el-form-item>
+                    <el-form-item label="胶厚下限" prop="aa3GoldenGlueThicknessMin">
+                      <el-input v-model="editForm.aa3GoldenGlueThicknessMin" @input="handleInputChange('aa3GoldenGlueThicknessMin')"></el-input>
                     </el-form-item>
                   </el-collapse-item>
 
@@ -1335,7 +1335,7 @@
                   </el-collapse-item>
 
                   <el-collapse-item class="sub-item" title="EpoxyInspectionAuto" name="20">
-                    <el-form-item label="epoxyInspection" prop="epoxyInspectionInterval">
+                    <el-form-item label="胶检频率" prop="epoxyInspectionInterval">
                       <el-input v-model="editForm.epoxyInspectionInterval"
                                 @input="handleInputChange('epoxyInspectionInterval')"
                       ></el-input>

@@ -8,23 +8,23 @@
         </el-select>
       </el-form-item>
       <el-form-item label="车间" prop="groupName">
-        <el-select v-model="queryParams.groupName" placeholder="请输入车间" clearable @focus="getGroupNames"
+        <el-select v-model="queryParams.groupName" placeholder="请输入车间" clearable @focus="checkPreInput"
           @change="handleQuery">
           <el-option v-for="groupName in groupNameOptions" :key="groupName.id" :label="groupName.name"
             :value="groupName.name"></el-option>
         </el-select>
       </el-form-item>
       <el-form-item label="设备号" prop="eqId">
-        <el-input v-model="queryParams.eqId" placeholder="请输入设备号" clearable @keyup.enter.native="handleQuery" />
+        <el-input v-model="queryParams.eqId" placeholder="请输入设备号" clearable @change="handleQuery" @keyup.native="handleQuery" />
       </el-form-item>
       <el-form-item label="机台号" prop="mcId">
-        <el-input v-model="queryParams.mcId" placeholder="请输入机型" clearable @keyup.enter.native="handleQuery" />
+        <el-input v-model="queryParams.mcId" placeholder="请输入机型" clearable @change="handleQuery" @keyup.native="handleQuery" />
       </el-form-item>
       <el-form-item label="盒子号" prop="simId">
-        <el-input v-model="queryParams.simId" placeholder="请输入盒子号" clearable @change="handleQuery" />
+        <el-input v-model="queryParams.simId" placeholder="请输入盒子号" clearable @change="handleQuery" @keyup.native="handleQuery" />
       </el-form-item>
       <el-form-item label="机型" prop="prodType">
-        <el-input v-model="queryParams.prodType" placeholder="请输入机型" clearable @change="handleQuery" />
+        <el-input v-model="queryParams.prodType" placeholder="请输入机型" clearable @change="handleQuery" @keyup.native="handleQuery" />
       </el-form-item>
       <el-form-item label="状态" prop="status">
         <el-select v-model="queryParams.status" placeholder="请输入比对结果状态" clearable :key="queryParams.category"
@@ -78,7 +78,7 @@
 
 <script>
 import { headerCellStyle, bodyCellStyle, tableStyle } from '@/views/biz/common/js/tableStyles';
-import { listEqInfo, listWbComparison } from '@/api/biz/wb/result'
+import { listEqInfo, listWbOlpChkResult } from '@/api/biz/wb/result'
 import { fetchWbOlpLatestResultFactoryNames, fetchWbOlpLatestResultGroupNames } from '@/api/biz/common/factoryAndGroupNames'
 
 
@@ -130,7 +130,7 @@ export default {
           this.loading = false
         })
       } else {
-        listWbComparison(this.queryParams).then(response => {
+        listWbOlpChkResult(this.queryParams).then(response => {
           this.resultList = response.rows
           this.total = response.total
           this.loading = false
@@ -141,7 +141,7 @@ export default {
       /* 在 Vue 中，每个组件都有一个唯一的 key 属性。当组件的 key 属性发生改变时，Vue 会视为这是一个新的组件，而不是复用之前的组件。这样就会触发组件的重新渲染，从而实现页面的刷新 */
       // 点击刷新按钮，改变 refreshKey 的值触发组件的重新渲染
       this.refreshKey++
-      this.reset()
+      // this.reset()
       this.getList()
     },
 
@@ -159,7 +159,6 @@ export default {
       this.$refs['queryForm'].validate(valid => {
         if (valid) {
           this.factoryNameOptions = []
-
           fetchWbOlpLatestResultFactoryNames(this.queryParams).then(response => {
             if (!response.data || response.data.length === 0) {
               return
@@ -186,10 +185,7 @@ export default {
 
     getGroupNames() {
       this.groupNameOptions = []
-      if (!this.queryParams.factoryName) {
-        this.$message.error('请先选择厂区')
-        return
-      }
+      this.checkPreInput()
       this.$refs['queryForm'].validate(valid => {
         if (valid) {
           this.queryParams.params = {}
@@ -217,6 +213,13 @@ export default {
       })
     },
 
+    checkPreInput() {
+      if (!this.queryParams.factoryName) {
+        this.$message.error('请先选择厂区')
+        return
+      }
+    },
+
     handleQuery() {
       this.queryParams.pageNum = 1
       this.getList()
@@ -234,12 +237,13 @@ export default {
         mcId: null,
         eqId: null,
         status: null,
-
+        category: this.queryParams.category
       }
     },
 
     resetQuery() {
-      this.resetForm('queryForm')
+      this.reset()
+      // this.resetForm('queryForm')
       this.handleQuery()
     },
 

@@ -9,19 +9,28 @@
         </el-select>
       </el-form-item>
       <el-form-item label="车间" prop="groupName">
-        <el-select v-model="queryParams.groupName" placeholder="请输入车间" clearable @focus="getGroupNames"
+        <el-select v-model="queryParams.groupName" placeholder="请输入车间" clearable @focus="checkPreInput"
           @change="handleQuery">
           <el-option v-for="groupName in groupNameOptions" :key="groupName.id" :label="groupName.name"
             :value="groupName.name"></el-option>
         </el-select>
       </el-form-item>
+      <el-form-item label="设备编号" prop="eqId">
+        <el-input v-model="queryParams.eqId" placeholder="请输入设备编号" clearable @change="handleQuery"
+          @keyup.native="handleQuery" />
+      </el-form-item>
+      <el-form-item label="机台号" prop="mcId">
+        <el-input v-model="queryParams.mcId" placeholder="请输入机台号" clearable @change="handleQuery"
+          @keyup.native="handleQuery" />
+      </el-form-item>
       <el-form-item label="机型" prop="prodType">
-        <el-input v-model="queryParams.prodType" placeholder="请输入机型" clearable />
+        <el-input v-model="queryParams.prodType" placeholder="请输入机型" clearable @change="handleQuery"
+          @keyup.native="handleQuery" />
       </el-form-item>
       <el-form-item label="时段" prop="dtRange">
         <el-date-picker v-model="queryParams.dtRange" style="width: 340px" value-format="yyyy-MM-dd HH:mm:ss"
           type="datetimerange" range-separator="至" start-placeholder="开始日期" end-placeholder="结束日期"
-          :picker-options="pickerOptions" @change="handleQuery"></el-date-picker>
+          :picker-options="pickerOptions" @change="getFactoryNames, handleQuery"></el-date-picker>
       </el-form-item>
       <el-form-item>
         <el-button type="primary" icon="el-icon-search" size="mini" @click="handleQuery">搜索</el-button>
@@ -134,6 +143,7 @@ export default {
     this.queryParams.factoryName = this.$route.query.factoryName
     this.queryParams.groupName = this.$route.query.groupName
     this.queryParams.eqId = this.$route.query.eqId
+    this.queryParams.mcId = this.$route.query.mcId
     this.queryParams.prodType = this.$route.query.prodType
     this.queryParams.flag = this.$route.query.flag
     this.queryParams.code = this.$route.query.code
@@ -210,10 +220,7 @@ export default {
 
     getGroupNames() {
       this.groupNameOptions = []
-      if (!this.queryParams.factoryName) {
-        this.$message.error('请先选择厂区')
-        return
-      }
+      this.checkPreInput()
       this.$refs['queryForm'].validate(valid => {
         if (valid) {
           this.queryParams.params = {}
@@ -241,6 +248,13 @@ export default {
           })
         }
       })
+    },
+
+    checkPreInput() {
+      if (!this.queryParams.factoryName) {
+        this.$message.error('请先选择厂区')
+        return
+      }
     },
     /** 重置查询参数（resetForm是重置为初始值，此处重置为空值） */
     reset() {

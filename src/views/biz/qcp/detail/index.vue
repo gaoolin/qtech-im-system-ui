@@ -7,21 +7,21 @@
     <el-form :model="queryParams" ref="queryForm" size="small" :inline="true" v-show="showSearch" label-width="72px"
       :rules="rules">
       <el-form-item label="厂区" prop="factoryName">
-        <el-select v-model="queryParams.factoryName" placeholder="请输入厂区" clearable @change="handleQuery">
-          <el-option v-for="item in factoryOptions" :key="item.key" :label="item.label" :value="item.label"
-            :disabled="item.disabled">
-          </el-option>
+        <el-select v-model="queryParams.factoryName" placeholder="请输入厂区" clearable @change="handleFactoryChange">
+          <el-option v-for="factory in factoryNameOptions" :key="factory.id" :label="factory.name"
+            :value="factory.name"></el-option>
         </el-select>
       </el-form-item>
       <el-form-item label="车间" prop="groupName">
-        <el-select v-model="queryParams.groupName" placeholder="请输入车间" clearable @focus="getGroupNames"
+        <el-select v-model="queryParams.groupName" placeholder="请输入车间" clearable @focus="checkPreInput"
           @change="handleQuery">
-          <el-option v-for="item in workshopOptions" :key="item" :label="item" :value="item">
-          </el-option>
+          <el-option v-for="groupName in groupNameOptions" :key="groupName.id" :label="groupName.name"
+            :value="groupName.name"></el-option>
         </el-select>
       </el-form-item>
       <el-form-item label="设备类型" prop="deviceType">
-        <el-select v-model="queryParams.deviceType" placeholder="请输入设备类型" clearable @change="handleQuery">
+        <el-select v-model="queryParams.deviceType" placeholder="请输入设备类型" clearable @change="handleQuery"
+          @keyup.native="handleQuery">
           <el-option v-for="item in deviceTypeOptions" :key="item" :label="item" :value="item">
           </el-option>
         </el-select>
@@ -44,7 +44,7 @@
 
     <!-- 警告框，数据不正常时显示，带渐显效果 -->
     <transition name="fade">
-      <div v-if="showAlert" class="alert-box">数据异常：采集数据近10分钟无更新！</div>
+      <div v-if="showAlert" class="alert-box">数据异常：采集数据无更新！</div>
     </transition>
 
     <el-table v-loading="loading" :data="tableData" border :cell-style="bodyCellStyle()"
@@ -67,7 +67,8 @@
 import { headerCellStyle, bodyCellStyle, tableStyle } from '@/views/biz/common/js/tableStyles';
 import { fetchDataStatus } from '@/api/biz/common/eqRelated'
 import { listQcpParams } from '@/api/biz/qcp/parameters'
-import { getFactoryNames, getGroupNames } from '@/api/biz/eqn/networking'
+import { fetchQcpFactoryNames, fetchQcpGroupNames } from '@/api/biz/common/factoryAndGroupNames'
+
 import RightToolBarUDF from '@/views/biz/common/RightToolBarGoBack'
 
 export default {
@@ -78,10 +79,13 @@ export default {
       loading: true,
       showSearch: true,
       back: false,
+      showAlert: false,
       total: 0,
       tableData: [],
-      factoryOptions: [],
-      workshopOptions: [],
+      // 厂选择器
+      factoryNameOptions: [],
+      // 区选择器
+      groupNameOptions: [],
       deviceTypeOptions: ['DB', 'WB', 'HM', 'AA'],
       queryParams: {
         pageNum: 1,
@@ -124,10 +128,10 @@ export default {
     this.getFactoryNames()
 
     // 每隔5秒检查数据状态
-    this.checkDataStatus();
-    setInterval(() => {
-      this.checkDataStatus();
-    }, 5000); // 5秒（300,000毫秒）
+    // this.checkDataStatus();
+    // setInterval(() => {
+    //   this.checkDataStatus();
+    // }, 5000); // 5秒（300,000毫秒）
   },
 
   methods: {
@@ -144,32 +148,79 @@ export default {
       })
     },
 
+    /** 选取厂区列表时 */
+    async handleFactoryChange() {
+      if (this.queryParams.factoryName) {
+        // 加载车间数据
+        await this.getGroupNames()
+      }
+      this.queryParams.groupName = null
+      this.handleQuery()
+    },
+
     getFactoryNames() {
-      this.factoryOptions = []
-      getFactoryNames().then(response => {
-        for (const i in response.data) {
-          let o = {}
-          const tmp = response.data[i]['factoryName']
-          o.label = tmp
-          if (tmp === '汉浦厂区' || tmp === 'QT_India') {
-            o.disabled = true
-            this.factoryOptions.push(o)
-          } else {
-            this.factoryOptions.push(o)
-          }
+      this.$refs['queryForm'].validate(valid => {
+        if (valid) {
+          this.factoryNameOptions = []
+          fetchQcpFactoryNames().then(response => {
+            if (!response.data || response.data.length === 0) {
+              return
+            }
+            for (let index = 0; index < response.data.length; index++) {
+              const factory = response.data[index]
+              const option = {
+                id: index + 1,
+                name: factory['factoryName']
+              }
+              if (option.name === this.queryParams.factoryName) {
+                // 将该项目插入到 factoryNameOptions 数组的最前面
+                this.factoryNameOptions.unshift(option)
+              } else {
+                this.factoryNameOptions.push(option)
+              }
+            }
+          }).catch(error => {
+            console.error('获取厂区列表失败:', error)
+          })
         }
       })
     },
 
     getGroupNames() {
-      this.workshopOptions = []
-      getGroupNames(this.queryParams).then(response => {
-        for (const i in response.data) {
-          this.workshopOptions.push(response.data[i]['groupName'])
+      this.groupNameOptions = []
+      this.checkPreInput()
+      this.$refs['queryForm'].validate(valid => {
+        if (valid) {
+          fetchQcpGroupNames(this.queryParams).then(response => {
+            if (!response.data || response.data.length === 0) {
+              return
+            }
+            for (let index = 0; index < response.data.length; index++) {
+              const group = response.data[index]
+              const option = {
+                id: index + 1,
+                name: group['groupName']
+              }
+              if (option.name === this.queryParams.groupName) {
+                // 将该项目插入到 groupNameOptions 数组的最前面
+                this.groupNameOptions.unshift(option)
+              } else {
+                this.groupNameOptions.push(option)
+              }
+            }
+          }).catch(error => {
+            console.error('获取组名列表失败:', error)
+          })
         }
       })
     },
 
+    checkPreInput() {
+      if (!this.queryParams.factoryName) {
+        this.$message.error('请先选择厂区')
+        return
+      }
+    },
 
     async checkDataStatus() {
       // 发送请求检查数据状态的函数

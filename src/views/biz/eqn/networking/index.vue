@@ -62,7 +62,7 @@
 
     <!-- 警告框，数据不正常时显示，带渐显效果 -->
     <transition name="fade">
-      <div v-if="showAlert" class="alert-box">数据异常：采集数据近10分钟无更新！</div>
+      <div v-if="showAlert" class="alert-box">数据异常：采集数据无更新！</div>
     </transition>
 
     <el-table v-loading="loading" :data="tableData" :header-cell-style="headerCellStyle()" :cell-style="bodyCellStyle()"
@@ -151,9 +151,9 @@ export default {
 
     // 每隔5秒检查数据状态
     this.checkDataStatus();
-    setInterval(() => {
-      this.checkDataStatus();
-    }, 5000); // 5秒（300,000毫秒）
+    // setInterval(() => {
+    //   this.checkDataStatus();
+    // }, 5000); // 5秒（300,000毫秒）
   },
 
   methods: {

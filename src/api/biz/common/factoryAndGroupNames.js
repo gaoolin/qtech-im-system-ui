@@ -51,3 +51,35 @@ export function fetchWbOlpLatestResultGroupNames(query) {
     params: query
   })
 }
+
+// 设备联网
+export function fetchEqnFactoryNames() {
+  return request({
+    url: '/qtech/im/factoryNames/eqn',
+    method: 'get',
+  })
+}
+
+export function fetchEqnGroupNames(query) {
+  return request({
+    url: '/qtech/im/groupNames/eqn',
+    method: 'get',
+    params: query
+  })
+}
+
+// qcp 参数
+export function fetchQcpFactoryNames() {
+  return request({
+    url: '/qtech/im/factoryNames/qcp',
+    method: 'get',
+  })
+}
+
+export function fetchQcpGroupNames(query) {
+  return request({
+    url: '/qtech/im/groupNames/qcp',
+    method: 'get',
+    params: query
+  })
+}

@@ -118,7 +118,7 @@
       <el-table-column label="机台编号" align="center" prop="mcId"/>
       <el-table-column label="盒子号" align="center" prop="simId" min-width="100"/>
       <el-table-column align="center" prop="prodType">
-        <template slot-scope="scope" slot="header">
+        <template slot="header">
           <span>机型</span>
           <el-tooltip class="item" effect="dark" placement="top-start" content="超过7天没有点检数据的机台不显示机型">
             <i class="el-icon-question" style="color:#272728; margin-left:2px;'"> </i>
@@ -126,7 +126,7 @@
         </template>
       </el-table-column>
       <el-table-column align="center" prop="status">
-        <template slot-scope="scope" slot="header">
+        <template slot="header">
           <span>状态</span>
           <el-tooltip class="item" effect="dark" placement="top-start" content="切换按钮为绿色时，机台为受控状态;切换按钮为红色时，机台为放行状态">
             <i class="el-icon-question" style="color:#272728; margin-left:2px;'"> </i>

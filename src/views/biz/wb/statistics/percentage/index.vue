@@ -9,25 +9,23 @@
         </el-select>
       </el-form-item>
       <el-form-item label="车间" prop="groupName">
-        <el-select v-model="queryParams.groupName" placeholder="请输入车间" clearable @focus="getGroupNames"
+        <el-select v-model="queryParams.groupName" placeholder="请输入车间" clearable @focus="checkPreInput"
           @change="handleQuery">
           <el-option v-for="groupName in groupNameOptions" :key="groupName.id" :label="groupName.name"
             :value="groupName.name"></el-option>
         </el-select>
       </el-form-item>
-      <el-form-item label="机型" prop="prodType">
-        <el-input v-model="queryParams.prodType" placeholder="请输入机型" clearable />
+      <el-form-item label="设备编号" prop="eqId">
+        <el-input v-model="queryParams.eqId" placeholder="请输入设备编号" clearable @change="handleQuery"
+          @keyup.native="handleQuery" />
       </el-form-item>
       <el-form-item label="机台号" prop="mcId">
-        <el-input v-model="queryParams.mcId" placeholder="请输入机台号" clearable @keyup.enter.native="handleQuery"
-          @input="handleQuery" />
-      </el-form-item>
-      <el-form-item label="设备编号" prop="eqId">
-        <el-input v-model="queryParams.eqId" placeholder="请输入设备编号" clearable @keyup.enter.native="handleQuery"
-          @input="handleQuery" />
+        <el-input v-model="queryParams.mcId" placeholder="请输入机台号" clearable @change="handleQuery"
+          @keyup.native="handleQuery" />
       </el-form-item>
       <el-form-item label="机型" prop="prodType">
-        <el-input v-model="queryParams.prodType" placeholder="请输入机型" clearable />
+        <el-input v-model="queryParams.prodType" placeholder="请输入机型" clearable @change="handleQuery"
+          @keyup.native="handleQuery" />
       </el-form-item>
       <el-form-item label="状态" prop="status">
         <el-select v-model="queryParams.status" placeholder="请输入比对状态" clearable :key="queryParams.category"
@@ -39,7 +37,7 @@
       <el-form-item label="时段" prop="dtRange">
         <el-date-picker v-model="queryParams.dtRange" style="width: 340px" value-format="yyyy-MM-dd HH:mm:ss"
           type="datetimerange" range-separator="至" start-placeholder="开始日期" end-placeholder="结束日期"
-          :picker-options="pickerOptions" @change="handleQuery"></el-date-picker>
+          :picker-options="pickerOptions" @change="getFactoryNames, handleQuery"></el-date-picker>
       </el-form-item>
       <el-form-item>
         <el-button type="primary" icon="el-icon-search" size="mini" @click="handleQuery">搜索</el-button>
@@ -170,8 +168,8 @@ export default {
           }, {
             validator: (rule, value, callback) => {
               // 调用 checkDtRange 方法并指定 intervalDays 的值
-              checkDtRange(rule, value, callback); // 指定 intervalDays 为 60 天
-            }, trigger: 'blur',
+              checkDtRange(rule, value, callback, 60, 'day') // 指定 intervalDays 为 60 天
+            }, trigger: 'blur'
           }]
       },
     }
@@ -190,16 +188,15 @@ export default {
         if (valid) {
           this.loading = true;
           this.queryParams.params = {}
-          if (null != this.queryParams.dtRange && '' !== this.queryParams.dtRange) {
-            this.queryParams.params['beginDate'] = this.queryParams.dtRange[0]
-            this.queryParams.params['endDate'] = this.queryParams.dtRange[1]
-            listComparisonRatio(this.queryParams).then(response => {
-              this.tableData = response.rows
-              this.total = response.total;
-              this.rowMergeArrs = rowMergeHandle(this.needMergeArr, response.rows)
-              this.loading = false
-            })
-          }
+          this.queryParams.params['beginTime'] = this.queryParams.dtRange[0]
+          this.queryParams.params['endTime'] = this.queryParams.dtRange[1]
+          listComparisonRatio(this.queryParams).then(response => {
+            this.tableData = response.rows
+            this.total = response.total;
+            this.rowMergeArrs = rowMergeHandle(this.needMergeArr, response.rows)
+            this.loading = false
+          })
+
         }
       })
     },
@@ -273,10 +270,7 @@ export default {
 
     getGroupNames() {
       this.groupNameOptions = []
-      if (!this.queryParams.factoryName) {
-        this.$message.error('请先选择厂区')
-        return
-      }
+      this.checkPreInput()
       this.$refs['queryForm'].validate(valid => {
         if (valid) {
           this.queryParams.params = {}
@@ -304,6 +298,13 @@ export default {
           })
         }
       })
+    },
+
+    checkPreInput() {
+      if (!this.queryParams.factoryName) {
+        this.$message.error('请先选择厂区')
+        return
+      }
     },
 
     /** 导出 */
@@ -334,6 +335,7 @@ export default {
     this.queryParams.factoryName = this.$route.query.factoryName
     this.queryParams.groupName = this.$route.query.groupName
     this.queryParams.eqId = this.$route.query.eqId
+    this.queryParams.mcId = this.$route.query.mcId
     this.queryParams.prodType = this.$route.query.prodType
     this.queryParams.flag = this.$route.query.flag
   },
