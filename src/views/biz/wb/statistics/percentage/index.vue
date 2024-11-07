@@ -299,9 +299,20 @@ export default {
         }
       })
     },
-
-    checkPreInput() {
+    
+    checkPreInput(e) {
       if (!this.queryParams.factoryName) {
+        // 根据事件类型进行不同的处理
+        const eventType = e && e.type ? e.type : 'unknown';
+        switch (eventType) {
+          case 'focus':
+            // 处理 change 事件
+            this.groupNameOptions = []
+            break;
+          default:
+            // 处理其他事件类型
+            break;
+        }
         this.$message.error('请先选择厂区')
         return
       }

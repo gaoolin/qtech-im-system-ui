@@ -82,6 +82,29 @@ export function checkDtRange(rule, value, callback, intervalValue = 30, unit = '
   callback()
 }
 
+/**
+ * 必填项校验方法
+ * 
+ * @param {Object} rule - 校验规则对象，通常由表单验证框架提供
+ * @param {any} value - 当前输入的值
+ * @param {Function} callback - 回调函数，用于返回校验结果
+ * 
+ * @example
+ * rules: [
+ *   { required: true, validator: requiredValidator, trigger: 'blur' }
+ * ]
+ */
+ export function requiredValidator(rule, value, callback) {
+  // 检查输入值是否为空
+  if (!value) {
+    // 如果输入值为空，调用回调函数并传递错误信息
+    callback(new Error('需要输入值'));
+  } else {
+    // 如果输入值不为空，调用回调函数表示校验通过
+    callback();
+  }
+}
+
 /** 表格合并行 */
 /**
  * 表格合并行方法

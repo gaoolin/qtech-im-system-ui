@@ -83,3 +83,36 @@ export function fetchQcpGroupNames(query) {
     params: query
   })
 }
+
+// aa 参数
+export function fetchHistoryFactoryNames(query) {
+  return request({
+    url: '/qtech/im/factoryNames/aa/history',
+    method: 'get',
+    params: query
+  })
+}
+
+export function fetchHistoryGroupNames(query) {
+  return request({
+    url: '/qtech/im/groupNames/aa/history',
+    method: 'get',
+    params: query
+  })
+}
+
+export function fetchLatestFactoryNames(query) {
+  return request({
+    url: '/qtech/im/factoryNames/aa/latest',
+    method: 'get',
+    params: query
+  })
+}
+
+export function fetchLatestGroupNames(query) {
+  return request({
+    url: '/qtech/im/groupNames/aa/latest',
+    method: 'get',
+    params: query
+  })
+}

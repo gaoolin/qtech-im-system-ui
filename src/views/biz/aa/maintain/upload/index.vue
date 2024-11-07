@@ -522,7 +522,7 @@
                     <el-descriptions-item label="胶厚下限">
                       {{ convertNull(scope.row.aa1GoldenGlueThicknessMin) }}
                     </el-descriptions-item>
-                    <el-descriptions-item label="MtfOffAxisCheck1">
+                    <!-- <el-descriptions-item label="MtfOffAxisCheck1">
                       {{ convertNull(scope.row.aa1MtfOffAxisCheck1) }}
                     </el-descriptions-item>
                     <el-descriptions-item label="MtfOffAxisCheck2">
@@ -530,7 +530,7 @@
                     </el-descriptions-item>
                     <el-descriptions-item label="MtfOffAxisCheck3">
                       {{ convertNull(scope.row.aa1MtfOffAxisCheck3) }}
-                    </el-descriptions-item>
+                    </el-descriptions-item> -->
                   </el-descriptions>
                 </el-collapse-item>
                 <el-collapse-item class="prop-label" title="AA2" name="2">
@@ -574,7 +574,7 @@
                     <el-descriptions-item label="胶厚下限">
                       {{ convertNull(scope.row.aa2GoldenGlueThicknessMin) }}
                     </el-descriptions-item>
-                    <el-descriptions-item label="MtfOffAxisCheck1">
+                    <!-- <el-descriptions-item label="MtfOffAxisCheck1">
                       {{ convertNull(scope.row.aa2MtfOffAxisCheck1) }}
                     </el-descriptions-item>
                     <el-descriptions-item label="MtfOffAxisCheck2">
@@ -582,7 +582,7 @@
                     </el-descriptions-item>
                     <el-descriptions-item label="MtfOffAxisCheck3">
                       {{ convertNull(scope.row.aa2MtfOffAxisCheck3) }}
-                    </el-descriptions-item>
+                    </el-descriptions-item> -->
                   </el-descriptions>
                 </el-collapse-item>
                 <el-collapse-item class="prop-label" title="AA3" name="3">
@@ -626,7 +626,7 @@
                     <el-descriptions-item label="胶厚下限">
                       {{ convertNull(scope.row.aa3GoldenGlueThicknessMin) }}
                     </el-descriptions-item>
-                    <el-descriptions-item label="MtfOffAxisCheck1">
+                    <!-- <el-descriptions-item label="MtfOffAxisCheck1">
                       {{ convertNull(scope.row.aa3MtfOffAxisCheck1) }}
                     </el-descriptions-item>
                     <el-descriptions-item label="MtfOffAxisCheck2">
@@ -634,7 +634,7 @@
                     </el-descriptions-item>
                     <el-descriptions-item label="MtfOffAxisCheck3">
                       {{ convertNull(scope.row.aa3MtfOffAxisCheck3) }}
-                    </el-descriptions-item>
+                    </el-descriptions-item> -->
                   </el-descriptions>
                 </el-collapse-item>
                 <el-collapse-item class="prop-label" title="chartAlignment" name="4">

@@ -1,6 +1,7 @@
 <template>
   <div class="app-container">
-    <el-form :model="queryParams" ref="queryForm" size="small" :inline="true" v-show="showSearch" label-width="68px" :rules="rules">
+    <el-form :model="queryParams" ref="queryForm" size="small" :inline="true" v-show="showSearch" label-width="68px"
+      :rules="rules">
       <el-form-item label="厂区" prop="factoryName">
         <el-select v-model="queryParams.factoryName" placeholder="请输入厂区" clearable @change="handleFactoryChange">
           <el-option v-for="factory in factoryNameOptions" :key="factory.id" :label="factory.name"
@@ -15,16 +16,20 @@
         </el-select>
       </el-form-item>
       <el-form-item label="设备号" prop="eqId">
-        <el-input v-model="queryParams.eqId" placeholder="请输入设备号" clearable @change="handleQuery" @keyup.native="handleQuery" />
+        <el-input v-model="queryParams.eqId" placeholder="请输入设备号" clearable @change="handleQuery"
+          @keyup.native="handleQuery" />
       </el-form-item>
       <el-form-item label="机台号" prop="mcId">
-        <el-input v-model="queryParams.mcId" placeholder="请输入机型" clearable @change="handleQuery" @keyup.native="handleQuery" />
+        <el-input v-model="queryParams.mcId" placeholder="请输入机型" clearable @change="handleQuery"
+          @keyup.native="handleQuery" />
       </el-form-item>
       <el-form-item label="盒子号" prop="simId">
-        <el-input v-model="queryParams.simId" placeholder="请输入盒子号" clearable @change="handleQuery" @keyup.native="handleQuery" />
+        <el-input v-model="queryParams.simId" placeholder="请输入盒子号" clearable @change="handleQuery"
+          @keyup.native="handleQuery" />
       </el-form-item>
       <el-form-item label="机型" prop="prodType">
-        <el-input v-model="queryParams.prodType" placeholder="请输入机型" clearable @change="handleQuery" @keyup.native="handleQuery" />
+        <el-input v-model="queryParams.prodType" placeholder="请输入机型" clearable @change="handleQuery"
+          @keyup.native="handleQuery" />
       </el-form-item>
       <el-form-item label="状态" prop="status">
         <el-select v-model="queryParams.status" placeholder="请输入比对结果状态" clearable :key="queryParams.category"
@@ -80,7 +85,7 @@
 import { headerCellStyle, bodyCellStyle, tableStyle } from '@/views/biz/common/js/tableStyles';
 import { listEqInfo, listWbOlpChkResult } from '@/api/biz/wb/result'
 import { fetchWbOlpLatestResultFactoryNames, fetchWbOlpLatestResultGroupNames } from '@/api/biz/common/factoryAndGroupNames'
-
+import { requiredValidator } from '@/views/biz/common/js/utils'
 
 export default {
   name: 'index',
@@ -108,7 +113,11 @@ export default {
       factoryNameOptions: [],
       // 区选择器
       groupNameOptions: [],
-      rules: {}
+      rules: {
+        category: [
+          { message: '请选择查询类型', validator: requiredValidator, trigger: 'blur' }
+        ]
+      }
     }
   },
 
@@ -122,20 +131,25 @@ export default {
     bodyCellStyle,
     tableStyle,
     getList() {
-      this.loading = true
-      if (this.queryParams.category === '1') {
-        listEqInfo(this.queryParams).then(response => {
-          this.resultList = response.rows
-          this.total = response.total
-          this.loading = false
-        })
-      } else {
-        listWbOlpChkResult(this.queryParams).then(response => {
-          this.resultList = response.rows
-          this.total = response.total
-          this.loading = false
-        })
-      }
+      this.$refs['queryForm'].validate(valid => {
+        if (valid) {
+          // 获取数据
+          this.loading = true
+          if (this.queryParams.category === '1') {
+            listEqInfo(this.queryParams).then(response => {
+              this.resultList = response.rows
+              this.total = response.total
+              this.loading = false
+            })
+          } else {
+            listWbOlpChkResult(this.queryParams).then(response => {
+              this.resultList = response.rows
+              this.total = response.total
+              this.loading = false
+            })
+          }
+        }
+      })
     },
     handleRefresh() {
       /* 在 Vue 中，每个组件都有一个唯一的 key 属性。当组件的 key 属性发生改变时，Vue 会视为这是一个新的组件，而不是复用之前的组件。这样就会触发组件的重新渲染，从而实现页面的刷新 */
@@ -213,8 +227,19 @@ export default {
       })
     },
 
-    checkPreInput() {
+    checkPreInput(e) {
       if (!this.queryParams.factoryName) {
+        // 根据事件类型进行不同的处理
+        const eventType = e && e.type ? e.type : 'unknown';
+        switch (eventType) {
+          case 'focus':
+            // 处理 change 事件
+            this.groupNameOptions = []
+            break;
+          default:
+            // 处理其他事件类型
+            break;
+        }
         this.$message.error('请先选择厂区')
         return
       }
@@ -237,7 +262,7 @@ export default {
         mcId: null,
         eqId: null,
         status: null,
-        category: this.queryParams.category
+        category: this.queryParams.category || '0'
       }
     },
 
@@ -270,5 +295,4 @@ export default {
 ::v-deep .el-form-item {
   margin-top: 5px;
   margin-bottom: 5px !important;
-}
-</style>
+}</style>

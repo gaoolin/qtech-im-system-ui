@@ -3,30 +3,33 @@
     <el-form :model="queryParams" ref="queryForm" size="small" :inline="true" v-show="showSearch" label-width="68px"
       :rules="rules">
       <el-form-item label="厂区" prop="factoryName">
-        <el-select v-model="queryParams.factoryName" placeholder="请输入厂区" clearable @change="handleQuery">
+        <el-select v-model="queryParams.factoryName" placeholder="请输入厂区" clearable @change="handleFactoryChange">
           <el-option v-for="factory in factoryNameOptions" :key="factory.id" :label="factory.name"
             :value="factory.name"></el-option>
         </el-select>
       </el-form-item>
       <el-form-item label="车间" prop="groupName">
-        <el-select v-model="queryParams.groupName" placeholder="请输入车间" clearable @focus="getGroupNames"
+        <el-select v-model="queryParams.groupName" placeholder="请输入车间" clearable @focus="checkPreInput"
           @change="handleQuery">
-          <el-option v-for="groupName in groupNameOptions" style="width: 240px" :key="groupName.id"
-            :label="groupName.name" :value="groupName.name"></el-option>
+          <el-option v-for="groupName in groupNameOptions" :key="groupName.id" :label="groupName.name"
+            :value="groupName.name"></el-option>
         </el-select>
       </el-form-item>
       <el-form-item label="设备编号" prop="eqId">
-        <el-input v-model="queryParams.eqId" placeholder="请输入设备编号" clearable size="small"
-          @keyup.enter.native="handleQuery" />
+        <el-input v-model="queryParams.eqId" placeholder="请输入设备编号" clearable @change="handleQuery"
+          @keyup.native="handleQuery" />
       </el-form-item>
       <el-form-item label="机台号" prop="mcId">
-        <el-input v-model="queryParams.mcId" placeholder="请输入机台号" clearable @keyup.enter.native="handleQuery" />
+        <el-input v-model="queryParams.mcId" placeholder="请输入机台号" clearable @change="handleQuery"
+          @keyup.native="handleQuery" />
       </el-form-item>
       <el-form-item label="机型" prop="prodType">
-        <el-input v-model="queryParams.prodType" placeholder="请输入机型" clearable @keyup.enter.native="handleQuery" />
+        <el-input v-model="queryParams.prodType" placeholder="请输入机型" clearable @change="handleQuery"
+          @keyup.native="handleQuery" />
       </el-form-item>
       <el-form-item label="盒子号" prop="simId">
-        <el-input v-model="queryParams.simId" placeholder="请输入盒子号" clearable @keyup.enter.native="handleQuery" />
+        <el-input v-model="queryParams.simId" placeholder="请输入盒子号" clearable @change="handleQuery"
+          @keyup.native="handleQuery" />
       </el-form-item>
       <el-form-item label="点检状态" prop="code">
         <el-select v-model="queryParams.code" placeholder="请输入比对结果状态" clearable @change="handleQuery">
@@ -78,7 +81,8 @@
 <script>
 import { pickerOptionsSet1 } from '@/views/biz/common/js/pickerOptionsConfig'
 import { bodyCellStyle, headerCellStyle, tableStyle } from '@/views/biz/common/js/tableStyles'
-import { fetchHistoryFactoryNames, fetchHistoryGroupNames, listHistoryCheckStatus } from '@/api/biz/aa/statistics/statistics'
+import { listHistoryCheckStatus } from '@/api/biz/aa/statistics/statistics'
+import { fetchHistoryFactoryNames, fetchHistoryGroupNames } from '@/api/biz/common/factoryAndGroupNames'
 import { checkDtRange, dateToStr } from '@/views/biz/common/js/utils'
 
 export default {
@@ -160,6 +164,16 @@ export default {
       })
     },
 
+    /** 选取厂区列表时 */
+    async handleFactoryChange() {
+      if (this.queryParams.factoryName) {
+        // 加载车间数据
+        await this.getGroupNames()
+      }
+      this.queryParams.groupName = null
+      this.handleQuery()
+    },
+
     getFactoryNames() {
       this.$refs['queryForm'].validate(valid => {
         if (valid) {
@@ -194,10 +208,7 @@ export default {
     /** 获取车间列表 */
     getGroupNames() {
       this.groupNameOptions = []
-      if (!this.queryParams.factoryName) {
-        this.$message.error('请先选择厂区')
-        return
-      }
+      this.checkPreInput()
       this.$refs['queryForm'].validate(valid => {
         if (valid) {
           this.queryParams.params = {}
@@ -225,6 +236,24 @@ export default {
           })
         }
       })
+    },
+
+    checkPreInput(e) {
+      if (!this.queryParams.factoryName) {
+        // 根据事件类型进行不同的处理
+        const eventType = e && e.type ? e.type : 'unknown';
+        switch (eventType) {
+          case 'focus':
+            // 处理 change 事件
+            this.groupNameOptions = []
+            break;
+          default:
+            // 处理其他事件类型
+            break;
+        }
+        this.$message.error('请先选择厂区')
+        return
+      }
     },
 
     /** 搜索按钮操作 */

@@ -164,15 +164,13 @@ export default {
         if (valid) {
           this.loading = true
           this.queryParams.params = {}
-          if (null != this.queryParams.dtRange && '' !== this.queryParams.dtRange) {
-            this.queryParams.params['beginDate'] = this.queryParams.dtRange[0]
-            this.queryParams.params['endDate'] = this.queryParams.dtRange[1]
+          this.queryParams.params['beginTime'] = this.queryParams.dtRange[0]
+          this.queryParams.params['endTime'] = this.queryParams.dtRange[1]
             listComparisonDetail(this.queryParams).then(response => {
               this.tableData = response.rows
               this.total = response.total
               this.loading = false
             })
-          }
         }
       })
     },
@@ -250,12 +248,24 @@ export default {
       })
     },
 
-    checkPreInput() {
+    checkPreInput(e) {
       if (!this.queryParams.factoryName) {
+        // 根据事件类型进行不同的处理
+        const eventType = e && e.type ? e.type : 'unknown';
+        switch (eventType) {
+          case 'focus':
+            // 处理 change 事件
+            this.groupNameOptions = []
+            break;
+          default:
+            // 处理其他事件类型
+            break;
+        }
         this.$message.error('请先选择厂区')
         return
       }
     },
+
     /** 重置查询参数（resetForm是重置为初始值，此处重置为空值） */
     reset() {
       this.queryParams = {

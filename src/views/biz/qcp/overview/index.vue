@@ -205,9 +205,17 @@ export default {
   mounted() {
     // 每隔5秒检查数据状态
     this.checkDataStatus();
-    // setInterval(() => {
-    //   this.checkDataStatus();
-    // }, 5000); // 5秒（300,000毫秒）
+    // 在组件挂载时启动定时器
+    this.intervalId = setInterval(() => {
+      this.checkDataStatus();
+    }, 5000); // 5秒
+  },
+
+  beforeDestroy() {
+    // 在组件销毁前清除定时器
+    if (this.intervalId) {
+      clearInterval(this.intervalId);
+    }
   },
 
   methods: {
@@ -246,7 +254,7 @@ export default {
       // 发送请求检查数据状态的函数
       const isDataNormal = await this.getDataStatus();
       if (isDataNormal === 'true') {
-        his.showAlert = true // 数据不正常时显示红色提示框
+        this.showAlert = true // 数据不正常时显示红色提示框
       }
       this.showAlert = false
     },
