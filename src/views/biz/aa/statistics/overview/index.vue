@@ -110,7 +110,7 @@
             </router-link>
           </template>
         </el-table-column>
-        <el-table-column prop="lackParamsCnt" label="无模版" align="center" fit>
+        <el-table-column prop="noTplCnt" label="无模版" align="center" fit>
           <template slot-scope="scope">
             <router-link :to="{ path: '/biz/aa/statistics/history', query: {
             dtRange: queryParams.dtRange,
@@ -118,7 +118,7 @@
             groupName: scope.row.groupName === '小计' ? '' : scope.row.groupName,
             code: 1} }"
             >
-              <span v-if="scope.row.noModCnt > 0">{{ numberToCurrencyNo(scope.row.noModCnt) }}</span>
+              <span v-if="scope.row.noTplCnt > 0">{{ numberToCurrencyNo(scope.row.noTplCnt) }}</span>
             </router-link>
           </template>
         </el-table-column>
@@ -128,9 +128,21 @@
             dtRange: queryParams.dtRange,
             factoryName: scope.row.factoryName === '总计' ? '' : scope.row.factoryName,
             groupName: scope.row.groupName === '小计' ? '' : scope.row.groupName,
-            code: 1} }"
+            code: 2} }"
             >
               <span v-if="scope.row.lackParamsCnt > 0">{{ numberToCurrencyNo(scope.row.lackParamsCnt) }}</span>
+            </router-link>
+          </template>
+        </el-table-column>
+        <el-table-column prop="unsuitableCnt" label="多参值异常" align="center" fit>
+          <template slot-scope="scope">
+            <router-link :to="{ path: '/biz/aa/statistics/history', query: {
+            dtRange: queryParams.dtRange,
+            factoryName: scope.row.factoryName === '总计' ? '' : scope.row.factoryName,
+            groupName: scope.row.groupName === '小计' ? '' : scope.row.groupName,
+            code: 3} }"
+            >
+              <span v-if="scope.row.unsuitableCnt > 0">{{ numberToCurrencyNo(scope.row.unsuitableCnt) }}</span>
             </router-link>
           </template>
         </el-table-column>
@@ -140,16 +152,13 @@
             dtRange: queryParams.dtRange,
             factoryName: scope.row.factoryName === '总计' ? '' : scope.row.factoryName,
             groupName: scope.row.groupName === '小计' ? '' : scope.row.groupName,
-            code: 3} }"
+            code: 4} }"
             >
               <span v-if="scope.row.overflowCnt > 0">{{ numberToCurrencyNo(scope.row.overflowCnt) }}</span>
             </router-link>
           </template>
         </el-table-column>
-        <el-table-column prop="unsuitableCnt" label="参数错误" align="center" fit>
-          <template slot-scope="scope">
-            <span v-if="(scope.row.unsuitableCnt) > 0">{{ numberToCurrencyNo(scope.row.unsuitableCnt) }}</span>
-          </template>
+        <el-table-column prop="compErrCnt" label="复合异常" align="center" fit>
           <template slot-scope="scope">
             <router-link :to="{ path: '/biz/aa/statistics/history', query: {
             dtRange: queryParams.dtRange,
@@ -157,11 +166,34 @@
             groupName: scope.row.groupName === '小计' ? '' : scope.row.groupName,
             code: 5} }"
             >
-              <span v-if="(scope.row.unsuitableCnt) > 0">{{ numberToCurrencyNo(scope.row.unsuitableCnt) }}</span>
+              <span v-if="scope.row.compErrCnt > 0">{{ numberToCurrencyNo(scope.row.compErrCnt) }}</span>
             </router-link>
           </template>
         </el-table-column>
-
+        <el-table-column prop="offlineTplCnt" label="模版离线" align="center" fit>
+          <template slot-scope="scope">
+            <router-link :to="{ path: '/biz/aa/statistics/history', query: {
+            dtRange: queryParams.dtRange,
+            factoryName: scope.row.factoryName === '总计' ? '' : scope.row.factoryName,
+            groupName: scope.row.groupName === '小计' ? '' : scope.row.groupName,
+            code: 6} }"
+            >
+              <span v-if="(scope.row.offlineTplCnt) > 0">{{ numberToCurrencyNo(scope.row.offlineTplCnt) }}</span>
+            </router-link>
+          </template>
+        </el-table-column>
+        <el-table-column prop="lackTplDetailCnt" label="模版明细缺失" align="center" fit>
+          <template slot-scope="scope">
+            <router-link :to="{ path: '/biz/aa/statistics/history', query: {
+            dtRange: queryParams.dtRange,
+            factoryName: scope.row.factoryName === '总计' ? '' : scope.row.factoryName,
+            groupName: scope.row.groupName === '小计' ? '' : scope.row.groupName,
+            code: 7} }"
+            >
+              <span v-if="(scope.row.lackTplDetailCnt) > 0">{{ numberToCurrencyNo(scope.row.lackTplDetailCnt) }}</span>
+            </router-link>
+          </template>
+        </el-table-column>
         <el-table-column prop="errRatio" label="错误率" align="center" fit>
           <template slot-scope="scope">
             <span>{{ scope.row.errRatio > 0 ? toPercent(getBit(scope.row.errRatio, 6), 2) : '-' }}</span>
@@ -236,9 +268,6 @@ export default {
   methods: {
     getBit,
     toPercent,
-    headerCellStyle,
-    bodyCellStyle,
-    tableStyle,
     numberToCurrencyNo,
 
     getList() {
@@ -394,15 +423,16 @@ export default {
         return 'background: #DDDDDD; color: #00008B; font-size: 21px; font-weight: bolder;'
       } else if (row.groupName === '小计') {
         return 'background: #DDDDDD; font-size: 20px; font-weight: bolder;'
-      } else if (columnIndex === 6 && row[column.property] > 0) {
-        return 'background:#228B22; color: #FFFFFF; font-size: 19px; font-weight: bolder; text-decoration: underline;'
       } else if (columnIndex === 4 && row[column.property] > 0) {
         return 'background: #FFBB00; color: #FFFFFF; font-size: 19px; font-weight: bolder; text-decoration: underline;'
+      } else if (columnIndex === 6 && row[column.property] > 0) {
+        return 'background:#228B22; color: #FFFFFF; font-size: 19px; font-weight: bolder; text-decoration: underline;'
+    
       } else if (columnIndex === 7 && row[column.property] > 0) {
         return 'background: orangered; color: #FFFFFF; font-size: 19px; font-weight: bolder; text-decoration: underline;'
-      } else if ((columnIndex > 7 && columnIndex < 11) && row[column.property] > 0) {
+      } else if ((columnIndex > 7 && columnIndex < 15) && row[column.property] > 0) {
         return 'font-size: 19px; font-weight: bolder; text-decoration: underline;'
-      } else if (columnIndex === 11 && row[column.property] > 0) {
+      } else if (columnIndex === 15 && row[column.property] > 0) {
         return 'color: red; font-size: 19px; font-weight: bolder;'
       } else {
         return 'font-size: 20px; font-weight: bolder;'
@@ -421,7 +451,7 @@ export default {
       if (columnIndex >= 0 && columnIndex < 7 && rowIndex === 0) {
         return cellStyle1
       }
-      if (columnIndex >= 0 && columnIndex < 5 && rowIndex === 1) {
+      if (columnIndex >= 0 && columnIndex < 9 && rowIndex === 1) {
         return cellStyle1
       }
       if (rowIndex === 0) {
