@@ -67,7 +67,7 @@
       <el-table-column prop="mcId" label="机台号" align="center" />
       <el-table-column prop="prodType" label="机型" align="center" />
       <el-table-column prop="simId" label="盒子号" align="center" />
-      <el-table-column prop="dt" label="时间" align="center" v-if="this.queryParams.category === '0'" />
+      <el-table-column prop="dt" label="最新比对时间" align="center" v-if="this.queryParams.category === '0'" />
       <el-table-column prop="status" label="状态" align="center" v-if="this.queryParams.category === '0'">
         <template slot-scope="scope">
           <dict-tag :options="dict.type.comparison_result_code" :value="scope.row.status" />

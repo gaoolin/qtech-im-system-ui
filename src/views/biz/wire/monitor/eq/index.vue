@@ -141,7 +141,7 @@ export default {
           }, {
             validator: (rule, value, callback) => {
               // 调用 checkDtRange 方法并指定 intervalDays 的值
-              checkDtRange(rule, value, callback, 365, 'day') // 指定 intervalDays 为 60 天
+              checkDtRange(rule, value, callback, 366, 'day') // 指定 intervalDays 为 60 天
             }, trigger: 'blur'
           }]
       },

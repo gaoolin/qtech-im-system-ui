@@ -171,6 +171,8 @@ export default {
   height: 100vh;
   background: linear-gradient(135deg, #b2ebf2, #4fc3f7);
   /* 明亮的渐变背景 */
+  /* background-image: url("../assets/images/design.webp"); */
+  background-size: cover;
 }
 
 .login-panel {

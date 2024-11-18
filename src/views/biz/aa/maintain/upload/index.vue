@@ -688,7 +688,7 @@
                 <el-collapse-item class="prop-label" title="mtfCheck" name="7">
                   <el-descriptions :column="1" border class="prop-label">
                     <el-descriptions-item label="Cc">
-                      {{ convertNull(scope.row.mtfCheckFC) }}
+                      {{ convertNull(scope.row.mtfCheckFc) }}
                     </el-descriptions-item>
                     <el-descriptions-item label="F1">
                       {{ convertNull(scope.row.mtfCheckF1) }}
@@ -707,7 +707,7 @@
                 <el-collapse-item class="prop-label" title="mtfCheck1" name="8">
                   <el-descriptions :column="1" border class="prop-label">
                     <el-descriptions-item label="Cc">
-                      {{ convertNull(scope.row.mtfCheck1FC) }}
+                      {{ convertNull(scope.row.mtfCheck1Fc) }}
                     </el-descriptions-item>
                     <el-descriptions-item label="F1">
                       {{ convertNull(scope.row.mtfCheck1F1) }}
@@ -726,7 +726,7 @@
                 <el-collapse-item class="prop-label" title="mtfCheck2" name="9">
                   <el-descriptions :column="1" border class="prop-label">
                     <el-descriptions-item label="Cc">
-                      {{ convertNull(scope.row.mtfCheck2FC) }}
+                      {{ convertNull(scope.row.mtfCheck2Fc) }}
                     </el-descriptions-item>
                     <el-descriptions-item label="F1">
                       {{ convertNull(scope.row.mtfCheck2F1) }}
@@ -761,7 +761,7 @@
                 </el-collapse-item>
                 <el-collapse-item class="prop-label" title="EpoxyInspectionAuto" name="12">
                   <el-descriptions :column="1" border>
-                    <el-descriptions-item label="胶检测频率">
+                    <el-descriptions-item label="胶检频率">
                       {{ convertNull(scope.row.epoxyInspectionInterval) }}
                     </el-descriptions-item>
                   </el-descriptions>
@@ -1251,8 +1251,8 @@
                   </el-collapse-item>
 
                   <el-collapse-item class="sub-item" title="mtfCheck" name="13">
-                    <el-form-item label="FC" prop="mtfCheckFC">
-                      <el-input v-model="editForm.mtfCheckFC" @input="handleInputChange('mtfCheckFC')"></el-input>
+                    <el-form-item label="CC" prop="mtfCheckFc">
+                      <el-input v-model="editForm.mtfCheckFc" @input="handleInputChange('mtfCheckFc')"></el-input>
                     </el-form-item>
                     <el-form-item label="F1" prop="mtfCheckF1">
                       <el-input v-model="editForm.mtfCheckF1" @input="handleInputChange('mtfCheckF1')"></el-input>
@@ -1268,8 +1268,8 @@
                     </el-form-item>
                   </el-collapse-item>
                   <el-collapse-item class="sub-item" title="mtfCheck1" name="14">
-                    <el-form-item label="FC" prop="mtfCheck1FC">
-                      <el-input v-model="editForm.mtfCheck1FC" @input="handleInputChange('mtfCheck1FC')"></el-input>
+                    <el-form-item label="FC" prop="mtfCheck1Fc">
+                      <el-input v-model="editForm.mtfCheck1Fc" @input="handleInputChange('mtfCheck1Fc')"></el-input>
                     </el-form-item>
                     <el-form-item label="F1" prop="mtfCheck1F1">
                       <el-input v-model="editForm.mtfCheck1F1" @input="handleInputChange('mtfCheck1F1')"></el-input>
@@ -1285,8 +1285,8 @@
                     </el-form-item>
                   </el-collapse-item>
                   <el-collapse-item class="sub-item" title="mtfCheck2" name="15">
-                    <el-form-item label="FC" prop="mtfCheck2FC">
-                      <el-input v-model="editForm.mtfCheck2FC" @input="handleInputChange('mtfCheck2FC')"></el-input>
+                    <el-form-item label="CC" prop="mtfCheck2Fc">
+                      <el-input v-model="editForm.mtfCheck2Fc" @input="handleInputChange('mtfCheck2Fc')"></el-input>
                     </el-form-item>
                     <el-form-item label="F1" prop="mtfCheck2F1">
                       <el-input v-model="editForm.mtfCheck2F1" @input="handleInputChange('mtfCheck2F1')"></el-input>
@@ -1302,8 +1302,8 @@
                     </el-form-item>
                   </el-collapse-item>
                   <el-collapse-item class="sub-item" title="mtfCheck3" name="16">
-                    <el-form-item label="FC" prop="mtfCheck3FC">
-                      <el-input v-model="editForm.mtfCheck3FC" @input="handleInputChange('mtfCheck3FC')"></el-input>
+                    <el-form-item label="CC" prop="mtfCheck3Fc">
+                      <el-input v-model="editForm.mtfCheck3Fc" @input="handleInputChange('mtfCheck3Fc')"></el-input>
                     </el-form-item>
                     <el-form-item label="F1" prop="mtfCheck3F1">
                       <el-input v-model="editForm.mtfCheck3F1" @input="handleInputChange('mtfCheck3F1')"></el-input>
@@ -1484,7 +1484,7 @@ export default {
         aa1RoiUr: [{ validator: this.checkNumericOrEmpty, trigger: 'blur' }],
         aa1RoiLr: [{ validator: this.checkNumericOrEmpty, trigger: 'blur' }],
         aa1RoiLl: [{ validator: this.checkNumericOrEmpty, trigger: 'blur' }],
-        aa1FC: [{ validator: this.checkNumericOrEmpty, trigger: 'blur' }],
+        aa1Fc: [{ validator: this.checkNumericOrEmpty, trigger: 'blur' }],
         aa1F1: [{ validator: this.checkNumericOrEmpty, trigger: 'blur' }],
         aa1F2: [{ validator: this.checkNumericOrEmpty, trigger: 'blur' }],
         aa1F3: [{ validator: this.checkNumericOrEmpty, trigger: 'blur' }],
@@ -1506,7 +1506,7 @@ export default {
         aa2RoiUr: [{ validator: this.checkNumericOrEmpty, trigger: 'blur' }],
         aa2RoiLr: [{ validator: this.checkNumericOrEmpty, trigger: 'blur' }],
         aa2RoiLl: [{ validator: this.checkNumericOrEmpty, trigger: 'blur' }],
-        aa2FC: [{ validator: this.checkNumericOrEmpty, trigger: 'blur' }],
+        aa2Fc: [{ validator: this.checkNumericOrEmpty, trigger: 'blur' }],
         aa2F1: [{ validator: this.checkNumericOrEmpty, trigger: 'blur' }],
         aa2F2: [{ validator: this.checkNumericOrEmpty, trigger: 'blur' }],
         aa2F3: [{ validator: this.checkNumericOrEmpty, trigger: 'blur' }],
@@ -1528,7 +1528,7 @@ export default {
         aa3RoiUr: [{ validator: this.checkNumericOrEmpty, trigger: 'blur' }],
         aa3RoiLr: [{ validator: this.checkNumericOrEmpty, trigger: 'blur' }],
         aa3RoiLl: [{ validator: this.checkNumericOrEmpty, trigger: 'blur' }],
-        aa3FC: [{ validator: this.checkNumericOrEmpty, trigger: 'blur' }],
+        aa3Fc: [{ validator: this.checkNumericOrEmpty, trigger: 'blur' }],
         aa3F1: [{ validator: this.checkNumericOrEmpty, trigger: 'blur' }],
         aa3F2: [{ validator: this.checkNumericOrEmpty, trigger: 'blur' }],
         aa3F3: [{ validator: this.checkNumericOrEmpty, trigger: 'blur' }],
@@ -1545,25 +1545,25 @@ export default {
         aa3GoldenGlueThicknessMin: [{ validator: this.checkNumericOrEmpty, trigger: 'blur' }],
         aa3GoldenGlueThicknessMax: [{ validator: this.checkNumericOrEmpty, trigger: 'blur' }],
 
-        mtfCheckFC: [{ validator: this.checkNumericOrEmpty, trigger: 'blur' }],
+        mtfCheckFc: [{ validator: this.checkNumericOrEmpty, trigger: 'blur' }],
         mtfCheckF1: [{ validator: this.checkNumericOrEmpty, trigger: 'blur' }],
         mtfCheckF2: [{ validator: this.checkNumericOrEmpty, trigger: 'blur' }],
         mtfCheckF3: [{ validator: this.checkNumericOrEmpty, trigger: 'blur' }],
         mtfCheckF4: [{ validator: this.checkNumericOrEmpty, trigger: 'blur' }],
 
-        mtfCheck1FC: [{ validator: this.checkNumericOrEmpty, trigger: 'blur' }],
+        mtfCheck1Fc: [{ validator: this.checkNumericOrEmpty, trigger: 'blur' }],
         mtfCheck1F1: [{ validator: this.checkNumericOrEmpty, trigger: 'blur' }],
         mtfCheck1F2: [{ validator: this.checkNumericOrEmpty, trigger: 'blur' }],
         mtfCheck1F3: [{ validator: this.checkNumericOrEmpty, trigger: 'blur' }],
         mtfCheck1F4: [{ validator: this.checkNumericOrEmpty, trigger: 'blur' }],
 
-        mtfCheck2FC: [{ validator: this.checkNumericOrEmpty, trigger: 'blur' }],
+        mtfCheck2Fc: [{ validator: this.checkNumericOrEmpty, trigger: 'blur' }],
         mtfCheck2F1: [{ validator: this.checkNumericOrEmpty, trigger: 'blur' }],
         mtfCheck2F2: [{ validator: this.checkNumericOrEmpty, trigger: 'blur' }],
         mtfCheck2F3: [{ validator: this.checkNumericOrEmpty, trigger: 'blur' }],
         mtfCheck2F4: [{ validator: this.checkNumericOrEmpty, trigger: 'blur' }],
 
-        mtfCheck3FC: [{ validator: this.checkNumericOrEmpty, trigger: 'blur' }],
+        mtfCheck3Fc: [{ validator: this.checkNumericOrEmpty, trigger: 'blur' }],
         mtfCheck3F1: [{ validator: this.checkNumericOrEmpty, trigger: 'blur' }],
         mtfCheck3F2: [{ validator: this.checkNumericOrEmpty, trigger: 'blur' }],
         mtfCheck3F3: [{ validator: this.checkNumericOrEmpty, trigger: 'blur' }],

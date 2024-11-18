@@ -1,30 +1,23 @@
 <template>
   <div class="app-container">
     <h1 style="text-align:center; margin-top: 0; padding-top: 0; font-weight: bolder">AA List参数点检概览</h1>
-    <el-form ref="queryForm" :model="queryParams" :inline="true" v-show="showSearch" label-width="68px" label-position="right">
+    <el-form ref="queryForm" :model="queryParams" :inline="true" v-show="showSearch" label-width="68px"
+      label-position="right">
       <el-form-item label="时段" prop="dtRange">
-        <el-date-picker
-            v-model="queryParams.dtRange"
-            style="width: 370px"
-            value-format="yyyy-MM-dd HH:mm:ss"
-            type="datetimerange"
-            range-separator="-"
-            start-placeholder="开始日期"
-            end-placeholder="结束日期"
-            :picker-options="pickerOptions"
-            @change="handleQuery"
-        ></el-date-picker>
+        <el-date-picker v-model="queryParams.dtRange" style="width: 370px" value-format="yyyy-MM-dd HH:mm:ss"
+          type="datetimerange" range-separator="-" start-placeholder="开始日期" end-placeholder="结束日期"
+          :picker-options="pickerOptions" @change="handleQuery"></el-date-picker>
       </el-form-item>
 
       <el-form-item label="厂区" prop="factoryName">
         <el-select v-model="queryParams.factoryName" placeholder="请选择厂区" clearable @change="handleFactoryChange">
-          <el-option v-for="factory in factoryOptions" :key="factory.id" :label="factory.name" :value="factory.name"/>
+          <el-option v-for="factory in factoryOptions" :key="factory.id" :label="factory.name" :value="factory.name" />
         </el-select>
       </el-form-item>
 
       <el-form-item label="车间" prop="groupName" v-if="groupNameOptions.length > 0">
         <el-select v-model="queryParams.groupName" placeholder="请输入车间" clearable @change="handleQuery">
-          <el-option v-for="item in groupNameOptions" :key="item.id" :label="item.name" :value="item.name"/>
+          <el-option v-for="item in groupNameOptions" :key="item.id" :label="item.name" :value="item.name" />
         </el-select>
       </el-form-item>
 
@@ -40,22 +33,16 @@
       </el-col>
 
       <el-col :span="12">
-        <right-tool-bar-download :showSearch.sync="showSearch" @queryTable="getList" @handleExport="handleExport"></right-tool-bar-download>
+        <right-tool-bar-download :showSearch.sync="showSearch" @queryTable="getList"
+          @handleExport="handleExport"></right-tool-bar-download>
       </el-col>
     </el-row>
 
     <!-- 数据表格 -->
-    <el-table
-        v-loading="loading"
-        :data="tableData"
-        border
-        :span-method="arraySpanMethod"
-        :cell-style="tableBodyCellStyle"
-        :header-cell-style="tableHeaderCellStyle"
-        :row-style="{height: '25px'}"
-    >
-      <el-table-column prop="factoryName" label="厂区" align="center" min-width="100"/>
-      <el-table-column prop="groupName" label="车间" align="center" min-width="120" fit/>
+    <el-table v-loading="loading" :data="tableData" border :span-method="arraySpanMethod" :cell-style="tableBodyCellStyle"
+      :header-cell-style="tableHeaderCellStyle" :row-style="{ height: '25px' }">
+      <el-table-column prop="factoryName" label="厂区" align="center" min-width="100" />
+      <el-table-column prop="groupName" label="车间" align="center" min-width="120" fit />
       <el-table-column prop="ttlEqs" label="设备总数" align="center" min-width="60">
         <template slot-scope="scope">
           <span v-if="scope.row.ttlEqs > 0">{{ numberToCurrencyNo(scope.row.ttlEqs) }}</span>
@@ -68,13 +55,14 @@
       </el-table-column>
       <el-table-column prop="offlineEqs" label="未联网机台数" align="center" min-width="60">
         <template slot-scope="scope">
-          <router-link :to="{path: '/biz/eqn/networking', query: {
-            factoryName: scope.row.factoryName === '总计' ? '' : scope.row.factoryName,
-            groupName: scope.row.groupName === '小计' ? '' : scope.row.groupName,
-            deviceType: 'AA',
-            label: 1
-          }}"
-          >
+          <router-link :to="{
+            path: '/biz/eqn/networking', query: {
+              factoryName: scope.row.factoryName === '总计' ? '' : scope.row.factoryName,
+              groupName: scope.row.groupName === '小计' ? '' : scope.row.groupName,
+              deviceType: 'AA',
+              label: 1
+            }
+          }">
             <span v-if="scope.row.offlineEqs > 0">{{ numberToCurrencyNo(scope.row.offlineEqs) }}</span>
           </router-link>
         </template>
@@ -87,12 +75,14 @@
       </el-table-column>
       <el-table-column prop="okCnt" label="正确次数" align="center" min-width="80">
         <template slot-scope="scope">
-          <router-link :to="{ path: '/aa/params/statistics', query: {
-            dtRange: queryParams.dtRange,
-            factoryName: scope.row.factoryName === '总计' ? '' : scope.row.factoryName,
-            groupName: scope.row.groupName === '小计' ? '' : scope.row.groupName,
-            flag: 'ok'} }"
-          >
+          <router-link :to="{
+            path: '/aa/params/statistics', query: {
+              dtRange: queryParams.dtRange,
+              factoryName: scope.row.factoryName === '总计' ? '' : scope.row.factoryName,
+              groupName: scope.row.groupName === '小计' ? '' : scope.row.groupName,
+              flag: 'ok'
+            }
+          }">
             <span v-if="scope.row.okCnt > 0">{{ numberToCurrencyNo(scope.row.okCnt) }}</span>
           </router-link>
         </template>
@@ -100,97 +90,100 @@
       <el-table-column label="异常信息" align="center">
         <el-table-column prop="errCnt" label="错误次数" align="center">
           <template slot-scope="scope">
-            <router-link :to="{ path: '/biz/aa/statistics/history', query: {
-              dtRange: queryParams.dtRange,
-              factoryName: scope.row.factoryName === '总计' ? '' : scope.row.factoryName,
-              groupName: scope.row.groupName === '小计' ? '' : scope.row.groupName,
-              flag: 'err' }}"
-            >
+            <router-link :to="{
+              path: '/biz/aa/statistics/history', query: {
+                dtRange: queryParams.dtRange,
+                factoryName: scope.row.factoryName === '总计' ? '' : scope.row.factoryName,
+                groupName: scope.row.groupName === '小计' ? '' : scope.row.groupName,
+                flag: 'err'
+              }
+            }">
               <span v-if="scope.row.errCnt > 0">{{ numberToCurrencyNo(scope.row.errCnt) }}</span>
             </router-link>
           </template>
         </el-table-column>
         <el-table-column prop="noTplCnt" label="无模版" align="center" fit>
           <template slot-scope="scope">
-            <router-link :to="{ path: '/biz/aa/statistics/history', query: {
-            dtRange: queryParams.dtRange,
-            factoryName: scope.row.factoryName === '总计' ? '' : scope.row.factoryName,
-            groupName: scope.row.groupName === '小计' ? '' : scope.row.groupName,
-            code: 1} }"
-            >
+            <router-link :to="{
+              path: '/biz/aa/statistics/history', query: {
+                dtRange: queryParams.dtRange,
+                factoryName: scope.row.factoryName === '总计' ? '' : scope.row.factoryName,
+                groupName: scope.row.groupName === '小计' ? '' : scope.row.groupName,
+                code: 1
+              }
+            }">
               <span v-if="scope.row.noTplCnt > 0">{{ numberToCurrencyNo(scope.row.noTplCnt) }}</span>
             </router-link>
           </template>
         </el-table-column>
         <el-table-column prop="lackParamsCnt" label="少参数" align="center" fit>
           <template slot-scope="scope">
-            <router-link :to="{ path: '/biz/aa/statistics/history', query: {
-            dtRange: queryParams.dtRange,
-            factoryName: scope.row.factoryName === '总计' ? '' : scope.row.factoryName,
-            groupName: scope.row.groupName === '小计' ? '' : scope.row.groupName,
-            code: 2} }"
-            >
+            <router-link :to="{
+              path: '/biz/aa/statistics/history', query: {
+                dtRange: queryParams.dtRange,
+                factoryName: scope.row.factoryName === '总计' ? '' : scope.row.factoryName,
+                groupName: scope.row.groupName === '小计' ? '' : scope.row.groupName,
+                code: 2
+              }
+            }">
               <span v-if="scope.row.lackParamsCnt > 0">{{ numberToCurrencyNo(scope.row.lackParamsCnt) }}</span>
             </router-link>
           </template>
         </el-table-column>
         <el-table-column prop="unsuitableCnt" label="多参值异常" align="center" fit>
           <template slot-scope="scope">
-            <router-link :to="{ path: '/biz/aa/statistics/history', query: {
-            dtRange: queryParams.dtRange,
-            factoryName: scope.row.factoryName === '总计' ? '' : scope.row.factoryName,
-            groupName: scope.row.groupName === '小计' ? '' : scope.row.groupName,
-            code: 3} }"
-            >
+            <router-link :to="{
+              path: '/biz/aa/statistics/history', query: {
+                dtRange: queryParams.dtRange,
+                factoryName: scope.row.factoryName === '总计' ? '' : scope.row.factoryName,
+                groupName: scope.row.groupName === '小计' ? '' : scope.row.groupName,
+                code: 3
+              }
+            }">
               <span v-if="scope.row.unsuitableCnt > 0">{{ numberToCurrencyNo(scope.row.unsuitableCnt) }}</span>
             </router-link>
           </template>
         </el-table-column>
         <el-table-column prop="overflowCnt" label="多参数" align="center" fit>
           <template slot-scope="scope">
-            <router-link :to="{ path: '/biz/aa/statistics/history', query: {
-            dtRange: queryParams.dtRange,
-            factoryName: scope.row.factoryName === '总计' ? '' : scope.row.factoryName,
-            groupName: scope.row.groupName === '小计' ? '' : scope.row.groupName,
-            code: 4} }"
-            >
+            <router-link :to="{
+              path: '/biz/aa/statistics/history', query: {
+                dtRange: queryParams.dtRange,
+                factoryName: scope.row.factoryName === '总计' ? '' : scope.row.factoryName,
+                groupName: scope.row.groupName === '小计' ? '' : scope.row.groupName,
+                code: 4
+              }
+            }">
               <span v-if="scope.row.overflowCnt > 0">{{ numberToCurrencyNo(scope.row.overflowCnt) }}</span>
             </router-link>
           </template>
         </el-table-column>
         <el-table-column prop="compErrCnt" label="复合异常" align="center" fit>
           <template slot-scope="scope">
-            <router-link :to="{ path: '/biz/aa/statistics/history', query: {
-            dtRange: queryParams.dtRange,
-            factoryName: scope.row.factoryName === '总计' ? '' : scope.row.factoryName,
-            groupName: scope.row.groupName === '小计' ? '' : scope.row.groupName,
-            code: 5} }"
-            >
+            <router-link :to="{
+              path: '/biz/aa/statistics/history', query: {
+                dtRange: queryParams.dtRange,
+                factoryName: scope.row.factoryName === '总计' ? '' : scope.row.factoryName,
+                groupName: scope.row.groupName === '小计' ? '' : scope.row.groupName,
+                code: 5
+              }
+            }">
               <span v-if="scope.row.compErrCnt > 0">{{ numberToCurrencyNo(scope.row.compErrCnt) }}</span>
             </router-link>
           </template>
         </el-table-column>
-        <el-table-column prop="offlineTplCnt" label="模版离线" align="center" fit>
+        <el-table-column label="模版异常" align="center" fit>
           <template slot-scope="scope">
-            <router-link :to="{ path: '/biz/aa/statistics/history', query: {
-            dtRange: queryParams.dtRange,
-            factoryName: scope.row.factoryName === '总计' ? '' : scope.row.factoryName,
-            groupName: scope.row.groupName === '小计' ? '' : scope.row.groupName,
-            code: 6} }"
-            >
-              <span v-if="(scope.row.offlineTplCnt) > 0">{{ numberToCurrencyNo(scope.row.offlineTplCnt) }}</span>
-            </router-link>
-          </template>
-        </el-table-column>
-        <el-table-column prop="lackTplDetailCnt" label="模版明细缺失" align="center" fit>
-          <template slot-scope="scope">
-            <router-link :to="{ path: '/biz/aa/statistics/history', query: {
-            dtRange: queryParams.dtRange,
-            factoryName: scope.row.factoryName === '总计' ? '' : scope.row.factoryName,
-            groupName: scope.row.groupName === '小计' ? '' : scope.row.groupName,
-            code: 7} }"
-            >
-              <span v-if="(scope.row.lackTplDetailCnt) > 0">{{ numberToCurrencyNo(scope.row.lackTplDetailCnt) }}</span>
+            <router-link :to="{
+              path: '/biz/aa/statistics/history', query: {
+                dtRange: queryParams.dtRange,
+                factoryName: scope.row.factoryName === '总计' ? '' : scope.row.factoryName,
+                groupName: scope.row.groupName === '小计' ? '' : scope.row.groupName,
+                flag: 'tplErr'
+              }
+            }">
+              <span v-if="(scope.row.offlineTplCnt + scope.row.lackTplDetailCnt) > 0">{{
+                numberToCurrencyNo(scope.row.offlineTplCnt + scope.row.lackTplDetailCnt) }}</span>
             </router-link>
           </template>
         </el-table-column>
@@ -201,14 +194,13 @@
         </el-table-column>
       </el-table-column>
     </el-table>
-
   </div>
 </template>
 
 <script>
 import { pickerOptionsSet1 } from '@/views/biz/common/js/pickerOptionsConfig'
-import { bodyCellStyle, headerCellStyle, tableStyle } from '@/views/biz/common/js/tableStyles'
-import { fetchFactoryNames, fetchGroupNames, fetchList, getUpdateTime } from '@/api/biz/aa/index/index'
+import { fetchList, getUpdateTime } from '@/api/biz/aa/index/index'
+import { fetchLatestFactoryNames, fetchLatestGroupNames } from '@/api/biz/common/factoryAndGroupNames'
 import { getBit, toPercent, numberToCurrencyNo, dateToStr, arraySpanMethod, checkDtRange, mergeAction, rowMergeHandle } from '@/views/biz/common/js/utils'
 import { listEqInfo } from '@/api/biz/eqn/networking'
 import RightToolBarDownload from '@/views/biz/common/RightToolBarDownload'
@@ -280,11 +272,11 @@ export default {
             this.queryParams.params['endTime'] = this.queryParams.dtRange[1]
           }
 
-          const fetchData = async() => {
+          const fetchData = async () => {
             try {
               const [overviewData, eqInfoData] = await Promise.all([
-                  fetchList(this.queryParams),
-                  listEqInfo({ deviceType: 'AA' })
+                fetchList(this.queryParams),
+                listEqInfo({ deviceType: 'AA' })
               ])
               // console.log(overviewData)
               // console.log(eqInfoData)
@@ -344,36 +336,35 @@ export default {
     },
 
     getFactoryNames() {
-      this.factoryOptions = []
-      this.queryParams.params = {}
-      if (Array.isArray(this.queryParams.dtRange) && this.queryParams.dtRange.length === 2) {
-        this.queryParams.params['beginTime'] = this.queryParams.dtRange[0];
-        this.queryParams.params['endTime'] = this.queryParams.dtRange[1];
-      } else {
-        this.$message.error('请选择日期范围')
-        return
-      }
-      fetchFactoryNames(this.queryParams).then(response => {
-        if (!response.data || response.data.length === 0) {
-          return
-        }
+      this.$refs['queryForm'].validate(valid => {
+        if (valid) {
+          this.factoryNameOptions = []
+          this.queryParams.params = {}
+          this.queryParams.params['beginTime'] = this.queryParams.dtRange[0]
+          this.queryParams.params['endTime'] = this.queryParams.dtRange[1]
+          fetchLatestFactoryNames(this.queryParams).then(response => {
+            if (!response.data || response.data.length === 0) {
+              return
+            }
 
-        for (let index = 0; index < response.data.length; index++) {
-          const factory = response.data[index]
-          const option = {
-            id: index + 1,
-            name: factory['factoryName']
-          }
+            for (let index = 0; index < response.data.length; index++) {
+              const factory = response.data[index]
+              const option = {
+                id: index + 1,
+                name: factory['factoryName']
+              }
 
-          if (option.name === this.queryParams.factoryName) {
-            // 将该项目插入到 factoryOptions 数组的最前面
-            this.factoryOptions.unshift(option)
-          } else {
-            this.factoryOptions.push(option)
-          }
+              if (option.name === this.queryParams.factoryName) {
+                // 将该项目插入到 factoryOptions 数组的最前面
+                this.factoryOptions.unshift(option)
+              } else {
+                this.factoryOptions.push(option)
+              }
+            }
+          }).catch(error => {
+            console.error('获取厂区列表失败:', error)
+          })
         }
-      }).catch(error => {
-        console.error('获取厂区列表失败:', error)
       })
     },
 
@@ -385,7 +376,7 @@ export default {
         return
       }
 
-      fetchGroupNames(this.queryParams).then(response => {
+      fetchLatestGroupNames(this.queryParams).then(response => {
         if (!response.data || response.data.length === 0) {
           return
         }
@@ -427,7 +418,7 @@ export default {
         return 'background: #FFBB00; color: #FFFFFF; font-size: 19px; font-weight: bolder; text-decoration: underline;'
       } else if (columnIndex === 6 && row[column.property] > 0) {
         return 'background:#228B22; color: #FFFFFF; font-size: 19px; font-weight: bolder; text-decoration: underline;'
-    
+
       } else if (columnIndex === 7 && row[column.property] > 0) {
         return 'background: orangered; color: #FFFFFF; font-size: 19px; font-weight: bolder; text-decoration: underline;'
       } else if ((columnIndex > 7 && columnIndex < 15) && row[column.property] > 0) {
@@ -514,7 +505,7 @@ export default {
     //   this.queryParams.dtRange = dtRange
     // }
     this.$set(this.queryParams, 'dtRange', [dateToStr(new Date(new Date().setHours(0, 0, 0).valueOf())),
-      dateToStr(new Date(new Date().setHours(23, 59, 59).valueOf()))])
+    dateToStr(new Date(new Date().setHours(23, 59, 59).valueOf()))])
   },
 
 
