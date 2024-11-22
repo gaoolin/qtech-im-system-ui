@@ -114,11 +114,12 @@ export default {
 
   created() {
     // if (this.beforeRouteEnter) {
-    if (this.$route.query.label === '1') {
-      this.queryParams.factoryName = this.$route.query.factoryName
-      this.queryParams.groupName = this.$route.query.groupName
-      this.queryParams.deviceType = this.$route.query.deviceType
-      this.queryParams.label = this.$route.query.label
+    const query = this.$route.query
+    if (query) {
+      this.queryParams.factoryName = query.factoryName
+      this.queryParams.groupName = query.groupName
+      this.queryParams.deviceType = query.deviceType
+      this.queryParams.label = 1
       this.back = true
     }
   },

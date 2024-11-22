@@ -196,7 +196,6 @@ export default {
             this.rowMergeArrs = rowMergeHandle(this.needMergeArr, response.rows)
             this.loading = false
           })
-
         }
       })
     },
@@ -299,7 +298,7 @@ export default {
         }
       })
     },
-    
+
     checkPreInput(e) {
       if (!this.queryParams.factoryName) {
         // 根据事件类型进行不同的处理

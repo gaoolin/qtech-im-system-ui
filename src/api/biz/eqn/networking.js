@@ -8,23 +8,6 @@ export function listEqStatus(query) {
   })
 }
 
-// 查询厂区
-export function getFactoryNames() {
-  return request({
-    url: '/eqn/status/factoryNames',
-    method: 'get'
-  })
-}
-
-// 查询车间
-export function getGroupNames(query) {
-  return request({
-    url: '/eqn/status/workShopNames',
-    method: 'get',
-    params: query
-  })
-}
-
 // 查询离线设备
 export function listOfflineEqs(query) {
   return request({
