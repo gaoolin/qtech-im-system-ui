@@ -100,7 +100,7 @@
                 groupName: scope.row.groupName,
                 deviceType: scope.row.deviceType,
                 netStatus: 1,
-                remoteStatus: 1
+                remoteStatus: 0
               }
             }">
                 <span>{{ scope.row.remoteStatusOff !== 0 ? scope.row.remoteStatusOff : '' }}</span>
@@ -175,7 +175,6 @@ export default {
 
   created() {
     this.getList();
-    this.getDataMaxTime();
   },
 
   mounted() {
@@ -202,6 +201,7 @@ export default {
         this.updateFilterOptions();
         this.loading = false;
       });
+      this.getDataMaxTime();
     },
 
     getDataMaxTime() {

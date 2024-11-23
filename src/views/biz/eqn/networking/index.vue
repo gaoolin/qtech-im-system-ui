@@ -204,6 +204,7 @@ export default {
       this.queryParams.factoryName = this.$route.query.factoryName
       this.queryParams.groupName = this.$route.query.groupName
       this.queryParams.deviceType = this.$route.query.deviceType
+      this.back = true
     }
     if (remoteStatus) {
       this.queryParams.remoteStatus = remoteStatus
@@ -299,14 +300,9 @@ export default {
     },
 
     load() {
-      if (this.queryParams.label === '1') {
-        this.listOfflineEqs()
-        this.getFactoryNames();
-      } else {
         this.getList()
         // overview.methods.getFactoryNames()
         this.getFactoryNames();
-      }
     },
 
     getList() {
