@@ -100,7 +100,6 @@
       <div v-if="showAlert" class="alert-box">数据异常：采集数据无更新！</div>
     </transition>
 
-
     <!-- 弹窗展示流程图 -->
     <el-dialog
       title="设备如何反控？"
@@ -113,14 +112,14 @@
 
     <el-table v-loading="loading" :data="tableData" :header-cell-style="headerCellStyle()" :cell-style="bodyCellStyle()"
       :style="tableStyle()">
-      <el-table-column prop="factoryName" label="厂区" align="center" min-width="100" fit></el-table-column>
-      <el-table-column prop="deptName" label="站位" align="center" min-width="100" fit></el-table-column>
-      <el-table-column prop="groupName" label="车间" align="center" min-width="120" fit></el-table-column>
-      <el-table-column prop="deviceType" label="设备类型" align="center" min-width="80" fit></el-table-column>
+      <el-table-column prop="factoryName" label="厂区" align="center" min-width="80" fit></el-table-column>
+      <el-table-column prop="deptName" label="站位" align="center" min-width="80" fit></el-table-column>
+      <el-table-column prop="groupName" label="车间" align="center" min-width="100" fit></el-table-column>
+      <el-table-column prop="deviceType" label="设备类型" align="center" min-width="60" fit></el-table-column>
       <el-table-column prop="eqId" label="设备编号" align="center" min-width="160" fit></el-table-column>
       <el-table-column prop="mcId" label="机台号" align="center" min-width="120" fit></el-table-column>
       <el-table-column prop="simId" label="盒子号" align="center" min-width="160" fit></el-table-column>
-      <el-table-column prop="remoteCode" label="远程状态码" align="center" min-width="80" fit></el-table-column>
+      <el-table-column prop="dt" label="最后采集时间" align="center" min-width="160" fit></el-table-column>
       <el-table-column prop="netStatus" label="联网状态" align="center" min-width="80" fit>
         <template slot-scope="scope">
           <span
