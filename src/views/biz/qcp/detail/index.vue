@@ -115,11 +115,12 @@ export default {
   created() {
     // if (this.beforeRouteEnter) {
     const query = this.$route.query
+    console.log('query:', query)
     if (query) {
       this.queryParams.factoryName = query.factoryName
       this.queryParams.groupName = query.groupName
       this.queryParams.deviceType = query.deviceType
-      this.queryParams.label = 1
+      this.queryParams.label = query.label
       this.back = true
     }
   },

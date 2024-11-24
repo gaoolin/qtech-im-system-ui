@@ -79,7 +79,8 @@
               path: '/biz/qcp/detail', query: {
                 factoryName: scope.row.factoryName,
                 groupName: scope.row.groupName,
-                deviceType: scope.row.deviceType
+                deviceType: scope.row.deviceType,
+                label: 0
               }
             }">
                 <span>{{ scope.row.qcpParamsIsNull !== 0 ? scope.row.qcpParamsIsNull : '' }}</span>
