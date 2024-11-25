@@ -160,7 +160,6 @@ import { checkPermi, checkRole } from "@/utils/permission"; // 权限判断函�
 export default {
   dicts: ['aa_program_status'],
   components: {
-    RightToolBarGoBack,
     QtechFileUpload
   },
   data() {

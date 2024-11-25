@@ -76,6 +76,10 @@
           <i class="el-icon-info" style="margin-right: 5px;">设备如何反控？</i>
         </span>
       </el-col>
+
+      <el-col :span="12">
+        <right-tool-bar-go-back :showSearch.sync="showSearch" @queryTable="load" :back="back"></right-tool-bar-go-back>
+      </el-col>
     </el-row>
 
     <!-- 流程图组件 -->

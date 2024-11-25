@@ -38,7 +38,7 @@
         </el-button>
       </el-col>
       <el-col :span="8">
-        <right-tool-bar-u-d-f :showSearch.sync="showSearch" @queryTable="getList" :back="back"></right-tool-bar-u-d-f>
+        <right-tool-bar-go-back :showSearch.sync="showSearch" @queryTable="getList" :back="back"></right-tool-bar-go-back>
       </el-col>
     </el-row>
 
@@ -69,11 +69,11 @@ import { fetchDataStatus } from '@/api/biz/common/eqRelated'
 import { listQcpParams } from '@/api/biz/qcp/parameters'
 import { fetchQcpFactoryNames, fetchQcpGroupNames } from '@/api/biz/common/factoryAndGroupNames'
 
-import RightToolBarUDF from '@/views/biz/common/RightToolBarGoBack'
+import RightToolBarGoBack from '@/views/biz/common/RightToolBarGoBack'
 
 export default {
   name: 'index',
-  components: { RightToolBarUDF },
+  components: { RightToolBarGoBack },
   data() {
     return {
       loading: true,
@@ -115,7 +115,7 @@ export default {
   created() {
     // if (this.beforeRouteEnter) {
     const query = this.$route.query
-    console.log('query:', query)
+
     if (query) {
       this.queryParams.factoryName = query.factoryName
       this.queryParams.groupName = query.groupName
