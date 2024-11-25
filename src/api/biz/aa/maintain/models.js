@@ -23,14 +23,6 @@ export function updateAaParamsModelInfo(data) {
   })
 }
 
-export function updateAaParamsModelInfoStatus(data) {
-  return request({
-    url: '/aa/params/model/info/edit',
-    method: 'post',
-    data
-  })
-}
-
 export function addAaParamsModel(data) {
   return request({
     url: '/aa/params/model/detail/add',

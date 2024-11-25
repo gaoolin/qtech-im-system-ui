@@ -1,9 +1,5 @@
 <template>
   <div class="app-container">
-<!--    <div style="text-align:center;">-->
-<!--      <h1 style="margin-top: 0; padding-top: 0; font-weight: bolder" v-if="queryParams.label === '1'">未联网机台明细</h1>-->
-<!--      <h1 style="margin-top: 0; padding-top: 0; font-weight: bolder" v-else-if="queryParams.label === '2'">未开启远程机台明细</h1>-->
-<!--    </div>-->
 
     <el-form :model="queryParams" ref="queryForm" size="small" :inline="true" v-show="showSearch" label-width="72px"
       :rulues="rules">
@@ -72,43 +68,25 @@
         </el-button>
 
         <!-- 带下划线的文字，前面加上图标 -->
-
         <span
           style="cursor: pointer; text-decoration: underline; color: #007BFF; font-size: 14px; display: inline-flex; align-items: center; margin-left: 10px;"
-          @click="openFlowChart"
+          @click="showFlowChart"
         >
           <!-- 图标 -->
           <i class="el-icon-info" style="margin-right: 5px;">设备如何反控？</i>
         </span>
       </el-col>
-
-      <!-- 右侧工具栏 -->
-      <el-col :span="12" style="text-align: right;">
-        <right-tool-bar-go-back
-          :showSearch.sync="showSearch"
-          @queryTable="getList"
-          :back="back"
-          style="display: inline-block; margin-right: 10px;"
-        ></right-tool-bar-go-back>
-      </el-col>
     </el-row>
 
-
-
+    <!-- 流程图组件 -->
+    <FlowChartImage
+      :flowChartSrc="flowChartSrc"
+      :visible.sync="isFlowChartVisible"
+    />
     <!-- 警告框，数据不正常时显示，带渐显效果 -->
     <transition name="fade">
       <div v-if="showAlert" class="alert-box">数据异常：采集数据无更新！</div>
     </transition>
-
-    <!-- 弹窗展示流程图 -->
-    <el-dialog
-      title="设备如何反控？"
-      :visible.sync="isFlowChartVisible"
-      width="80%"
-      @close="closeFlowChart"
-    >
-      <div id="flow-chart" style="width: 100%; height: 500px;"></div>
-    </el-dialog>
 
     <el-table v-loading="loading" :data="tableData" :header-cell-style="headerCellStyle()" :cell-style="bodyCellStyle()"
       :style="tableStyle()">
@@ -149,11 +127,10 @@ import { listEqStatus, listOfflineEqs } from '@/api/biz/eqn/networking'
 import { fetchEqnFactoryNames, fetchEqnGroupNames } from '@/api/biz/common/factoryAndGroupNames'
 import { fetchDataStatus } from '@/api/biz/common/eqRelated'
 import RightToolBarGoBack from '@/views/biz/common/RightToolBarGoBack'
-
-import * as echarts from "echarts";
+import FlowChartImage from '@/views/biz/eqn/networking/FlowChartImage'
 
 export default {
-  components: { RightToolBarGoBack },
+  components: { RightToolBarGoBack, FlowChartImage },
   dicts: ['remote_control_status'],
   name: 'index',
 
@@ -189,7 +166,8 @@ export default {
       showAlert: false,
       rules: {},
 
-      isFlowChartVisible: false,
+      isFlowChartVisible: false, // 控制流程图显示状态
+      flowChartSrc: require("@/assets/biz/flow-chart.png"), // 流程图的图片路径
 
     }
   },
@@ -230,73 +208,6 @@ export default {
     headerCellStyle,
     bodyCellStyle,
     tableStyle,
-
-    openFlowChart() {
-      this.isFlowChartVisible = true;
-      this.$nextTick(() => {
-        this.renderFlowChart();
-      });
-    },
-    closeFlowChart() {
-      this.isFlowChartVisible = false;
-    },
-    renderFlowChart() {
-      const chartDom = document.getElementById("flow-chart");
-      const myChart = echarts.init(chartDom);
-
-      const option = {
-        title: {
-          text: "设备反控逻辑流程图",
-          left: "center",
-        },
-        tooltip: {
-          trigger: "item",
-          formatter: "{b}",
-        },
-        series: [
-          {
-            type: "graph",
-            layout: "force",
-            roam: true,
-            label: {
-              show: true,
-            },
-            edgeSymbol: ["circle", "arrow"],
-            edgeSymbolSize: [4, 10],
-            force: {
-              repulsion: 1000,
-              edgeLength: [50, 200],
-            },
-            data: [
-              { name: "设备类型", symbolSize: 80 },
-              { name: "是否联网？", symbolSize: 100 },
-              { name: "是否支持远程功能？", symbolSize: 100 },
-              { name: "能反控", symbolSize: 60 },
-              { name: "不能反控", symbolSize: 60 },
-              { name: "是否远程开关？", symbolSize: 100 },
-              { name: "异常处理流程", symbolSize: 80 }
-            ],
-            links: [
-              { source: "设备类型", target: "是否联网？" },
-              { source: "是否联网？", target: "是否支持远程功能？", label: { formatter: "是" } },
-              { source: "是否联网？", target: "异常处理流程", label: { formatter: "否" } },
-              { source: "是否支持远程功能？", target: "能反控", label: { formatter: "是" } },
-              { source: "是否支持远程功能？", target: "不能反控", label: { formatter: "否" } },
-              { source: "能反控", target: "箱子号" },
-              { source: "不能反控", target: "是否远程开关？" },
-              { source: "是否远程开关？", target: "能反控", label: { formatter: "是" } },
-              { source: "是否远程开关？", target: "不能反控", label: { formatter: "否" } },
-            ],
-            lineStyle: {
-              color: "source",
-              curveness: 0.3,
-            },
-          },
-        ],
-      };
-
-      myChart.setOption(option);
-    },
 
     load() {
         this.getList()
@@ -450,7 +361,7 @@ export default {
 
     /** 导出 */
     handleExport() {
-      this.download('/aa/params/hdfs/downloadFile', {
+      this.download('/eqn/status/export', {
         ...this.queryParams
       }, `设备联网情况明细_${new Date().getTime()}.xlsx`)
     },
@@ -498,6 +409,7 @@ export default {
           };
       }
     },
+
     getNetStatusIcon(status) {
       // 不同状态显示的图标
       switch (status) {
@@ -515,6 +427,10 @@ export default {
       return statusOption ? statusOption.name : '未知状态';
     },
 
+
+    showFlowChart() {
+      this.isFlowChartVisible = true; // 显示流程图
+    },
   },
 }
 </script>

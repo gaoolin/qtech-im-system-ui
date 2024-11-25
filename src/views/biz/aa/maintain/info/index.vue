@@ -135,7 +135,7 @@
 
 <script>
 import { headerCellStyle, bodyCellStyle, tableStyle } from '@/views/biz/common/js/tableStyles';
-import { deleteAaParamsModelInfo, getAaParamsModelInfo, updateAaParamsModelInfo, updateAaParamsModelInfoStatus } from '@/api/biz/aa/maintain/models'
+import { deleteAaParamsModelInfo, getAaParamsModelInfo, updateAaParamsModelInfo } from '@/api/biz/aa/maintain/models'
 export default {
   name: 'index.vue',
   data() {
@@ -213,7 +213,7 @@ export default {
 
     /** 修改模版状态 */
     changeSwitch(id, status) {
-      updateAaParamsModelInfoStatus({ id: id, status: status }).then(response => {
+      updateAaParamsModelInfo({ id: id, status: status }).then(response => {
         if (response.code === 200) {
           this.getList()
           this.$modal.msgSuccess('修改成功！')
