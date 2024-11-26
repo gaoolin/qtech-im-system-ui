@@ -30,8 +30,8 @@
         <el-input v-model="queryParams.simId" placeholder="请输入盒子号" clearable @change="handleQuery"
           @keyup.native="handleQuery" />
       </el-form-item>
-      <el-form-item label="点检状态" prop="code">
-        <el-select v-model="queryParams.code" placeholder="请输入比对结果状态" clearable @change="handleQuery">
+      <el-form-item label="点检状态" prop="statusCode">
+        <el-select v-model="queryParams.statusCode" placeholder="请输入比对结果状态" clearable @change="handleQuery">
           <el-option v-for="dict in dict.type.aa_list_params_status" :key="dict.value" :label="dict.label"
             :value="dict.value" />
         </el-select>
@@ -65,9 +65,9 @@
       <el-table-column prop="prodType" label="机型" align="center" />
       <el-table-column prop="simId" label="盒子号" align="center" />
       <el-table-column prop="dt" label="点检时间" align="center" />
-      <el-table-column prop="code" label="状态" align="center">
+      <el-table-column prop="statusCode" label="状态" align="center">
         <template slot-scope="scope">
-          <dict-tag :options="dict.type.aa_list_params_status" :value="scope.row.code" />
+          <dict-tag :options="dict.type.aa_list_params_status" :value="scope.row.statusCode" />
         </template>
       </el-table-column>
       <el-table-column prop="description" label="描述" align="center" show-overflow-tooltip />
@@ -114,7 +114,7 @@ export default {
         mcId: null,
         prodType: null,
         simId: null,
-        code: null
+        statusCode: null
       },
       rules: {},
       showAlert: false,

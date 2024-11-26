@@ -376,8 +376,17 @@
     />
 
     <!--   添加治具对话框   -->
-    <modal-udf :title="title" :dialogShow="addFixtureDialogVisible" :name="'pogopinDialog'" :width="'30%'" :isCloseOnClick="false" :resetBtn="dialogResetBtnShow"
-               @closeChildDialog="closeChildDialog" v-dialogDrag v-dialogDragWidth v-dialogDragHeight
+    <modal-udf
+      :title="title"
+      :dialogShow="addFixtureDialogVisible"
+      :name="'pogopinDialog'"
+      :width="'30%'"
+      :isCloseOnClick="false"
+      :resetBtn="dialogResetBtnShow"
+      @closeChildDialog="closeChildDialog"
+      v-dialogDrag
+      v-dialogDragWidth
+      v-dialogDragHeight
     >
       <el-form ref="fixturePoGoPinForm" :model="form" :rules="rulesFlag === 0 ? rules : rulesFlag === 1 ? rulesAddShared : rulesFlag === 2 ? rulesUpdate : rulesFlag === 3 ? rules : rules" label-width="110px">
         <el-form-item label="料号" prop="materialNmb" class="recover-form-item">
@@ -1115,36 +1124,43 @@ export default {
 
     /** 关闭模态框 */
     async closeChildDialog(flag, name) {
+      console.log("关闭模态框被调用了");
       if (name === 'pogopinDialog') {
         if (flag === 0 || flag === 1) { // 取消
-          console.log('cancel 1...')
-          this.cancel()
+          console.log('cancel 1...');
+          this.cancel();
         } else if (flag === 2) { // 确定
-          if (this.btnFlag === 4) { //用参新增
+          if (this.btnFlag === 4) { // 用参新增
             try {
-              await this.submitForm()
-              console.log('cancel 2...')
-              this.cancel()
+              await this.submitForm();
+              console.log('cancel 2...');
+              this.cancel();
             } catch (error) {
-              console.error('Submit form error:', error)
+              console.error('Submit form error:', error);
             }
           } else if (this.btnFlag === 2) { // 新增共享机型
             try {
-              await this.submitForm()
-              console.log('cancel 2...')
-              this.cancel()
+              await this.submitForm();
+              console.log('cancel 2...');
+              this.cancel();
             } catch (error) {
-              console.error('Submit form error:', error)
+              console.error('Submit form error:', error);
+            }
+          } else if (this.btnFlag === 1) {
+            try {
+              await this.submitForm();
+            } catch (error) {
+              console.error('Submit form error:', error);
             }
           }
         } else if (flag === 3) { // 重置
-          console.log('reset 10...')
-          this.resetFixture()
-          this.reset()
+          console.log('reset 10...');
+          this.resetFixture();
+          this.reset();
         }
       } else if (name === 'fixtureCategoryPogopinDialog') {
-        console.log('fixtureCategoryPogopinDialog')
-        this.cancel()
+        console.log('fixtureCategoryPogopinDialog');
+        this.cancel();
       }
     },
 

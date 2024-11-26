@@ -61,7 +61,7 @@ export default {
         let a, b, c, d, e
 
         for (let i = 0; i < response.rows.length; i++) {
-          xAxisDataTmp.push(response.rows[i].date)
+          xAxisDataTmp.push(response.rows[i].dt)
         }
 
         xAxisData = Array.from(new Set(xAxisDataTmp))
@@ -78,24 +78,24 @@ export default {
 
           for (const datum of response.rows) {
 
-            if (datum.date === xAxisDatum && datum.code === 0) {
-              data0.push(datum.cnt)
+            if (datum.dt === xAxisDatum && datum.statusCode === 0) {
+              data0.push(datum.amount)
               a++
             }
-            if (datum.date === xAxisDatum && datum.code === 1) {
-              data1.push(datum.cnt)
+            if (datum.dt === xAxisDatum && datum.statusCode === 1) {
+              data1.push(datum.amount)
               b++
             }
-            if (datum.date === xAxisDatum && datum.code === 2) {
-              data2.push(datum.cnt)
+            if (datum.dt === xAxisDatum && datum.statusCode === 2) {
+              data2.push(datum.amount)
               c++
             }
-            if (datum.date === xAxisDatum && datum.code === 3) {
-              data3.push(datum.cnt)
+            if (datum.dt === xAxisDatum && datum.statusCode === 3) {
+              data3.push(datum.amount)
               d++
             }
-            if (datum.date === xAxisDatum && datum.code === 4) {
-              data4.push(datum.cnt)
+            if (datum.dt === xAxisDatum && datum.statusCode === 4) {
+              data4.push(datum.amount)
               e++
             }
           }

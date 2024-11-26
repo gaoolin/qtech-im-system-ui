@@ -1,6 +1,6 @@
 <!--  dialog组件-->
 <template>
-  <el-dialog :title="title" :close-on-click-modal="isCloseOnClick" :visible.sync="dialogVisible" :width="width" :name="name" :append-to-body="appendToBody" @close="closeDialog(1, name, '关闭')">
+  <el-dialog :title="title" :close-on-click-modal="isCloseOnClick" :visible.sync="dialogVisible" :width="width" :name="name" :append-to-body="appendToBody" @close="closeDialog(1, name)">
     <slot></slot>
     <div slot="footer" class="dialog-footer">
       <!--   native对应的是本页面方法，否则会被认为父组件的方法而报错   -->
@@ -12,7 +12,6 @@
 </template>
 
 <script>
-
 export default {
   name: 'ModalUdf',
 
@@ -57,7 +56,6 @@ export default {
       type: Boolean,
       default: false
     },
-
   },
   data() {
     return {
@@ -69,13 +67,13 @@ export default {
     dialogShow(val) {
       this.dialogVisible = val
     },
-
   },
   methods: {
     /**
      * 关闭弹出框事件，触发父级组件中的子组件@closeChildDialog所对应的方法
      */
     closeDialog(flag, name) {
+      console.log(flag, name)
       this.$emit('closeChildDialog', flag, name)
     },
   },
@@ -104,21 +102,21 @@ export default {
   }
 }
 </script>
+
 <style scoped lang="scss">
 .dialog {
 }
-::v-deep .el-dialog{
-  .el-dialog__header{
+::v-deep .el-dialog {
+  .el-dialog__header {
     box-shadow: 0px 0px 5px 0px rgba(136, 152, 157, 0.3);
     border-radius: 6px 6px 0px 0px;
     padding: 20px 20px 18px 25px;
-    .el-dialog__title{
+    .el-dialog__title {
       color: #212121;
       font-weight: bolder;
     }
-
   }
-  .el-dialog__body{
+  .el-dialog__body {
     padding-left: 25px;
   }
 }

@@ -98,7 +98,7 @@
     <el-dialog :title="title" :visible.sync="open" width="500px" append-to-body>
       <el-form ref="form" :model="form" label-width="80px">
         <el-form-item label="机型" prop="prodType">
-          <el-input v-model="form.prodType" placeholder="请输入机型" :disabled="isDisabled" />
+          <el-input v-model="form.prodType" placeholder="请输入机型" :disabled="isProdTypeDisabled" />
         </el-form-item>
         <el-form-item label="线径" prop="wireWidth">
           <el-input v-model="form.wireWidth" placeholder="请输入线径" />
@@ -154,14 +154,16 @@ export default {
       // 表单参数
       form: {},
       // 控制输入框禁用
-      isDisabled: true,
+      isProdTypeDisabled: true,
       // 选中的机型
       prodTypes: []
     };
   },
+
   created() {
     this.getList();
   },
+
   methods: {
     headerCellStyle,
     bodyCellStyle,
@@ -216,7 +218,7 @@ export default {
       this.reset();
       this.open = true;
       this.title = "添加金线标准用量信息";
-      this.isDisabled = false;
+      this.isProdTypeDisabled = false;
     },
     /** 修改按钮操作 */
     handleUpdate(row) {
@@ -226,14 +228,14 @@ export default {
         this.form = response.data;
         this.open = true;
         this.title = "修改金线标准用量信息";
-        this.isDisabled = true;
+        this.isProdTypeDisabled = true;
       });
     },
     /** 提交按钮 */
     submitForm() {
       this.$refs["form"].validate(valid => {
         if (valid) {
-          if (this.isDisabled === true) {
+          if (this.isProdTypeDisabled === true) {
             updateQuery(this.form).then(response => {
               this.$modal.msgSuccess("修改成功");
               this.open = false;
