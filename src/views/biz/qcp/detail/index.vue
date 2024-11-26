@@ -26,6 +26,12 @@
           </el-option>
         </el-select>
       </el-form-item>
+      <el-form-item label="状态" prop="statusCode">
+        <el-select v-model="queryParams.statusCode" placeholder="请输入状态" clearable @change="handleQuery">
+          <el-option v-for="item in chkStatusOptions" :key="item.id" :label="item.name" :value="item.id">
+          </el-option>
+        </el-select>
+      </el-form-item>
       <el-form-item>
         <el-button type="primary" icon="el-icon-search" size="mini" @click="handleQuery">搜索</el-button>
         <el-button icon="el-icon-refresh" size="mini" @click="restQuery">重置</el-button>
@@ -86,6 +92,7 @@ export default {
       factoryNameOptions: [],
       // 区选择器
       groupNameOptions: [],
+      chkStatusOptions: [{ name: 'QCP标准参数空', id: '1'}, { name: 'PASS', id: '2' }, { name: 'FAIL', id: '3' }],
       deviceTypeOptions: ['DB', 'WB', 'HM', 'AA'],
       queryParams: {
         pageNum: 1,
@@ -95,6 +102,7 @@ export default {
         deviceType: '',
         eqId: null,
         mcId: null,
+        statusCode: null,
       },
       rules: {},
       // 需要合并项的列

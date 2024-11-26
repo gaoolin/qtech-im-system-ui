@@ -130,7 +130,7 @@
             </router-link>
           </template>
         </el-table-column>
-        <el-table-column prop="unsuitableCnt" label="多参值异常" align="center" fit>
+        <el-table-column prop="unsuitableCnt" label="值异常" align="center" fit>
           <template slot-scope="scope">
             <router-link :to="{
               path: '/biz/aa/statistics/history', query: {
