@@ -71,9 +71,9 @@
           @keyup.enter.native="handleQuery"
         />
       </el-form-item>
-      <el-form-item label="状态" prop="status">
+      <el-form-item label="状态" prop="statusCode">
         <el-select
-          v-model="queryParams.status"
+          v-model="queryParams.statusCode"
           placeholder="请选择状态"
           clearable
           size="small"
@@ -125,7 +125,7 @@
           </el-tooltip>
         </template>
       </el-table-column>
-      <el-table-column align="center" prop="status">
+      <el-table-column align="center" prop="statusCode">
         <template slot="header">
           <span>状态</span>
           <el-tooltip class="item" effect="dark" placement="top-start" content="切换按钮为绿色时，机台为受控状态;切换按钮为红色时，机台为放行状态">
@@ -195,7 +195,7 @@ export default {
         mcId: null,
         simId: null,
         prodType: null,
-        status: null,
+        statusCode: null,
         remark: null
       },
       formLabelWidth: '68px',
@@ -266,7 +266,7 @@ export default {
     },
 
     statusFormat(row, column) {
-      return this.selectDictLabel(this.dict.type.aa_list_params_ignore_status, row.status)
+      return this.selectDictLabel(this.dict.type.aa_list_params_ignore_status, row.statusCode)
     },
     dataChange(data) {
       for (let item in this.columns) {
@@ -278,7 +278,7 @@ export default {
     /** 修改模版状态 */
     changeSwitch(row) {
       this.queryParams.simId = row.simId
-      this.queryParams.status = row.statusComputed
+      this.queryParams.statusCode = row.statusComputed
       updateAaEqReverseStat(this.queryParams).then(response => {
         if (response.code === 200) {
           this.$modal.msgSuccess('修改成功！')
@@ -292,7 +292,7 @@ export default {
 
     initializeStatus() {
       this.tableData.forEach(row => {
-        row.statusComputed = row.status === null ? 0 : row.status;
+        row.statusComputed = row.statusCode === null ? 0 : row.statusCode;
       });
     },
 
