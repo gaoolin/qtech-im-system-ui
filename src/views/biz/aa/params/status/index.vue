@@ -295,8 +295,6 @@ export default {
         row.statusComputed = row.statusCode === null ? 0 : row.statusCode;
       });
     },
-
-
   },
 
   created() {
