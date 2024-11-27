@@ -108,7 +108,7 @@
                 dtRange: queryParams.dtRange,
                 factoryName: scope.row.factoryName === '总计' ? '' : scope.row.factoryName,
                 groupName: scope.row.groupName === '小计' ? '' : scope.row.groupName,
-                code: 1
+                statusCode: 1
               }
             }">
               <span v-if="scope.row.offsetCnt > 0">{{ numberToCurrencyNo(scope.row.offsetCnt) }}</span>
@@ -122,7 +122,7 @@
                 dtRange: queryParams.dtRange,
                 factoryName: scope.row.factoryName === '总计' ? '' : scope.row.factoryName,
                 groupName: scope.row.groupName === '小计' ? '' : scope.row.groupName,
-                code: 3
+                statusCode: 3
               }
             }">
               <span v-if="scope.row.npCnt > 0">{{ numberToCurrencyNo(scope.row.npCnt) }}</span>
@@ -140,7 +140,7 @@
                 dtRange: queryParams.dtRange,
                 factoryName: scope.row.factoryName === '总计' ? '' : scope.row.factoryName,
                 groupName: scope.row.groupName === '小计' ? '' : scope.row.groupName,
-                code: 5
+                statusCode: 5
               }
             }">
               <span v-if="(scope.row.lackCnt + scope.row.overCnt) > 0">{{ numberToCurrencyNo(scope.row.lackCnt +
@@ -349,7 +349,7 @@ export default {
           })
         }
       })
-    },    
+    },
 
     getUpdateTime() {
       getUpdateTime().then(response => {

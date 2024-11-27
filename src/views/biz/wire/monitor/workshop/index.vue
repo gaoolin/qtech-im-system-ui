@@ -21,8 +21,8 @@
       <el-form-item label="线径" prop="wireWidth">
         <el-input v-model="queryParams.wireWidth" placeholder="请输入线径" clearable @keyup.enter.native="handleQuery" />
       </el-form-item>
-      <el-form-item label="状态" prop="status">
-        <el-select v-model="queryParams.status" placeholder="请选择状态" @change="handleQuery" clearable>
+      <el-form-item label="状态" prop="statusCode">
+        <el-select v-model="queryParams.statusCode" placeholder="请选择状态" @change="handleQuery" clearable>
           <el-option v-for="dict in dict.type.wire_diff_status" :key="dict.value" :label="dict.label"
             :value="dict.value" />
         </el-select>
@@ -116,7 +116,7 @@ export default {
         prodType: null,
         wireWidth: null,
         dtRange: [],
-        status: null
+        statusCode: null
       },
       // 表单参数
       form: {},
@@ -186,7 +186,7 @@ export default {
         yield: null,
         percents: null,
         dtRange: [],
-        status: null
+        statusCode: null
       }
       this.resetForm('form')
     },

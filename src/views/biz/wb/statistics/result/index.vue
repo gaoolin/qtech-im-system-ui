@@ -31,8 +31,8 @@
         <el-input v-model="queryParams.prodType" placeholder="请输入机型" clearable @change="handleQuery"
           @keyup.native="handleQuery" />
       </el-form-item>
-      <el-form-item label="状态" prop="status">
-        <el-select v-model="queryParams.status" placeholder="请输入比对结果状态" clearable :key="queryParams.category"
+      <el-form-item label="状态" prop="statusCode">
+        <el-select v-model="queryParams.statusCode" placeholder="请输入比对结果状态" clearable :key="queryParams.category"
           @change="handleQuery">
           <el-option v-for="dict in dict.type.comparison_result_code" :key="dict.value" :label="dict.label"
             :value="dict.value" />
@@ -68,9 +68,9 @@
       <el-table-column prop="prodType" label="机型" align="center" />
       <el-table-column prop="simId" label="盒子号" align="center" />
       <el-table-column prop="dt" label="最新比对时间" align="center" v-if="this.queryParams.category === '0'" />
-      <el-table-column prop="status" label="状态" align="center" v-if="this.queryParams.category === '0'">
+      <el-table-column prop="statusCode" label="状态" align="center" v-if="this.queryParams.category === '0'">
         <template slot-scope="scope">
-          <dict-tag :options="dict.type.comparison_result_code" :value="scope.row.status" />
+          <dict-tag :options="dict.type.comparison_result_code" :value="scope.row.statusCode" />
         </template>
       </el-table-column>
       <el-table-column prop="description" label="描述" align="center" show-overflow-tooltip
@@ -106,7 +106,7 @@ export default {
         simId: null,
         mcId: null,
         prodType: null,
-        status: null,
+        statusCode: null,
         category: '0'
       },
       // 厂选择器
@@ -261,7 +261,7 @@ export default {
         simId: null,
         mcId: null,
         eqId: null,
-        status: null,
+        statusCode: null,
         category: this.queryParams.category || '0'
       }
     },

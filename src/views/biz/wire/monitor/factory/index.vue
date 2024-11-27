@@ -14,8 +14,8 @@
       <el-form-item label="线径" prop="wireWidth">
         <el-input v-model="queryParams.wireWidth" placeholder="请输入线径" clearable />
       </el-form-item>
-      <el-form-item label="状态" prop="status">
-        <el-select v-model="queryParams.status" placeholder="请选择状态" @change="handleQuery" clearable>
+      <el-form-item label="状态" prop="statusCode">
+        <el-select v-model="queryParams.statusCode" placeholder="请选择状态" @change="handleQuery" clearable>
           <el-option v-for="dict in dict.type.wire_diff_status" :key="dict.value" :label="dict.label"
             :value="dict.value" />
         </el-select>
@@ -107,7 +107,7 @@ export default {
         prodType: null,
         wireWidth: null,
         dtRange: [],
-        status: null
+        statusCode: null
       },
       // 表单校验
       rules: {
@@ -173,7 +173,7 @@ export default {
         ...this.queryParams
       }, `厂区_${new Date().getTime()}.xlsx`)
     },
-    
+
     /** 远程获取厂区名称 */
     getFactoryNames() {
       this.$refs['queryForm'].validate(valid => {
@@ -206,7 +206,7 @@ export default {
       })
     },
   },
-  
+
   created() {
     const dtRange = this.$route.query.dtRange;
     if (Array.isArray(dtRange) && dtRange.length === 2) {

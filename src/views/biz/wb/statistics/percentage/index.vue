@@ -27,8 +27,8 @@
         <el-input v-model="queryParams.prodType" placeholder="请输入机型" clearable @change="handleQuery"
           @keyup.native="handleQuery" />
       </el-form-item>
-      <el-form-item label="状态" prop="status">
-        <el-select v-model="queryParams.status" placeholder="请输入比对状态" clearable :key="queryParams.category"
+      <el-form-item label="状态" prop="statusCode">
+        <el-select v-model="queryParams.statusCode" placeholder="请输入比对状态" clearable :key="queryParams.category"
           @change="handleQuery">
           <el-option v-for="dict in dict.type.comparison_result_code" :key="dict.value" :label="dict.label"
             :value="dict.value" />

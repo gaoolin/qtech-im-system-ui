@@ -55,7 +55,7 @@
       <el-table-column prop="mcId" label="机台号" align="center" min-width="160" fit></el-table-column>
       <el-table-column prop="prodType" label="机种" align="center" min-width="120" fit></el-table-column>
       <el-table-column prop="dt" label="比对时间" align="center" min-width="160" fit></el-table-column>
-      <el-table-column prop="code" label="状态码" align="center" min-width="120" fit></el-table-column>
+      <el-table-column prop="statusCode" label="状态码" align="center" min-width="120" fit></el-table-column>
       <el-table-column prop="description" label="描述" align="center" min-width="120"
         show-overflow-tooltip></el-table-column>
     </el-table>
@@ -95,7 +95,7 @@ export default {
         dtRange: [],
         prodType: null,
         flag: null,
-        code: null
+        statusCode: null
       },
       // 需要合并项的列
       needMergeArr: [
@@ -146,7 +146,7 @@ export default {
     this.queryParams.mcId = this.$route.query.mcId
     this.queryParams.prodType = this.$route.query.prodType
     this.queryParams.flag = this.$route.query.flag
-    this.queryParams.code = this.$route.query.code
+    this.queryParams.statusCode = this.$route.query.statusCode
   },
 
   mounted() {
@@ -276,7 +276,7 @@ export default {
         dtRange: [dateToStr(new Date(new Date().setHours(0, 0, 0).valueOf())), dateToStr(new Date(new Date().setHours(23, 59, 59).valueOf()))],
         prodType: null,
         flag: null,
-        code: null
+        statusCode: null
       }
     },
 
