@@ -78,7 +78,7 @@
       </el-col>
 
       <el-col :span="12">
-        <right-tool-bar-go-back :showSearch.sync="showSearch" @queryTable="load" :back="back"></right-tool-bar-go-back>
+        <right-tool-bar-go-back :showSearch.sync="showSearch" @queryTable="getList" :back="back"></right-tool-bar-go-back>
       </el-col>
     </el-row>
 
@@ -87,6 +87,7 @@
       :flowChartSrc="flowChartSrc"
       :visible.sync="isFlowChartVisible"
     />
+
     <!-- 警告框，数据不正常时显示，带渐显效果 -->
     <transition name="fade">
       <div v-if="showAlert" class="alert-box">数据异常：采集数据无更新！</div>
@@ -121,7 +122,7 @@
     </el-table>
 
     <pagination v-show="total > 0" :total="total" :page.sync="queryParams.pageNum" :limit.sync="queryParams.pageSize"
-      @pagination="load" />
+      @pagination="getList" />
   </div>
 </template>
 
@@ -193,7 +194,8 @@ export default {
   },
 
   mounted() {
-    this.load()
+    this.getList()
+    this.getFactoryNames();
 
     // 在组件挂载时启动定时器
     this.intervalId = setInterval(() => {
@@ -212,12 +214,6 @@ export default {
     headerCellStyle,
     bodyCellStyle,
     tableStyle,
-
-    load() {
-        this.getList()
-        // overview.methods.getFactoryNames()
-        this.getFactoryNames();
-    },
 
     getList() {
       this.$refs['queryForm'].validate(valid => {
@@ -258,7 +254,7 @@ export default {
     /** 搜索按钮操作 */
     handleQuery() {
       this.queryParams.pageNum = 1;
-      this.load();
+      this.getList();
     },
 
     reset() {
@@ -431,10 +427,10 @@ export default {
       return statusOption ? statusOption.name : '未知状态';
     },
 
-
     showFlowChart() {
-      this.isFlowChartVisible = true; // 显示流程图
+      this.isFlowChartVisible = true; // 显示弹窗
     },
+
   },
 }
 </script>
