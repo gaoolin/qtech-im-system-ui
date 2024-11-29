@@ -340,30 +340,6 @@
         <!-- 检查和检测 -->
         <el-table-column label="检查和检测" align="left" width="300">
           <template slot-scope="scope">
-            <div class="prop-container" v-if="convertNull(scope.row.mtfOffAxisCheck1) !== '--'">
-              <span class="prop-label">
-                mtfOffAxisCheck1:
-                <span class="prop-value"
-                  :class="{ 'enabled': convertNull(scope.row.mtfOffAxisCheck1) === 'Enable', 'disabled': convertNull(scope.row.mtfOffAxisCheck1) === 'Disable' }">{{
-                    convertNull(scope.row.mtfOffAxisCheck1) }}</span>
-              </span>
-            </div>
-            <div class="prop-container" v-if="convertNull(scope.row.mtfOffAxisCheck2) !== '--'">
-              <span class="prop-label">
-                mtfOffAxisCheck2:
-                <span class="prop-value"
-                  :class="{ 'enabled': convertNull(scope.row.mtfOffAxisCheck2) === 'Enable', 'disabled': convertNull(scope.row.mtfOffAxisCheck2) === 'Disable' }">{{
-                    convertNull(scope.row.mtfOffAxisCheck2) }}</span>
-              </span>
-            </div>
-            <div class="prop-container" v-if="convertNull(scope.row.mtfOffAxisCheck3) !== '--'">
-              <span class="prop-label">
-                mtfOffAxisCheck3:
-                <span class="prop-value"
-                  :class="{ 'enabled': convertNull(scope.row.mtfOffAxisCheck3) === 'Enable', 'disabled': convertNull(scope.row.mtfOffAxisCheck3) === 'Disable' }">{{
-                    convertNull(scope.row.mtfOffAxisCheck3) }}</span>
-              </span>
-            </div>
             <div class="prop-container" v-if="convertNull(scope.row.openCheck) !== '--'">
               <span class="prop-label">
                 openCheck:
@@ -562,15 +538,6 @@
                   <el-descriptions-item label="胶厚下限">
                     {{ convertNull(scope.row.aa1GoldenGlueThicknessMin) }}
                   </el-descriptions-item>
-                  <!-- <el-descriptions-item label="MtfOffAxisCheck1">
-                    {{ convertNull(scope.row.aa1MtfOffAxisCheck1) }}
-                  </el-descriptions-item>
-                  <el-descriptions-item label="MtfOffAxisCheck2">
-                    {{ convertNull(scope.row.aa1MtfOffAxisCheck2) }}
-                  </el-descriptions-item>
-                  <el-descriptions-item label="MtfOffAxisCheck3">
-                    {{ convertNull(scope.row.aa1MtfOffAxisCheck3) }}
-                  </el-descriptions-item> -->
                 </el-descriptions>
               </el-collapse-item>
               <el-collapse-item class="prop-label" title="AA2" name="2" v-if="convertNull(scope.row.aa2RoiCc) !== '--'">
@@ -614,15 +581,6 @@
                   <el-descriptions-item label="胶厚下限">
                     {{ convertNull(scope.row.aa1GoldenGlueThicknessMin) }}
                   </el-descriptions-item>
-                  <!-- <el-descriptions-item label="MtfOffAxisCheck1">
-                    {{ convertNull(scope.row.aa2MtfOffAxisCheck1) }}
-                  </el-descriptions-item>
-                  <el-descriptions-item label="MtfOffAxisCheck2">
-                    {{ convertNull(scope.row.aa2MtfOffAxisCheck2) }}
-                  </el-descriptions-item>
-                  <el-descriptions-item label="MtfOffAxisCheck3">
-                    {{ convertNull(scope.row.aa2MtfOffAxisCheck3) }}
-                  </el-descriptions-item> -->
                 </el-descriptions>
               </el-collapse-item>
               <el-collapse-item class="prop-label" title="AA3" name="3" v-if="convertNull(scope.row.aa3RoiCc) !== '--'">
@@ -665,15 +623,6 @@
                   </el-descriptions-item>
                   <el-descriptions-item label="胶厚下限">
                     {{ convertNull(scope.row.aa1GoldenGlueThicknessMin) }}
-                  </el-descriptions-item>
-                  <!-- <el-descriptions-item label="MtfOffAxisCheck1">
-                    {{ convertNull(scope.row.aa3MtfOffAxisCheck1) }}
-                  </el-descriptions-item>
-                  <el-descriptions-item label="MtfOffAxisCheck2">
-                    {{ convertNull(scope.row.aa3MtfOffAxisCheck2) }}
-                  </el-descriptions-item>
-                  <el-descriptions-item label="MtfOffAxisCheck3">
-                    {{ convertNull(scope.row.aa3MtfOffAxisCheck3) }} -->
                   </el-descriptions-item>
                 </el-descriptions>
               </el-collapse-item>
@@ -1075,27 +1024,6 @@
             </el-form-item>
           </el-collapse-item>
           <el-collapse-item class="main-item" title="检查和检测" name="4">
-            <el-form-item label="mtfOffAxisCheck1" prop="mtfOffAxisCheck1">
-              <el-select v-model="editForm.mtfOffAxisCheck1" placeholder="请选择" clearable
-                @clear="handleClear('mtfOffAxisCheck1')">
-                <el-option v-for="dict in dict.type.aa_list_params_power" :key="dict.value" :label="dict.label"
-                  :value="dict.value" />
-              </el-select>
-            </el-form-item>
-            <el-form-item label="mtfOffAxisCheck2" prop="mtfOffAxisCheck2">
-              <el-select v-model="editForm.mtfOffAxisCheck2" placeholder="请选择" clearable
-                @clear="handleClear('mtfOffAxisCheck2')">
-                <el-option v-for="dict in dict.type.aa_list_params_power" :key="dict.value" :label="dict.label"
-                  :value="dict.value" />
-              </el-select>
-            </el-form-item>
-            <el-form-item label="mtfOffAxisCheck3" prop="mtfOffAxisCheck3">
-              <el-select v-model="editForm.mtfOffAxisCheck3" placeholder="请选择" clearable
-                @clear="handleClear('mtfOffAxisCheck3')">
-                <el-option v-for="dict in dict.type.aa_list_params_power" :key="dict.value" :label="dict.label"
-                  :value="dict.value" />
-              </el-select>
-            </el-form-item>
             <el-form-item label="openCheck" prop="openCheck">
               <el-select v-model="editForm.openCheck" placeholder="请选择" clearable @clear="handleClear('openCheck')">
                 <el-option v-for="dict in dict.type.aa_list_params_power" :key="dict.value" :label="dict.label"
@@ -1623,42 +1551,18 @@ export default {
         aa1RoiUr: [{ validator: this.checkNumericOrEmpty, trigger: 'blur' }],
         aa1RoiLr: [{ validator: this.checkNumericOrEmpty, trigger: 'blur' }],
         aa1RoiLl: [{ validator: this.checkNumericOrEmpty, trigger: 'blur' }],
-        aa1Fc: [{ validator: this.checkNumericOrEmpty, trigger: 'blur' }],
-        aa1F1: [{ validator: this.checkNumericOrEmpty, trigger: 'blur' }],
-        aa1F2: [{ validator: this.checkNumericOrEmpty, trigger: 'blur' }],
-        aa1F3: [{ validator: this.checkNumericOrEmpty, trigger: 'blur' }],
-        aa1F4: [{ validator: this.checkNumericOrEmpty, trigger: 'blur' }],
-        aa1MtfOffAxisCheck1: [{ validator: this.checkNumericOrEmpty, trigger: 'blur' }],
-        aa1MtfOffAxisCheck2: [{ validator: this.checkNumericOrEmpty, trigger: 'blur' }],
-        aa1MtfOffAxisCheck3: [{ validator: this.checkNumericOrEmpty, trigger: 'blur' }],
 
         aa2RoiCc: [{ validator: this.checkNumericOrEmpty, trigger: 'blur' }],
         aa2RoiUl: [{ validator: this.checkNumericOrEmpty, trigger: 'blur' }],
         aa2RoiUr: [{ validator: this.checkNumericOrEmpty, trigger: 'blur' }],
         aa2RoiLr: [{ validator: this.checkNumericOrEmpty, trigger: 'blur' }],
         aa2RoiLl: [{ validator: this.checkNumericOrEmpty, trigger: 'blur' }],
-        aa2Fc: [{ validator: this.checkNumericOrEmpty, trigger: 'blur' }],
-        aa2F1: [{ validator: this.checkNumericOrEmpty, trigger: 'blur' }],
-        aa2F2: [{ validator: this.checkNumericOrEmpty, trigger: 'blur' }],
-        aa2F3: [{ validator: this.checkNumericOrEmpty, trigger: 'blur' }],
-        aa2F4: [{ validator: this.checkNumericOrEmpty, trigger: 'blur' }],
-        aa2MtfOffAxisCheck1: [{ validator: this.checkNumericOrEmpty, trigger: 'blur' }],
-        aa2MtfOffAxisCheck2: [{ validator: this.checkNumericOrEmpty, trigger: 'blur' }],
-        aa2MtfOffAxisCheck3: [{ validator: this.checkNumericOrEmpty, trigger: 'blur' }],
 
         aa3RoiCc: [{ validator: this.checkNumericOrEmpty, trigger: 'blur' }],
         aa3RoiUl: [{ validator: this.checkNumericOrEmpty, trigger: 'blur' }],
         aa3RoiUr: [{ validator: this.checkNumericOrEmpty, trigger: 'blur' }],
         aa3RoiLr: [{ validator: this.checkNumericOrEmpty, trigger: 'blur' }],
         aa3RoiLl: [{ validator: this.checkNumericOrEmpty, trigger: 'blur' }],
-        aa3Fc: [{ validator: this.checkNumericOrEmpty, trigger: 'blur' }],
-        aa3F1: [{ validator: this.checkNumericOrEmpty, trigger: 'blur' }],
-        aa3F2: [{ validator: this.checkNumericOrEmpty, trigger: 'blur' }],
-        aa3F3: [{ validator: this.checkNumericOrEmpty, trigger: 'blur' }],
-        aa3F4: [{ validator: this.checkNumericOrEmpty, trigger: 'blur' }],
-        aa3MtfOffAxisCheck1: [{ validator: this.checkNumericOrEmpty, trigger: 'blur' }],
-        aa3MtfOffAxisCheck2: [{ validator: this.checkNumericOrEmpty, trigger: 'blur' }],
-        aa3MtfOffAxisCheck3: [{ validator: this.checkNumericOrEmpty, trigger: 'blur' }],
 
         mtfCheckFc: [{ validator: this.checkNumericOrEmpty, trigger: 'blur' }],
         mtfCheckF1: [{ validator: this.checkNumericOrEmpty, trigger: 'blur' }],
@@ -1808,40 +1712,16 @@ export default {
         aa1RoiUr: null,
         aa1RoiLl: null,
         aa1RoiLr: null,
-        aa1Fc: null,
-        aa1F1: null,
-        aa1F2: null,
-        aa1F3: null,
-        aa1F4: null,
-        aa1MtfOffAxisCheck1: null,
-        aa1MtfOffAxisCheck2: null,
-        aa1MtfOnAxisCheck1: null,
         aa2RoiCc: null,
         aa2RoiUl: null,
         aa2RoiUr: null,
         aa2RoiLl: null,
         aa2RoiLr: null,
-        aa2Fc: null,
-        aa2F1: null,
-        aa2F2: null,
-        aa2F3: null,
-        aa2F4: null,
-        aa2MtfOffAxisCheck1: null,
-        aa2MtfOffAxisCheck2: null,
-        aa2MtfOffAxisCheck3: null,
         aa3RoiCc: null,
         aa3RoiUl: null,
         aa3RoiUr: null,
         aa3RoiLl: null,
         aa3RoiLr: null,
-        aa3Fc: null,
-        aa3F1: null,
-        aa3F2: null,
-        aa3F3: null,
-        aa3F4: null,
-        aa3MtfOffAxisCheck1: null,
-        aa3MtfOffAxisCheck2: null,
-        aa3MtfOffAxisCheck3: null,
 
         mtfCheckFc: null,
         mtfCheckF1: null,

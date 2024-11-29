@@ -59,7 +59,7 @@
               factoryName: scope.row.factoryName === '总计' ? '' : scope.row.factoryName,
               groupName: scope.row.groupName === '小计' ? '' : scope.row.groupName,
               deviceType: 'WB',
-              label: 1
+              netStatus: 0
             }
           }">
             <span v-if="scope.row.offlineEqs > 0">{{ numberToCurrencyNo(scope.row.offlineEqs) }}</span>
