@@ -1,6 +1,5 @@
 import request from "@/utils/request"
 
-// 检查数采数据是否持续更新
 export function fetchDataStatus(query) {
   return request({
     url: '/qtech/im/eqs/iot/status',
@@ -13,6 +12,14 @@ export function fetchDataStatus(query) {
 export function fetchAaDataStatus(query) {
   return request({
     url: '/qtech/im/eqs/iot/aa/status',
+    method: 'get',
+    params: query
+  })
+}
+
+export function fetchQcpDataStatus(query) {
+  return request({
+    url: '/qtech/im/eqs/iot/qcp/status',
     method: 'get',
     params: query
   })

@@ -213,7 +213,8 @@ export default {
 
     checkDataStatus() {
       this.getDataStatus().then(isDataNormal => {
-        this.showAlert = isDataNormal === 'false';
+        console.log('isDataNormal: ', isDataNormal)
+        this.showAlert = isDataNormal === false;
       });
     },
 

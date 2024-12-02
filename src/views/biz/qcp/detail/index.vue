@@ -50,7 +50,7 @@
 
     <!-- 警告框，数据不正常时显示，带渐显效果 -->
     <transition name="fade">
-      <div v-if="showAlert" class="alert-box">数据异常：采集数据无更新！</div>
+      <div v-if="showAlert" class="alert-box">数据异常：QCP数据无更新！</div>
     </transition>
 
     <el-table v-loading="loading" :data="tableData" border :cell-style="bodyCellStyle()"
@@ -71,7 +71,7 @@
 
 <script>
 import { headerCellStyle, bodyCellStyle, tableStyle } from '@/views/biz/common/js/tableStyles';
-import { fetchDataStatus } from '@/api/biz/common/eqRelated'
+import { fetchQcpDataStatus } from '@/api/biz/common/eqRelated'
 import { listQcpParams } from '@/api/biz/qcp/parameters'
 import { fetchQcpFactoryNames, fetchQcpGroupNames } from '@/api/biz/common/factoryAndGroupNames'
 
@@ -138,9 +138,8 @@ export default {
     this.getFactoryNames()
 
     // 在组件挂载时启动定时器
-    this.intervalId = setInterval(() => {
-      this.checkDataStatus();
-    }, 5000); // 5秒
+    this.checkDataStatus();
+    this.intervalId = setInterval(this.checkDataStatus, 5000);
   },
 
   beforeDestroy() {
@@ -249,18 +248,15 @@ export default {
       }
     },
 
-    async checkDataStatus() {
-      // 发送请求检查数据状态的函数
-      const isDataNormal = await this.getDataStatus();
-      if (isDataNormal === 'true') {
-        this.showAlert = true // 数据不正常时显示红色提示框
-      }
-      this.showAlert = false
+    checkDataStatus() {
+      this.getDataStatus().then(isDataNormal => {
+        console.log('isDataNormal:', isDataNormal);
+        this.showAlert = isDataNormal === false;
+      });
     },
-    async getDataStatus() {
-      // 请求逻辑
-      const response = await fetchDataStatus(null); /* API 请求逻辑 */;
-      return response.data;
+
+    getDataStatus() {
+      return fetchQcpDataStatus(null).then(response => response.data);
     },
 
     /** 搜索按钮操作 */
