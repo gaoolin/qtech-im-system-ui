@@ -115,6 +115,12 @@
       </el-table-column>
 
       <el-table-column prop="remoteStatus" label="远程功能" align="center" min-width="80" show-overflow-tooltip>
+        <template slot="header">
+          <span>远程功能</span>
+          <el-tooltip class="item" effect="dark" placement="top-start" content="远程功能为[未知]的，是因未采集到机台的远程参数导致，后台无法判断当前机台的远程功能是否开启。可由人工确认机台的远程功能。">
+            <i class="el-icon-question" style="color:#272728; margin-left:2px;'"> </i>
+          </el-tooltip>
+        </template>
         <template slot-scope="scope">
           <dict-tag :options="dict.type.remote_control_status" :value="scope.row.remoteStatus" />
         </template>
