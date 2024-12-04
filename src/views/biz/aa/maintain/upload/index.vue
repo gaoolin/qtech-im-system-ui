@@ -78,7 +78,7 @@
           <el-form-item label="时段" prop="dtRange">
             <el-date-picker
                 v-model="queryParams.dtRange"
-                style="width: 350px"
+                style="width: 370px"
                 value-format="yyyy-MM-dd HH:mm:ss"
                 type="datetimerange"
                 range-separator="至"
@@ -1610,8 +1610,8 @@ export default {
           if (valid) {
             this.loading = true
             this.queryParams.params = {
-              beginDate: this.queryParams.dtRange[0],
-              endDate: this.queryParams.dtRange[1]
+              startTime: this.queryParams.dtRange[0],
+              endTime: this.queryParams.dtRange[1]
             }
             getAaParamsParsed(this.queryParams).then(response => {
               this.resultList = response.rows
@@ -1704,8 +1704,28 @@ export default {
     // const thirtyMinutesAgo = new Date(now.getTime() - 30 * 60 * 1000)
     // this.queryParams.dtRange = [thirtyMinutesAgo, now]
 
-    this.$set(this.queryParams, 'dtRange', [dateToStr(new Date(now.getTime() - 30 * 60 * 1000)),
-      dateToStr(new Date())])
+    const today = new Date();
+    const startOfDay = new Date(today.setHours(0, 0, 0, 0));
+    const nextDay = new Date(today);
+    const startOfNextDay = new Date(nextDay.setHours(23, 59, 59, 0));
+
+    const formatDate = (date) => {
+      const year = date.getFullYear();
+      const month = String(date.getMonth() + 1).padStart(2, '0');
+      const day = String(date.getDate()).padStart(2, '0');
+      const hour = String(date.getHours()).padStart(2, '0');
+      const minute = String(date.getMinutes()).padStart(2, '0');
+      const second = String(date.getSeconds()).padStart(2, '0');
+      return `${year}-${month}-${day} ${hour}:${minute}:${second}`;
+    };
+
+    this.$set(this.queryParams, 'dtRange', [
+      formatDate(startOfDay),
+      formatDate(startOfNextDay)
+    ]);
+
+    // this.$set(this.queryParams, 'dtRange', [dateToStr(new Date(now.getTime() - 30 * 60 * 1000)),
+    //   dateToStr(new Date())])
   }
 }
 
