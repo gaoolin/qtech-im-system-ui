@@ -288,7 +288,7 @@ export default {
 
     /** 导出 */
     handleExport() {
-      this.download('qcp/params/detail/export', {
+      this.download('/qcp/params/export', {
         ...this.queryParams
       }, `qcp参数模版明细_${new Date().getTime()}.xlsx`)
     },

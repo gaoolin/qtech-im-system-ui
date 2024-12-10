@@ -47,7 +47,7 @@
         <el-table-column label="序号" type="index" width="55" align="center" />
         <el-table-column label="厂区" align="center" prop="factoryName" />
         <el-table-column label="机型" align="center" prop="prodType" />
-        <el-table-column label="线径" align="center" width="180" prop="wireWidth" />
+        <el-table-column label="线径" align="center" width="180" prop="wireWidth" show-overflow-tooltip />
         <el-table-column label="实际用量" align="center" prop="actualWireUsage">
           <template slot-scope="scope">{{ getBit(scope.row.actualWireUsage, 4) }}</template>
         </el-table-column>
@@ -171,7 +171,7 @@ export default {
     handleExport() {
       this.download('biz/wire/monitor/factory/export', {
         ...this.queryParams
-      }, `厂区_${new Date().getTime()}.xlsx`)
+      }, `厂区金线用量_${new Date().getTime()}.xlsx`)
     },
 
     /** 远程获取厂区名称 */

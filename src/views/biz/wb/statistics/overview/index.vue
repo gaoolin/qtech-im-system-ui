@@ -131,10 +131,6 @@
         </el-table-column>
         <el-table-column label="少线/多线" align="center" fit>
           <template slot-scope="scope">
-            <span v-if="(scope.row.lackCnt + scope.row.overCnt) > 0">{{ numberToCurrencyNo(scope.row.lackCnt +
-              scope.row.overCnt) }}</span>
-          </template>
-          <template slot-scope="scope">
             <router-link :to="{
               path: '/biz/wb/statistics/particulars', query: {
                 dtRange: queryParams.dtRange,
@@ -143,8 +139,7 @@
                 statusCode: 5
               }
             }">
-              <span v-if="(scope.row.lackCnt + scope.row.overCnt) > 0">{{ numberToCurrencyNo(scope.row.lackCnt +
-                scope.row.overCnt) }}</span>
+              <span v-if="(scope.row.lackCnt + scope.row.overCnt) > 0">{{ numberToCurrencyNo(scope.row.lackCnt + scope.row.overCnt) }}</span>
             </router-link>
           </template>
         </el-table-column>
@@ -364,14 +359,14 @@ export default {
       } else if (row.groupName === '小计') {
         return 'background: #DDDDDD; font-size: 20px; font-weight: bolder;'
       } else if (columnIndex === 6 && row[column.property] > 0) {
-        return 'background:#228B22; color: #FFFFFF; font-size: 19px; font-weight: bolder; text-decoration: underline;'
+        return 'background: #228B22; color: #FFFFFF; font-size: 19px; font-weight: bolder; text-decoration: underline;'
       } else if (columnIndex === 4 && row[column.property] > 0) {
         return 'background: #FFBB00; color: #FFFFFF; font-size: 19px; font-weight: bolder; text-decoration: underline;'
       } else if (columnIndex === 7 && row[column.property] > 0) {
         return 'background: orangered; color: #FFFFFF; font-size: 19px; font-weight: bolder; text-decoration: underline;'
-      } else if ((columnIndex > 7 && columnIndex < 11) && row[column.property] > 0) {
+      } else if ((columnIndex > 7 && columnIndex < 12) && row[column.property] > 0) {
         return 'font-size: 19px; font-weight: bolder; text-decoration: underline;'
-      } else if (columnIndex === 11 && row[column.property] > 0) {
+      } else if (columnIndex === 12 && row[column.property] > 0) {
         return 'color: red; font-size: 19px; font-weight: bolder;'
       } else {
         return 'font-size: 20px; font-weight: bolder;'

@@ -405,4 +405,5 @@ export default {
   font-style: normal;
   font-display: swap;
 }
+
 </style>

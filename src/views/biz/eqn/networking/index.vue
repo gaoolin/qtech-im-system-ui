@@ -96,7 +96,6 @@
     <el-table v-loading="loading" :data="tableData" :header-cell-style="headerCellStyle()" :cell-style="bodyCellStyle()"
       :style="tableStyle()">
       <el-table-column prop="factoryName" label="厂区" align="center" min-width="80" fit></el-table-column>
-      <el-table-column prop="deptName" label="站位" align="center" min-width="80" fit></el-table-column>
       <el-table-column prop="groupName" label="车间" align="center" min-width="100" fit></el-table-column>
       <el-table-column prop="deviceType" label="设备类型" align="center" min-width="60" fit></el-table-column>
       <el-table-column prop="eqId" label="设备编号" align="center" min-width="160" fit></el-table-column>

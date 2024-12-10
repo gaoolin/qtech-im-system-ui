@@ -15,6 +15,9 @@
             :value="groupName.name"></el-option>
         </el-select>
       </el-form-item>
+      <el-form-item label="机台号" prop="mcId">
+        <el-input v-model="queryParams.mcId" placeholder="请输入机台号" clearable @keyup.enter.native="handleQuery" />
+      </el-form-item>
       <el-form-item label="EQ" prop="eqId">
         <el-input v-model="queryParams.eqId" placeholder="请输入设备编号" clearable @keyup.enter.native="handleQuery" />
       </el-form-item>
@@ -57,9 +60,10 @@
         <el-table-column label="序号" type="index" width="55" align="center" />
         <el-table-column label="厂区" align="center" prop="factoryName" />
         <el-table-column label="车间" align="center" prop="groupName" />
-        <el-table-column label="机型" align="center" prop="prodType" />
-        <el-table-column label="设备编号(EQ)" align="center" width="180" prop="eqId" />
-        <el-table-column label="线径" align="center" width="180" prop="wireWidth" />
+        <el-table-column label="机台号" align="center" width="150" prop="mcId" show-overflow-tooltip />
+        <el-table-column label="设备编号(EQ)" align="center" width="180" prop="eqId" show-overflow-tooltip />
+        <el-table-column label="机型" align="center" prop="propType" />
+        <el-table-column label="线径" align="center" width="180" prop="wireWidth" show-overflow-tooltip />
         <el-table-column label="实际用量" align="center" prop="actualWireUsage">
           <template slot-scope="scope">{{ getBit(scope.row.actualWireUsage, 4) }}</template>
         </el-table-column>
@@ -119,6 +123,7 @@ export default {
         pageSize: 10,
         factoryName: null,
         groupName: null,
+        mcId: null,
         eqId: null,
         prodType: null,
         wireWidth: null,
@@ -268,7 +273,7 @@ export default {
     handleExport() {
       this.download('biz/wire/monitor/eq/export', {
         ...this.queryParams
-      }, `设备_${new Date().getTime()}.xlsx`)
+      }, `设备金线用量_${new Date().getTime()}.xlsx`)
     },
   },
 
