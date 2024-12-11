@@ -364,9 +364,11 @@ export default {
         return 'background: #FFBB00; color: #FFFFFF; font-size: 19px; font-weight: bolder; text-decoration: underline;'
       } else if (columnIndex === 7 && row[column.property] > 0) {
         return 'background: orangered; color: #FFFFFF; font-size: 19px; font-weight: bolder; text-decoration: underline;'
-      } else if ((columnIndex > 7 && columnIndex < 12) && row[column.property] > 0) {
+      } else if ((columnIndex > 7 && columnIndex < 10) && row[column.property] > 0) {
         return 'font-size: 19px; font-weight: bolder; text-decoration: underline;'
-      } else if (columnIndex === 12 && row[column.property] > 0) {
+      } else if (columnIndex === 10 && (row.lackCnt + row.overCnt) > 0) {
+        return 'font-size: 19px; font-weight: bolder; text-decoration: underline;'
+      } else if (columnIndex === 11 && row[column.property] > 0) {
         return 'color: red; font-size: 19px; font-weight: bolder;'
       } else {
         return 'font-size: 20px; font-weight: bolder;'
