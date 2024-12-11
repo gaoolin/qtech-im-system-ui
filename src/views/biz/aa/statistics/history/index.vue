@@ -62,9 +62,9 @@
       <el-table-column prop="factoryName" label="厂区" align="center" fixed />
       <el-table-column prop="groupName" label="车间" align="center" fixed />
       <el-table-column prop="eqId" label="设备号" align="center" />
+      <el-table-column prop="simId" label="盒子号" align="center" />
       <el-table-column prop="mcId" label="机台号" align="center" />
       <el-table-column prop="prodType" label="机型" align="center" />
-      <el-table-column prop="simId" label="盒子号" align="center" />
       <el-table-column prop="dt" label="点检时间" align="center" />
       <el-table-column prop="statusCode" label="状态" align="center">
         <template slot-scope="scope">

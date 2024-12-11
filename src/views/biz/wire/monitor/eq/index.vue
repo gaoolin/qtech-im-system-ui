@@ -60,8 +60,8 @@
         <el-table-column label="序号" type="index" width="55" align="center" />
         <el-table-column label="厂区" align="center" prop="factoryName" />
         <el-table-column label="车间" align="center" prop="groupName" />
-        <el-table-column label="机台号" align="center" width="150" prop="mcId" show-overflow-tooltip />
         <el-table-column label="设备编号(EQ)" align="center" width="180" prop="eqId" show-overflow-tooltip />
+        <el-table-column label="机台号" align="center" width="150" prop="mcId" show-overflow-tooltip />
         <el-table-column label="机型" align="center" prop="propType" />
         <el-table-column label="线径" align="center" width="180" prop="wireWidth" show-overflow-tooltip />
         <el-table-column label="实际用量" align="center" prop="actualWireUsage">

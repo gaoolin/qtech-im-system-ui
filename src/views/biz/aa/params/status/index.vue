@@ -145,7 +145,7 @@
         </template>
       </el-table-column>
       <el-table-column label="操作次数" align="center" prop="opCnt"/>
-      <el-table-column label="上次操作时间" align="center" prop="updateTime" width="180"/>
+      <el-table-column label="上次操作时间" align="center" prop="updateDt" width="180"/>
       <el-table-column label="操作人" align="center" prop="updateBy" width="180"/>
       <el-table-column label="备注" align="center" prop="remark"/>
     </el-table>
