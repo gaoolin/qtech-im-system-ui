@@ -1,90 +1,40 @@
 <template>
   <div class="app-container">
-    <el-form :inline="true" :model="queryParams" ref="queryForm" :label-width="formLabelWidth" v-show="showSearch">
+    <el-form :model="queryParams" ref="queryForm" :inline="true" v-show="showSearch" label-width="72px"
+             :rulues="rules">
       <el-form-item label="厂区" prop="factoryName">
-        <el-select
-          v-model="queryParams.factoryName"
-          placeholder="请输入厂区名称"
-          filterable
-          clearable
-          @change="handleQuery"
-        >
-          <el-option
-            v-for="item in factoryOptions"
-            :key="item.key"
-            :label="item.label"
-            :value="item.label"
-            :disabled="item.disabled"
-          />
+        <el-select v-model="queryParams.factoryName" placeholder="请输入厂区" clearable @change="handleFactoryChange">
+          <el-option v-for="factory in factoryNameOptions" :key="factory.id" :label="factory.name" :value="factory.name"
+                     :disabled="factory.disabled"></el-option>
         </el-select>
       </el-form-item>
       <el-form-item label="车间" prop="groupName">
-        <el-select
-          v-model="queryParams.groupName"
-          placeholder="请输入车间名称"
-          filterable
-          clearable
-          @focus="getGroupNames"
-          @change="handleQuery"
-        >
-          <el-option
-            v-for="item in groupNameOptions"
-            :key="item"
-            :label="item"
-            :value="item"
-          />
+        <el-select v-model="queryParams.groupName" placeholder="请输入车间" clearable @focus="checkPreInput"
+                   @change="handleQuery">
+          <el-option v-for="groupName in groupNameOptions" :key="groupName.id" :label="groupName.name"
+                     :value="groupName.name"></el-option>
         </el-select>
       </el-form-item>
-      <el-form-item label="设备编号" prop="eqId">
-        <el-input
-          v-model="queryParams.eqId"
-          placeholder="请输入设备编号"
-          clearable
-          size="small"
-          @keyup.enter.native="handleQuery"
-        />
+      <el-form-item label="设备编码" prop="eqId">
+        <el-input v-model="queryParams.eqId" placeholder="请输入设备编码" clearable @change="handleQuery" @keyup.native="handleQuery">
+        </el-input>
       </el-form-item>
       <el-form-item label="机台号" prop="mcId">
-        <el-input
-          v-model="queryParams.mcId"
-          placeholder="请输入机台编号"
-          clearable
-          size="small"
-          @keyup.enter.native="handleQuery"
-        />
+        <el-input v-model="queryParams.mcId" placeholder="请输入机台号" clearable @change="handleQuery" @keyup.native="handleQuery">
+        </el-input>
       </el-form-item>
       <el-form-item label="盒子号" prop="simId">
-        <el-input
-          v-model="queryParams.simId"
-          placeholder="请输入盒子号"
-          clearable
-          size="small"
-          @keyup.enter.native="handleQuery"
-        />
+        <el-input v-model="queryParams.simId" placeholder="请输入盒子号" clearable @change="handleQuery" @keyup.native="handleQuery">
+        </el-input>
       </el-form-item>
       <el-form-item label="机型" prop="prodType">
-        <el-input
-          v-model="queryParams.prodType"
-          placeholder="请输入机型"
-          clearable
-          size="small"
-          @keyup.enter.native="handleQuery"
-        />
+        <el-input v-model="queryParams.prodType" placeholder="请输入机型" clearable @change="handleQuery" @keyup.native="handleQuery">
+        </el-input>
       </el-form-item>
       <el-form-item label="状态" prop="statusCode">
-        <el-select
-          v-model="queryParams.statusCode"
-          placeholder="请选择状态"
-          clearable
-          size="small"
-          @change="handleQuery"
-        >
-          <el-option
-            v-for="dict in dict.type.aa_list_params_ignore_status"
-            :key="dict.value"
-            :label="dict.label"
-            :value="dict.value"
-          />
+        <el-select v-model="queryParams.statusCode" placeholder="请选择状态" clearable @change="handleQuery" @keyup.native="handleQuery">
+          <el-option v-for="status in statusCodeOptions" :key="status.id" :label="status.name"
+                     :value="status.id" />
         </el-select>
       </el-form-item>
       <el-form-item>
@@ -110,8 +60,7 @@
               :header-cell-style="headerCellStyle()"
               :cell-style="bodyCellStyle()"
               :style="tableStyle()"
-              border stripe
-              style="width: 100%">
+              border stripe>
       <el-table-column label="厂区" align="center" prop="factoryName"/>
       <el-table-column label="车间" align="center" prop="groupName"/>
       <el-table-column label="设备编号" align="center" prop="eqId" min-width="100"/>
@@ -128,7 +77,7 @@
       <el-table-column align="center" prop="statusCode">
         <template slot="header">
           <span>状态</span>
-          <el-tooltip class="item" effect="dark" placement="top-start" content="切换按钮为绿色时，机台为受控状态;切换按钮为红色时，机台为放行状态">
+          <el-tooltip class="item" effect="dark" placement="top-start" content="切换按钮为绿色时，机台为受控状态(正常状态);切换按钮为红色时，机台为放行状态(非正常状态)">
             <i class="el-icon-question" style="color:#272728; margin-left:2px;'"> </i>
           </el-tooltip>
         </template>
@@ -137,7 +86,7 @@
             v-model="scope.row.statusComputed"
             :active-value="0"
             :inactive-value="1"
-            :active-text="scope.row.statusComputed === 1 ? '放行' : '受控'"
+            :active-text="scope.row.statusComputed === 1 ? '放行' : scope.row.statusComputed === 0 ? '受控' : '未知'"
             active-color="#13ce66"
             inactive-color="#ff4949"
             @change="changeSwitch(scope.row)">
@@ -161,11 +110,11 @@
 
 <script>
 import { headerCellStyle, bodyCellStyle, tableStyle } from '@/views/biz/common/js/tableStyles';
-import { listAaEquipmentInfo, updateAaEqReverseStat, getFactoryNames, getGroupNames } from '@/api/biz/aa/params'
+import { listAaEquipmentInfo, updateAaEqReverseStat } from '@/api/biz/aa/params'
+import { fetchAaCtrlFactoryNames, fetchAaCtrlGroupNames } from '@/api/biz/common/factoryAndGroupNames'
 
 export default {
   name: 'index',
-  dicts: ['aa_list_params_ignore_status'],
   data() {
     return {
       // 遮罩层
@@ -185,6 +134,12 @@ export default {
       // 是否显示弹出层
       open: false,
       showSearch: true,
+      // 厂选择器
+      factoryNameOptions: [],
+      // 区选择器
+      groupNameOptions: [],
+      // 状态
+      statusCodeOptions: [{ name: '放行', id: '1'}, { name: '受控', id: '0' }],
       // 查询参数
       queryParams: {
         pageNum: 1,
@@ -199,8 +154,6 @@ export default {
         remark: null
       },
       formLabelWidth: '68px',
-      factoryOptions: [],
-      groupNameOptions: [],
     }
   },
 
@@ -216,32 +169,6 @@ export default {
         this.tableData = response.rows
         this.total = response.total
         this.loading = false
-      })
-    },
-
-    getFactoryNames() {
-      this.factoryOptions = []
-      getFactoryNames().then(response => {
-        for (const i in response.data) {
-          let o = {}
-          const tmp = response.data[i]['factoryName']
-          o.label = tmp
-          if (tmp === '汉浦厂区' || tmp === 'QT_India') {
-            o.disabled = false
-            this.factoryOptions.push(o)
-          } else {
-            this.factoryOptions.push(o)
-          }
-        }
-      })
-    },
-
-    getGroupNames() {
-      this.groupNameOptions = []
-      getGroupNames(this.queryParams).then(response => {
-        for (const i in response.data) {
-          this.groupNameOptions.push(response.data[i]['workshopName'])
-        }
       })
     },
 
@@ -263,6 +190,92 @@ export default {
       this.download('/aa/params/eq/export', {
         ...this.queryParams
       }, `AA-List管控设备状态_${new Date().getTime()}.xlsx`)
+    },
+
+    /** 选取厂区列表时 */
+    async handleFactoryChange() {
+      if (this.queryParams.factoryName) {
+        // 加载车间数据
+        await this.getGroupNames()
+      }
+      this.queryParams.groupName = null
+      this.handleQuery()
+    },
+
+    getFactoryNames() {
+      this.$refs['queryForm'].validate(valid => {
+        if (valid) {
+          this.factoryNameOptions = []
+          fetchAaCtrlFactoryNames().then(response => {
+            if (!response.data || response.data.length === 0) {
+              return
+            }
+            for (let index = 0; index < response.data.length; index++) {
+              const factory = response.data[index]
+              const option = {
+                id: index + 1,
+                name: factory['factoryName']
+              }
+              if (option.name === this.queryParams.factoryName) {
+                // 将该项目插入到 factoryNameOptions 数组的最前面
+                this.factoryNameOptions.unshift(option)
+              } else {
+                this.factoryNameOptions.push(option)
+              }
+            }
+          }).catch(error => {
+            console.error('获取厂区列表失败:', error)
+          })
+        }
+      })
+    },
+
+    getGroupNames() {
+      this.groupNameOptions = []
+      this.checkPreInput()
+      this.$refs['queryForm'].validate(valid => {
+        if (valid) {
+          this.groupNameOptions = []
+          fetchAaCtrlGroupNames(this.queryParams).then(response => {
+            if (!response.data || response.data.length === 0) {
+              return
+            }
+            for (let index = 0; index < response.data.length; index++) {
+              const group = response.data[index]
+              const option = {
+                id: index + 1,
+                name: group['groupName']
+              }
+              if (option.name === this.queryParams.groupName) {
+                // 将该项目插入到 groupNameOptions 数组的最前面
+                this.groupNameOptions.unshift(option)
+              } else {
+                this.groupNameOptions.push(option)
+              }
+            }
+          }).catch(error => {
+            console.error('获取组名列表失败:', error)
+          })
+        }
+      })
+    },
+
+    checkPreInput(e) {
+      if (!this.queryParams.factoryName) {
+        // 根据事件类型进行不同的处理
+        const eventType = e && e.type ? e.type : 'unknown';
+        switch (eventType) {
+          case 'focus':
+            // 处理 change 事件
+            this.groupNameOptions = []
+            break;
+          default:
+            // 处理其他事件类型
+            break;
+        }
+        this.$message.error('请先选择厂区')
+        return
+      }
     },
 
     statusFormat(row, column) {
@@ -301,6 +314,11 @@ export default {
     this.getList()
     this.getFactoryNames()
     this.initializeStatus()
+  },
+
+  mounted() {
+    this.getList()
+    this.getFactoryNames();
   },
 
   watch: {

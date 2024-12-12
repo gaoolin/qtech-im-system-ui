@@ -116,3 +116,19 @@ export function fetchLatestGroupNames(query) {
     params: query
   })
 }
+
+export function fetchAaCtrlFactoryNames(query) {
+  return request({
+    url: '/qtech/im/factoryNames/aa/ctrl',
+    method: 'get',
+    params: query
+  })
+}
+
+export function fetchAaCtrlGroupNames(query) {
+  return request({
+    url: '/qtech/im/groupNames/aa/ctrl',
+    method: 'get',
+    params: query
+  })
+}
