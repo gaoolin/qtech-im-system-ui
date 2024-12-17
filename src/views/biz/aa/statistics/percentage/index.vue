@@ -35,11 +35,10 @@
                   @keyup.native="handleQuery"/>
       </el-form-item>
       <el-form-item label="时段" prop="dtRange">
-        <el-date-picker v-model="queryParams.dtRange" :range-separator="null" :start-placeholder="'开始时间'"
-                        :end-placeholder="'结束时间'" :default-time="['00:00:00', '23:59:59']" type="datetimerange"
-                        :clearable="false" :picker-options="pickerOptions" :disabled="disabled"
-                        :unlink-panels="true" :value-format="'yyyy-MM-dd HH:mm:ss'" style="width: 370px;"
-                        @change="getFactoryNames, handleQuery"/>
+        <el-date-picker v-model="queryParams.dtRange" :range-separator="'-'" :start-placeholder="'开始时间'"
+                        :end-placeholder="'结束时间'" :default-time="['00:00:00', '23:59:59']"
+                        :clearable="false" :picker-options="pickerOptions" size="small" style="width: 240px" :value-format="'yyyy-MM-dd HH:mm:ss'" type="daterange" @change="onDateChange">
+        </el-date-picker>
       </el-form-item>
       <el-form-item>
         <el-button type="cyan" icon="el-icon-search" size="mini" @click="handleQuery">搜索</el-button>
@@ -125,7 +124,7 @@
 </template>
 
 <script>
-import { pickerOptionsSet1 } from '@/views/biz/common/js/pickerOptionsConfig'
+import { pickerOptionsSet9 } from '@/views/biz/common/js/pickerOptionsConfig'
 import { bodyCellStyle, headerCellStyle, tableStyle } from '@/views/biz/common/js/tableStyles';
 import {
   arraySpanMethod, checkDtRange,
@@ -150,7 +149,7 @@ export default {
       total: 0,
       loading: true,
       tableData: [],
-      pickerOptions: pickerOptionsSet1,
+      pickerOptions: pickerOptionsSet9,
       // 厂选择器
       factoryNameOptions: [],
       // 区选择器
@@ -349,6 +348,11 @@ export default {
         this.$message.error('请先选择厂区')
         return
       }
+    },
+
+    onDateChange(value) {
+      this.getFactoryNames();
+      this.handleQuery();
     },
 
     /** 导出 */

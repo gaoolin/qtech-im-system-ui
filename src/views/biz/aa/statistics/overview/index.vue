@@ -3,22 +3,25 @@
     <h1 style="text-align:center; margin-top: 0; padding-top: 0; font-weight: bolder">AA List参数点检概览</h1>
     <el-form ref="queryForm" :model="queryParams" :inline="true" v-show="showSearch" label-width="68px"
       label-position="right">
-      <el-form-item label="时段" prop="dtRange">
-        <el-date-picker v-model="queryParams.dtRange" style="width: 370px" value-format="yyyy-MM-dd HH:mm:ss"
-          type="datetimerange" range-separator="-" start-placeholder="开始日期" end-placeholder="结束日期"
-          :picker-options="pickerOptions" @change="handleQuery"></el-date-picker>
-      </el-form-item>
-
       <el-form-item label="厂区" prop="factoryName">
-        <el-select v-model="queryParams.factoryName" placeholder="请选择厂区" clearable @change="handleFactoryChange">
-          <el-option v-for="factory in factoryOptions" :key="factory.id" :label="factory.name" :value="factory.name" />
+        <el-select v-model="queryParams.factoryName" placeholder="请选择厂区" @change="handleFactoryChange"
+                   clearable filterable>
+          <el-option v-for="item in factoryNameOptions" :key="item.id" :label="item.name" :value="item.name">
+          </el-option>
         </el-select>
       </el-form-item>
 
       <el-form-item label="车间" prop="groupName" v-if="groupNameOptions.length > 0">
-        <el-select v-model="queryParams.groupName" placeholder="请输入车间" clearable @change="handleQuery">
+        <el-select v-model="queryParams.groupName" placeholder="请输入车间" @focus="checkPreInput" @change="handleQuery" clearable filterable>
           <el-option v-for="item in groupNameOptions" :key="item.id" :label="item.name" :value="item.name" />
         </el-select>
+      </el-form-item>
+
+      <el-form-item label="时段" prop="dtRange">
+        <el-date-picker v-model="queryParams.dtRange" :range-separator="'-'" :start-placeholder="'开始时间'"
+                        :end-placeholder="'结束时间'" :default-time="['00:00:00', '23:59:59']"
+                        :clearable="false" :picker-options="pickerOptions" size="small" style="width: 240px" :value-format="'yyyy-MM-dd HH:mm:ss'" type="daterange" @change="onDateChange">
+        </el-date-picker>
       </el-form-item>
 
       <el-form-item>
@@ -60,7 +63,7 @@
               factoryName: scope.row.factoryName === '总计' ? '' : scope.row.factoryName,
               groupName: scope.row.groupName === '小计' ? '' : scope.row.groupName,
               deviceType: 'AA',
-              label: 0
+              netStatus: 0
             }
           }">
             <span v-if="scope.row.offlineEqs > 0">{{ numberToCurrencyNo(scope.row.offlineEqs) }}</span>
@@ -109,7 +112,7 @@
                 dtRange: queryParams.dtRange,
                 factoryName: scope.row.factoryName === '总计' ? '' : scope.row.factoryName,
                 groupName: scope.row.groupName === '小计' ? '' : scope.row.groupName,
-                code: 2
+                statusCode: 2
               }
             }">
               <span v-if="scope.row.lackParamsCnt > 0">{{ numberToCurrencyNo(scope.row.lackParamsCnt) }}</span>
@@ -123,7 +126,7 @@
                 dtRange: queryParams.dtRange,
                 factoryName: scope.row.factoryName === '总计' ? '' : scope.row.factoryName,
                 groupName: scope.row.groupName === '小计' ? '' : scope.row.groupName,
-                code: 3
+                statusCode: 3
               }
             }">
               <span v-if="scope.row.unsuitableCnt > 0">{{ numberToCurrencyNo(scope.row.unsuitableCnt) }}</span>
@@ -137,7 +140,7 @@
                 dtRange: queryParams.dtRange,
                 factoryName: scope.row.factoryName === '总计' ? '' : scope.row.factoryName,
                 groupName: scope.row.groupName === '小计' ? '' : scope.row.groupName,
-                code: 4
+                statusCode: 4
               }
             }">
               <span v-if="scope.row.overflowCnt > 0">{{ numberToCurrencyNo(scope.row.overflowCnt) }}</span>
@@ -151,7 +154,7 @@
                 dtRange: queryParams.dtRange,
                 factoryName: scope.row.factoryName === '总计' ? '' : scope.row.factoryName,
                 groupName: scope.row.groupName === '小计' ? '' : scope.row.groupName,
-                code: 5
+                statusCode: 5
               }
             }">
               <span v-if="scope.row.compErrCnt > 0">{{ numberToCurrencyNo(scope.row.compErrCnt) }}</span>
@@ -184,9 +187,13 @@
 </template>
 
 <script>
-import { pickerOptionsSet1 } from '@/views/biz/common/js/pickerOptionsConfig'
+import { pickerOptionsSet9 } from '@/views/biz/common/js/pickerOptionsConfig'
 import { fetchList, getUpdateTime } from '@/api/biz/aa/index/index'
-import { fetchLatestFactoryNames, fetchLatestGroupNames } from '@/api/biz/common/factoryAndGroupNames'
+import {
+  fetchHistoryFactoryNames,
+  fetchLatestFactoryNames,
+  fetchLatestGroupNames
+} from '@/api/biz/common/factoryAndGroupNames'
 import { getBit, toPercent, numberToCurrencyNo, dateToStr, arraySpanMethod, checkDtRange, mergeAction, rowMergeHandle } from '@/views/biz/common/js/utils'
 import { listEqInfo } from '@/api/biz/eqn/networking'
 import RightToolBarDownload from '@/views/biz/common/RightToolBarDownload'
@@ -197,14 +204,16 @@ export default {
     return {
       loading: false,
       showSearch: true,
-      pickerOptions: pickerOptionsSet1,
+      pickerOptions: pickerOptionsSet9,
       queryParams: {
         dtRange: null,
         factoryName: null,
         groupName: null
       },
+      // 厂选择器
+      factoryNameOptions: [],
+      // 区选择器
       groupNameOptions: [],
-      factoryOptions: [],
       tableData: [],
       // 需要合并项的列
       needMergeArr: [
@@ -328,23 +337,21 @@ export default {
           this.queryParams.params = {}
           this.queryParams.params['beginTime'] = this.queryParams.dtRange[0]
           this.queryParams.params['endTime'] = this.queryParams.dtRange[1]
-          fetchLatestFactoryNames(this.queryParams).then(response => {
+          fetchHistoryFactoryNames(this.queryParams).then(response => {
             if (!response.data || response.data.length === 0) {
               return
             }
-
             for (let index = 0; index < response.data.length; index++) {
               const factory = response.data[index]
               const option = {
                 id: index + 1,
                 name: factory['factoryName']
               }
-
               if (option.name === this.queryParams.factoryName) {
-                // 将该项目插入到 factoryOptions 数组的最前面
-                this.factoryOptions.unshift(option)
+                // 将该项目插入到 factoryNameOptions 数组的最前面
+                this.factoryNameOptions.unshift(option)
               } else {
-                this.factoryOptions.push(option)
+                this.factoryNameOptions.push(option)
               }
             }
           }).catch(error => {
@@ -384,6 +391,11 @@ export default {
       })
     },
 
+    onDateChange(value) {
+      this.getFactoryNames();
+      this.handleQuery();
+    },
+
     /** 获取厂区列表 */
     async handleFactoryChange() {
       if (this.queryParams.factoryName) {
@@ -392,6 +404,24 @@ export default {
       }
       this.queryParams.groupName = null
       this.handleQuery()
+    },
+
+    checkPreInput(e) {
+      if (!this.queryParams.factoryName) {
+        // 根据事件类型进行不同的处理
+        const eventType = e && e.type ? e.type : 'unknown';
+        switch (eventType) {
+          case 'focus':
+            // 处理 change 事件
+            this.groupNameOptions = []
+            break;
+          default:
+            // 处理其他事件类型
+            break;
+        }
+        this.$message.error('请先选择厂区')
+        return
+      }
     },
 
     /** 样式控制方法 */

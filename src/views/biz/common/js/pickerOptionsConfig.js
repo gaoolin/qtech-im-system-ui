@@ -178,7 +178,7 @@ export const pickerOptionsSet3 = {
       picker.$emit('pick', [start, end])
     }
   }]
-}
+};
 
 export const pickerOptionsSet4 = {
   shortcuts: [
@@ -251,7 +251,7 @@ export const pickerOptionsSet4 = {
       }
     }
   ]
-}
+};
 
 export const pickerOptionsSet8 = {
   shortcuts: [{
@@ -281,6 +281,68 @@ export const pickerOptionsSet8 = {
       picker.$emit('pick', [start, end])
     }
   }]
+};
+
+export const pickerOptionsSet9 = {
+  shortcuts: [
+    {
+      text: '今天',
+      onClick(picker) {
+        const start = new Date();
+        start.setHours(0, 0, 0, 0);
+        const end = new Date();
+        end.setHours(23, 59, 59, 999);
+        picker.$emit('pick', [start, end]);
+      }
+    },
+    {
+      text: '昨天',
+      onClick(picker) {
+        const start = new Date();
+        start.setDate(start.getDate() - 1);
+        start.setHours(0, 0, 0, 0);
+        const end = new Date();
+        end.setDate(end.getDate() - 1);
+        end.setHours(23, 59, 59, 999);
+        picker.$emit('pick', [start, end]);
+      }
+    },
+    {
+      text: '前天',
+      onClick(picker) {
+        const start = new Date();
+        start.setDate(start.getDate() - 2);
+        start.setHours(0, 0, 0, 0);
+        const end = new Date();
+        end.setDate(end.getDate() - 2);
+        end.setHours(23, 59, 59, 999);
+        picker.$emit('pick', [start, end]);
+      }
+    },
+    {
+      text: '本周',
+      onClick(picker) {
+        const now = new Date();
+        const start = new Date(now.setDate(now.getDate() - now.getDay()));
+        start.setHours(0, 0, 0, 0);
+        const end = new Date(now.setDate(now.getDate() + 6));
+        end.setHours(23, 59, 59, 999);
+        picker.$emit('pick', [start, end]);
+      }
+    },
+    {
+      text: '本月',
+      onClick(picker) {
+        const start = new Date();
+        start.setDate(1);
+        start.setHours(0, 0, 0, 0);
+        const end = new Date();
+        end.setMonth(end.getMonth() + 1, 0);
+        end.setHours(23, 59, 59, 999);
+        picker.$emit('pick', [start, end]);
+      }
+    }
+  ]
 };
 
 // 你可以根据需要继续添加更多的 pickerOptions 配置组

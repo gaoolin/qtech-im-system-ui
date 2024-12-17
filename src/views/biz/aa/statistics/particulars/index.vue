@@ -16,15 +16,17 @@
                   @keyup.enter.native="handleQuery"/>
       </el-form-item>
       <el-form-item label="机台号" prop="mcId">
-        <el-input v-model="queryParams.mcId" placeholder="请输入机台号" clearable style="width: 240px;"
+        <el-input v-model="queryParams.mcId" placeholder="请输入机台号" clearable
                   @keyup.enter.native="handleQuery"/>
       </el-form-item>
       <el-form-item label="机型" prop="prodType">
-        <el-select v-model="queryParams.prodType" placeholder="请选择机型" clearable filterable>
-        </el-select>
+        <el-input v-model="queryParams.prodType" placeholder="请选择机型" clearable
+                  @keyup.enter.native="handleQuery"/>
       </el-form-item>
       <el-form-item label="时段" prop="dtRange">
-        <el-date-picker v-model="queryParams.dtRange" size="small" style="width: 240px" value-format="yyyy-MM-dd" type="daterange" range-separator="至" start-placeholder="开始日期" end-placeholder="结束日期" :picker-options="pickerOptions" @change="getFactoryNames, handleQuery">
+        <el-date-picker v-model="queryParams.dtRange" :range-separator="'-'" :start-placeholder="'开始时间'"
+                        :end-placeholder="'结束时间'" :default-time="['00:00:00', '23:59:59']"
+                        :clearable="false" :picker-options="pickerOptions" size="small" style="width: 240px" :value-format="'yyyy-MM-dd HH:mm:ss'" type="daterange" @change="onDateChange">
         </el-date-picker>
       </el-form-item>
       <el-form-item>
@@ -75,7 +77,7 @@
 </template>
 
 <script>
-import { pickerOptionsSet1 } from '@/views/biz/common/js/pickerOptionsConfig'
+import { pickerOptionsSet9 } from '@/views/biz/common/js/pickerOptionsConfig'
 import { bodyCellStyle, headerCellStyle, tableStyle } from '@/views/biz/common/js/tableStyles'
 import { getBit, toPercent, dateToStr, checkDtRange, arraySpanMethod, mergeAction, rowMergeHandle } from '@/views/biz/common/js/utils';
 import { listAaParamsChkDetail } from '@/api/biz/aa/statistics/particalurs'
@@ -94,7 +96,7 @@ export default {
       total: 0,
       loading: true,
       tableData: null,
-      pickerOptions: pickerOptionsSet1,
+      pickerOptions: pickerOptionsSet9,
       // 厂选择器
       factoryNameOptions: [],
       // 区选择器
@@ -290,6 +292,11 @@ export default {
       }
     },
 
+    onDateChange(value) {
+      this.getFactoryNames();
+      this.handleQuery();
+    },
+
     /** 重置查询参数（resetForm是重置为初始值，此处重置为空值） */
     reset() {
       this.queryParams = {
@@ -402,7 +409,7 @@ export default {
       };
 
       // 如果当前是第7列，且第6列的值大于0，则应用警告样式
-      if (columnIndex === 9 && Number(row.statusCode) > 0) {
+      if (columnIndex === 7 && Number(row.statusCode) > 0) {
         return {
           ...baseStyle,
           background: '#FFF3E0',   // 背景色，突显警示效果

@@ -38,9 +38,10 @@
         </el-select>
       </el-form-item>
       <el-form-item label="时段" prop="dtRange">
-        <el-date-picker v-model="queryParams.dtRange" style="width: 340px" value-format="yyyy-MM-dd HH:mm:ss"
-          type="datetimerange" range-separator="至" start-placeholder="开始日期" end-placeholder="结束日期"
-          :picker-options="pickerOptions" @change="getFactoryNames"></el-date-picker>
+        <el-date-picker v-model="queryParams.dtRange" :range-separator="'-'" :start-placeholder="'开始时间'"
+                        :end-placeholder="'结束时间'" :default-time="['00:00:00', '23:59:59']"
+                        :clearable="false" :picker-options="pickerOptions" size="small" style="width: 240px" :value-format="'yyyy-MM-dd HH:mm:ss'" type="daterange" @change="onDateChange">
+        </el-date-picker>
       </el-form-item>
       <el-form-item>
         <el-button type="primary" icon="el-icon-search" size="mini" @click="handleQuery">搜索</el-button>
@@ -83,7 +84,7 @@
 </template>
 
 <script>
-import { pickerOptionsSet1 } from '@/views/biz/common/js/pickerOptionsConfig'
+import { pickerOptionsSet9 } from '@/views/biz/common/js/pickerOptionsConfig'
 import { bodyCellStyle, headerCellStyle, tableStyle } from '@/views/biz/common/js/tableStyles'
 import { listHistoryCheckStatus } from '@/api/biz/aa/statistics/statistics'
 import { fetchHistoryFactoryNames, fetchHistoryGroupNames } from '@/api/biz/common/factoryAndGroupNames'
@@ -129,7 +130,7 @@ export default {
         statusCode: null,
         dtRange: []
       },
-      pickerOptions: pickerOptionsSet1,
+      pickerOptions: pickerOptionsSet9,
       rules: {
         dtRange: [
           {
@@ -265,6 +266,11 @@ export default {
         this.$message.error('请先选择厂区')
         return
       }
+    },
+
+    onDateChange(value) {
+      this.getFactoryNames();
+      this.handleQuery();
     },
 
     /** 搜索按钮操作 */
