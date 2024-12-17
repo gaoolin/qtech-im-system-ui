@@ -34,14 +34,13 @@
       <el-form-item label="状态" prop="statusCode">
         <el-select v-model="queryParams.statusCode" placeholder="请输入比对结果状态" clearable :key="queryParams.category"
           @change="handleQuery">
-          <el-option v-for="dict in dict.type.comparison_result_code" :key="dict.value" :label="dict.label"
-            :value="dict.value" />
+          <el-option v-for="statusCode in statusCodeOptions" :key="statusCode.id" :label="statusCode.name"
+                     :value="statusCode.id" />
         </el-select>
       </el-form-item>
       <el-form-item label="查询类型" prop="category">
         <el-select v-model="queryParams.category" placeholder="请输入查询类型" clearable @change="handleRefresh">
-          <el-option v-for="dict in dict.type.comparison_search_type" :key="dict.value" :label="dict.label"
-            :value="dict.value" />
+          <el-option  v-for="category in categoryOptions" :key="category.id" :label="category.name" :value="category.id"/>
         </el-select>
       </el-form-item>
       <el-form-item>
@@ -58,7 +57,7 @@
       <right-toolbar :showSearch.sync="showSearch" @queryTable="getList"></right-toolbar>
     </el-row>
 
-    <el-table v-loading="loading" :data="resultList" :key="refreshKey" :cell-style="bodyCellStyle()"
+    <el-table v-loading="loading" :data="resultList" :key="refreshKey" :cell-style="mergeCellStyles"
       :header-cell-style="headerCellStyle()" :style="tableStyle()">
       <el-table-column type="index" label="序号" width="55" align="center" fixed />
       <el-table-column prop="factoryName" label="厂区" align="center" fixed />
@@ -70,7 +69,11 @@
       <el-table-column prop="dt" label="最新比对时间" align="center" v-if="this.queryParams.category === '0'" />
       <el-table-column prop="statusCode" label="状态" align="center" v-if="this.queryParams.category === '0'">
         <template slot-scope="scope">
-          <dict-tag :options="dict.type.comparison_result_code" :value="scope.row.statusCode" />
+          <span
+            :style="getStatusCodeStyle(scope.row.statusCode)"
+            class="comparison-status-label">
+            {{ getStatusCodeName(scope.row.statusCode) }}
+          </span>
         </template>
       </el-table-column>
       <el-table-column prop="description" label="描述" align="center" show-overflow-tooltip
@@ -82,14 +85,14 @@
 </template>
 
 <script>
-import { headerCellStyle, bodyCellStyle, tableStyle } from '@/views/biz/common/js/tableStyles';
+import {bodyCellStyle, headerCellStyle, tableStyle} from '@/views/biz/common/js/tableStyles';
 import { listEqInfo, listWbOlpChkResult } from '@/api/biz/wb/result'
 import { fetchWbOlpLatestResultFactoryNames, fetchWbOlpLatestResultGroupNames } from '@/api/biz/common/factoryAndGroupNames'
 import { requiredValidator } from '@/views/biz/common/js/utils'
 
 export default {
   name: 'index',
-  dicts: ['comparison_result_code', 'comparison_search_type'],
+  dicts: ['comparison_search_type'],
   data() {
     return {
       loading: true,
@@ -113,6 +116,8 @@ export default {
       factoryNameOptions: [],
       // 区选择器
       groupNameOptions: [],
+      statusCodeOptions: [{ name: 'OK', id: '0'}, { name: '金线偏移', id: '1' }, {name: '少线', id: '2'}, {name: '无程序', id: '3'}, {name: '多线', id: '4'}],
+      categoryOptions: [{name: '比对结果', id: '0'}, {name: '设备信息', id: '1'}],
       rules: {
         category: [
           { message: '请选择查询类型', validator: requiredValidator, trigger: 'blur' }
@@ -127,8 +132,8 @@ export default {
   },
 
   methods: {
-    headerCellStyle,
     bodyCellStyle,
+    headerCellStyle,
     tableStyle,
     getList() {
       this.$refs['queryForm'].validate(valid => {
@@ -282,6 +287,107 @@ export default {
           ...this.queryParams
         }, `打线图比对结果信息_${new Date().getTime()}.xlsx`)
       }
+    },
+
+    /** 样式控制方法 */
+    mergeCellStyles({ row, column, rowIndex, columnIndex }) {
+      let baseStyle = bodyCellStyle()
+
+      // 默认样式
+      let style = {
+        ...baseStyle,
+        background: baseStyle.backgroundColor || '#e0f7fa'  // 这里确保背景色被重置
+      };
+
+      if (columnIndex === 9 && Number(row.statusCode) > 0) {
+        return {
+          ...baseStyle,
+          background: '#FFF3E0',   // 背景色，突显警示效果
+          color: '#D32F2F',        // 柔和的砖红色字体
+          fontSize: '12px',        // 字号适中
+          fontWeight: 'bold',      // 字体加粗
+          border: '1px solid #FFCCBC', // 细边框，增强视觉效果
+          boxShadow: '0px 2px 4px rgba(0, 0, 0, 0.1)', // 轻微阴影
+          transition: 'all 0.3s ease' // 平滑过渡效果
+        }
+      } else {
+        return style
+      }
+    },
+
+    getStatusCodeStyle(status) {
+      switch (Number(status)) {
+        case 0:  // 正常状态
+          return {
+            background: '#4CAF50', // 绿色
+            color: '#FFFFFF',      // 白色字体
+            fontWeight: 'bold',
+            fontSize: '16px',
+            borderRadius: '4px',
+            padding: '4px 8px',
+            textAlign: 'center',
+          };
+        case 1:  // 金线偏移
+          return {
+            background: '#FF9800', // 橙色警告
+            color: '#FFFFFF',
+            fontWeight: 'bold',
+            fontSize: '16px',
+            borderRadius: '4px',
+            padding: '4px 8px',
+            textAlign: 'center',
+          };
+        case 2:  // 少线
+          return {
+            background: '#F44336', // 深红色
+            color: '#FFFFFF',
+            fontWeight: 'bold',
+            fontSize: '16px',
+            borderRadius: '4px',
+            padding: '4px 8px',
+            textAlign: 'center',
+          };
+        case 3:  // 无程序
+          return {
+            background: '#9C27B0', // 紫色
+            color: '#FFFFFF',
+            fontWeight: 'bold',
+            fontSize: '16px',
+            borderRadius: '4px',
+            padding: '4px 8px',
+            textAlign: 'center',
+          };
+        case 4:  // 多线
+          return {
+            background: '#E91E63', // 粉红色
+            color: '#FFFFFF',
+            fontWeight: 'bold',
+            fontSize: '16px',
+            borderRadius: '4px',
+            padding: '4px 8px',
+            textAlign: 'center',
+          };
+        default: // 其他状态，作为兜底样式
+          return {
+            background: '#BDBDBD', // 灰色
+            color: '#212121',      // 深色字体
+            fontWeight: 'bold',
+            fontSize: '16px',
+            borderRadius: '4px',
+            padding: '4px 8px',
+            textAlign: 'center',
+          };
+      }
+    },
+
+    getStatusCodeName(status) {
+      const statusOption = this.statusCodeOptions.find(option => option.id === String(status));
+      return statusOption ? statusOption.name : '未知状态';
+    },
+
+    getCategoryName(status) {
+      const categoryOption = this.categoryOptions.find(option => option.id === String(status));
+      return categoryOption ? categoryOption.name : '未知类型';
     }
   }
 }
@@ -295,4 +401,20 @@ export default {
 ::v-deep .el-form-item {
   margin-top: 5px;
   margin-bottom: 5px !important;
-}</style>
+}
+
+.comparison-status-label {
+  display: inline-block; /* 使标签可以设置 padding 和圆角 */
+  min-width: 60px;       /* 保证最小宽度，视觉更均衡 */
+  text-align: center;    /* 文字居中对齐 */
+  padding: 4px 8px;      /* 上下左右内边距，增加可读性 */
+  font-size: 12px !important;       /* 字号适中，清晰易读 */
+  font-weight: bold !important;     /* 字体加粗，强调状态信息 */
+  color: #ffffff;        /* 默认字体颜色为白色，适配深色背景 */
+  border-radius: 4px;    /* 圆角边框，柔和视觉效果 */
+  line-height: 1.5;      /* 行高，保证文本垂直居中 */
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2); /* 添加阴影，增加立体感 */
+  user-select: none;     /* 禁止选中文本，提升交互体验 */
+  transition: all 0.3s ease; /* 添加过渡效果，视觉更平滑 */
+}
+</style>

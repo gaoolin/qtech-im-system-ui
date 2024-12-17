@@ -1610,7 +1610,7 @@ export default {
           if (valid) {
             this.loading = true
             this.queryParams.params = {
-              startTime: this.queryParams.dtRange[0],
+              beginTime: this.queryParams.dtRange[0],
               endTime: this.queryParams.dtRange[1]
             }
             getAaParamsParsed(this.queryParams).then(response => {

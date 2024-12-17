@@ -55,7 +55,15 @@
       <el-table-column prop="mcId" label="机台号" align="center" min-width="160" fit></el-table-column>
       <el-table-column prop="prodType" label="机种" align="center" min-width="120" fit></el-table-column>
       <el-table-column prop="dt" label="比对时间" align="center" min-width="160" fit></el-table-column>
-      <el-table-column prop="statusCode" label="状态码" align="center" min-width="120" fit></el-table-column>
+      <el-table-column prop="statusCode" label="状态" align="center" min-width="120" fit>
+        <template slot-scope="scope">
+          <span
+            :style="getStatusCodeStyle(scope.row.statusCode)"
+            class="comparison-status-label">
+            {{ getStatusCodeName(scope.row.statusCode) }}
+          </span>
+        </template>
+      </el-table-column>
       <el-table-column prop="description" label="描述" align="center" min-width="120"
         show-overflow-tooltip></el-table-column>
     </el-table>
@@ -87,6 +95,7 @@ export default {
       factoryNameOptions: [],
       // 区选择器
       groupNameOptions: [],
+      statusCodeOptions: [{ name: 'OK', id: '0'}, { name: '金线偏移', id: '1' }, {name: '少线', id: '2'}, {name: '无程序', id: '3'}, {name: '多线', id: '4'}],
       queryParams: {
         pageNum: 1,
         pageSize: 10,
@@ -265,7 +274,6 @@ export default {
         return
       }
     },
-
     /** 重置查询参数（resetForm是重置为初始值，此处重置为空值） */
     reset() {
       this.queryParams = {
@@ -279,7 +287,6 @@ export default {
         statusCode: null
       }
     },
-
     /** 重置按钮操作 */
     resetQuery() {
       if (!this.$route.query) {
@@ -289,7 +296,6 @@ export default {
       }
       this.handleQuery();
     },
-
     /** 搜索按钮操作 */
     handleQuery() {
       this.queryParams.pageNum = 1;
@@ -301,7 +307,6 @@ export default {
         ...this.queryParams
       }, `打线图机台比对明细_${new Date().getTime()}.xlsx`)
     },
-
     /** 样式控制方法 */
     mergeCellStyles({ row, column, rowIndex, columnIndex }) {
       let baseStyle = bodyCellStyle()
@@ -312,21 +317,90 @@ export default {
         background: baseStyle.backgroundColor || '#e0f7fa'  // 这里确保背景色被重置
       };
 
-      if ((columnIndex === 6 && row[column.property] > 0) || (columnIndex === 7 && row[column.property] !== 'qualified')) {
+      if (columnIndex === 7 && Number(row.statusCode) > 0) {
         return {
           ...baseStyle,
-          background: '#FFF3E0', // 增加背景颜色，突显警示效果
-          color: '#D32F2F', // 柔和的砖红色
-          fontSize: '12px', // 略微调小字体使其更协调
-          fontWeight: 'bold', // 字体加粗
-          // padding: '8px', // 添加内边距
-          // border: '1px solid #B71C1C', // 添加边框
-          // boxShadow: '0px 2px 4px rgba(0, 0, 0, 0.2)', // 添加阴影效果
-          // transition: 'all 0.3s ease' // 添加过渡效果
+          background: '#FFF3E0',   // 背景色，突显警示效果
+          color: '#D32F2F',        // 柔和的砖红色字体
+          fontSize: '12px',        // 字号适中
+          fontWeight: 'bold',      // 字体加粗
+          border: '1px solid #FFCCBC', // 细边框，增强视觉效果
+          boxShadow: '0px 2px 4px rgba(0, 0, 0, 0.1)', // 轻微阴影
+          transition: 'all 0.3s ease' // 平滑过渡效果
         }
       } else {
         return style
       }
+    },
+
+    getStatusCodeStyle(status) {
+      switch (Number(status)) {
+        case 0:  // 正常状态
+          return {
+            background: '#4CAF50', // 绿色
+            color: '#FFFFFF',      // 白色字体
+            fontWeight: 'bold',
+            fontSize: '16px',
+            borderRadius: '4px',
+            padding: '4px 8px',
+            textAlign: 'center',
+          };
+        case 1:  // 金线偏移
+          return {
+            background: '#FF9800', // 橙色警告
+            color: '#FFFFFF',
+            fontWeight: 'bold',
+            fontSize: '16px',
+            borderRadius: '4px',
+            padding: '4px 8px',
+            textAlign: 'center',
+          };
+        case 2:  // 少线
+          return {
+            background: '#F44336', // 深红色
+            color: '#FFFFFF',
+            fontWeight: 'bold',
+            fontSize: '16px',
+            borderRadius: '4px',
+            padding: '4px 8px',
+            textAlign: 'center',
+          };
+        case 3:  // 无程序
+          return {
+            background: '#9C27B0', // 紫色
+            color: '#FFFFFF',
+            fontWeight: 'bold',
+            fontSize: '16px',
+            borderRadius: '4px',
+            padding: '4px 8px',
+            textAlign: 'center',
+          };
+        case 4:  // 多线
+          return {
+            background: '#E91E63', // 粉红色
+            color: '#FFFFFF',
+            fontWeight: 'bold',
+            fontSize: '16px',
+            borderRadius: '4px',
+            padding: '4px 8px',
+            textAlign: 'center',
+          };
+        default: // 其他状态，作为兜底样式
+          return {
+            background: '#BDBDBD', // 灰色
+            color: '#212121',      // 深色字体
+            fontWeight: 'bold',
+            fontSize: '16px',
+            borderRadius: '4px',
+            padding: '4px 8px',
+            textAlign: 'center',
+          };
+      }
+    },
+
+    getStatusCodeName(status) {
+      const statusOption = this.statusCodeOptions.find(option => option.id === String(status));
+      return statusOption ? statusOption.name : '未知状态';
     },
 
   },
@@ -361,5 +435,21 @@ export default {
   margin-top: 5px;
   margin-bottom: 5px !important;
 }
+
+.comparison-status-label {
+  display: inline-block; /* 使标签可以设置 padding 和圆角 */
+  min-width: 60px;       /* 保证最小宽度，视觉更均衡 */
+  text-align: center;    /* 文字居中对齐 */
+  padding: 4px 8px;      /* 上下左右内边距，增加可读性 */
+  font-size: 12px !important;       /* 字号适中，清晰易读 */
+  font-weight: bold !important;     /* 字体加粗，强调状态信息 */
+  color: #ffffff;        /* 默认字体颜色为白色，适配深色背景 */
+  border-radius: 4px;    /* 圆角边框，柔和视觉效果 */
+  line-height: 1.5;      /* 行高，保证文本垂直居中 */
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2); /* 添加阴影，增加立体感 */
+  user-select: none;     /* 禁止选中文本，提升交互体验 */
+  transition: all 0.3s ease; /* 添加过渡效果，视觉更平滑 */
+}
+
 </style>
 

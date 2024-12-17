@@ -32,8 +32,8 @@
       </el-form-item>
       <el-form-item label="点检状态" prop="statusCode">
         <el-select v-model="queryParams.statusCode" placeholder="请输入比对结果状态" clearable @change="handleQuery">
-          <el-option v-for="dict in dict.type.aa_list_params_status" :key="dict.value" :label="dict.label"
-            :value="dict.value" />
+          <el-option v-for="statusCode in statusCodeOptions" :key="statusCode.id" :label="statusCode.name"
+                     :value="statusCode.id" />
         </el-select>
       </el-form-item>
       <el-form-item>
@@ -56,7 +56,7 @@
     </transition>
 
     <el-table v-loading="loading" :data="resultList" :key="refreshKey" :header-cell-style="headerCellStyle()"
-      :cell-style="bodyCellStyle()" :style="tableStyle()">
+      :cell-style="mergeCellStyles" :style="tableStyle()">
       <el-table-column type="index" label="序号" width="55" align="center" fixed />
       <el-table-column prop="factoryName" label="厂区" align="center" fixed />
       <el-table-column prop="groupName" label="车间" align="center" fixed />
@@ -67,7 +67,11 @@
       <el-table-column prop="dt" label="点检时间" align="center" />
       <el-table-column prop="statusCode" label="状态" align="center">
         <template slot-scope="scope">
-          <dict-tag :options="dict.type.aa_list_params_status" :value="scope.row.statusCode" />
+          <span
+            :style="getStatusCodeStyle(scope.row.statusCode)"
+            class="chk-status-label">
+            {{ getStatusCodeName(scope.row.statusCode) }}
+          </span>
         </template>
       </el-table-column>
       <el-table-column prop="description" label="描述" align="center" show-overflow-tooltip />
@@ -80,13 +84,11 @@
 <script>
 import { bodyCellStyle, headerCellStyle, tableStyle } from '@/views/biz/common/js/tableStyles'
 import { listLatestCheckStatus } from '@/api/biz/aa/statistics/statistics'
-import { dateToStr } from '@/views/biz/common/js/utils';
 import { fetchAaDataStatus } from '@/api/biz/common/eqRelated'
 import { fetchLatestFactoryNames, fetchLatestGroupNames } from '@/api/biz/common/factoryAndGroupNames'
 
 export default {
   name: 'index.vue',
-  dicts: ['aa_list_params_status'],
 
   data() {
     return {
@@ -104,6 +106,14 @@ export default {
       factoryNameOptions: [],
       // 区选择器
       groupNameOptions: [],
+      statusCodeOptions: [{ name: '正常', id: '0'},
+        {name: '无模版', id: '1' },
+        {name: '少参数', id: '2'},
+        {name: '参数值异常', id: '3'},
+        {name: '多参数', id: '4'},
+        {name: '复合异常', id: '5'},
+        {name: '模版离线', id: '6'},
+        {name: '模版明细缺失', id: '7'}],
       // 查询参数
       queryParams: {
         pageNum: 1,
@@ -143,7 +153,6 @@ export default {
 
     checkDataStatus() {
       this.getDataStatus().then(isDataNormal => {
-        console.log('isDataNormal: ', isDataNormal);
         this.showAlert = isDataNormal === false;
       });
     },
@@ -252,7 +261,100 @@ export default {
       this.download('aa/params/latest/status/export', {
         ...this.queryParams
       }, `AA参数反控机台状态_${new Date().getTime()}.xlsx`)
-    }
+    },
+
+    getStatusCodeStyle(status) {
+      switch (Number(status)) {
+        case 0:  // 正常状态
+          return {
+            backgroundColor: '#4CAF50',  // 绿色背景，代表正常
+            color: '#FFFFFF',            // 白色字体
+            border: '1px solid #388E3C'  // 边框稍深的绿色，增强层次感
+          };
+        case 1:  // 无模版
+          return {
+            backgroundColor: '#FFCA28',  // 深黄色背景，提示警告
+            color: '#5D4037',            // 深棕色字体
+            border: '1px solid #FFB300'  // 边框颜色，稍深的黄色
+          };
+        case 2:  // 少参数
+          return {
+            backgroundColor: '#FF7043',  // 橙色背景，表示异常
+            color: '#FFFFFF',            // 白色字体
+            border: '1px solid #F4511E'  // 边框颜色，稍深的橙色
+          };
+        case 3:  // 参数值异常
+          return {
+            backgroundColor: '#F44336',  // 红色背景，严重异常
+            color: '#FFFFFF',            // 白色字体
+            border: '1px solid #D32F2F'  // 深红色边框，强调严重性
+          };
+        case 4:  // 多参数
+          return {
+            backgroundColor: '#E91E63',  // 粉红色背景，特殊异常
+            color: '#FFFFFF',            // 白色字体
+            border: '1px solid #C2185B'  // 深粉红边框
+          };
+        case 5:  // 复合异常
+          return {
+            backgroundColor: '#AB47BC',  // 紫色背景，复合异常
+            color: '#FFFFFF',            // 白色字体
+            border: '1px solid #8E24AA'  // 深紫色边框
+          };
+        case 6:  // 模版离线
+          return {
+            backgroundColor: '#9E9E9E',  // 灰色背景，代表离线
+            color: '#FFFFFF',            // 白色字体
+            border: '1px solid #757575'  // 深灰色边框
+          };
+        case 7:  // 模版明细缺失
+          return {
+            backgroundColor: '#78909C',  // 蓝灰色背景
+            color: '#FFFFFF',            // 白色字体
+            border: '1px solid #546E7A'  // 深蓝灰边框
+          };
+        default:  // 未知状态，兜底样式
+          return {
+            backgroundColor: '#BDBDBD',  // 浅灰色背景
+            color: '#212121',            // 深灰色字体
+            border: '1px solid #9E9E9E'  // 深灰色边框
+          };
+      }
+    },
+
+    getStatusCodeName(status) {
+      const statusOption = this.statusCodeOptions.find(option => option.id === String(status));
+      return statusOption ? statusOption.name : '未知状态';
+    },
+
+    /** 样式控制方法 */
+    mergeCellStyles({ row, column, rowIndex, columnIndex }) {
+      let baseStyle = bodyCellStyle(); // 基础单元格样式
+
+      // 默认样式
+      let style = {
+        ...baseStyle,
+        background: baseStyle.backgroundColor || '#e0f7fa' // 确保默认背景色
+      };
+
+      // 如果当前是第7列，且第6列的值大于0，则应用警告样式
+      if (columnIndex === 9 && Number(row.statusCode) > 0) {
+        return {
+          ...baseStyle,
+          background: '#FFF3E0',   // 背景色，突显警示效果
+          color: '#D32F2F',        // 柔和的砖红色字体
+          fontSize: '12px',        // 字号适中
+          fontWeight: 'bold',      // 字体加粗
+          border: '1px solid #FFCCBC', // 细边框，增强视觉效果
+          boxShadow: '0px 2px 4px rgba(0, 0, 0, 0.1)', // 轻微阴影
+          transition: 'all 0.3s ease' // 平滑过渡效果
+        };
+      }
+
+      // 其他情况下，保持默认样式
+      return style;
+    },
+
   },
 
   created() {
@@ -318,5 +420,20 @@ export default {
   50% {
     opacity: 0.5;
   }
+}
+
+.chk-status-label {
+  display: inline-block; /* 保证标签拥有良好的排版特性 */
+  min-width: 60px;      /* 保证标签宽度，适配多种状态名称 */
+  text-align: center;    /* 文本居中 */
+  padding: 4px 8px;     /* 上下左右内边距，增加可读性 */
+  font-size: 12px;       /* 字号适中 */
+  font-weight: bold;     /* 字体加粗 */
+  color: #ffffff;        /* 默认字体颜色为白色，适配深色背景 */
+  border-radius: 4px;    /* 圆角边框，视觉柔和 */
+  line-height: 1.5;      /* 行高，保证垂直居中 */
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.2); /* 添加微弱阴影，增加立体感 */
+  user-select: none;     /* 禁止选中文本 */
+  transition: all 0.3s ease-in-out; /* 平滑过渡效果 */
 }
 </style>

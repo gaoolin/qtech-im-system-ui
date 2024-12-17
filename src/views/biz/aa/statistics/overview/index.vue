@@ -40,7 +40,7 @@
 
     <!-- 数据表格 -->
     <el-table v-loading="loading" :data="tableData" border :span-method="arraySpanMethod" :cell-style="tableBodyCellStyle"
-      :header-cell-style="tableHeaderCellStyle" :row-style="{ height: '25px' }">
+      :header-cell-style="tableHeaderCellStyle" :row-style="{ height: '25px' }" >
       <el-table-column prop="factoryName" label="厂区" align="center" min-width="100" />
       <el-table-column prop="groupName" label="车间" align="center" min-width="120" fit />
       <el-table-column prop="ttlEqs" label="设备总数" align="center" min-width="60">
@@ -60,7 +60,7 @@
               factoryName: scope.row.factoryName === '总计' ? '' : scope.row.factoryName,
               groupName: scope.row.groupName === '小计' ? '' : scope.row.groupName,
               deviceType: 'AA',
-              label: 1
+              label: 0
             }
           }">
             <span v-if="scope.row.offlineEqs > 0">{{ numberToCurrencyNo(scope.row.offlineEqs) }}</span>
@@ -76,7 +76,7 @@
       <el-table-column prop="okCnt" label="正确次数" align="center" min-width="80">
         <template slot-scope="scope">
           <router-link :to="{
-            path: '/aa/params/statistics', query: {
+            path: '/biz/aa/statistics/percentage', query: {
               dtRange: queryParams.dtRange,
               factoryName: scope.row.factoryName === '总计' ? '' : scope.row.factoryName,
               groupName: scope.row.groupName === '小计' ? '' : scope.row.groupName,
@@ -91,7 +91,7 @@
         <el-table-column prop="errCnt" label="错误次数" align="center">
           <template slot-scope="scope">
             <router-link :to="{
-              path: '/biz/aa/statistics/history', query: {
+              path: '/biz/aa/statistics/percentage', query: {
                 dtRange: queryParams.dtRange,
                 factoryName: scope.row.factoryName === '总计' ? '' : scope.row.factoryName,
                 groupName: scope.row.groupName === '小计' ? '' : scope.row.groupName,
@@ -102,24 +102,10 @@
             </router-link>
           </template>
         </el-table-column>
-        <el-table-column prop="noTplCnt" label="无模版" align="center" fit>
-          <template slot-scope="scope">
-            <router-link :to="{
-              path: '/biz/aa/statistics/history', query: {
-                dtRange: queryParams.dtRange,
-                factoryName: scope.row.factoryName === '总计' ? '' : scope.row.factoryName,
-                groupName: scope.row.groupName === '小计' ? '' : scope.row.groupName,
-                code: 1
-              }
-            }">
-              <span v-if="scope.row.noTplCnt > 0">{{ numberToCurrencyNo(scope.row.noTplCnt) }}</span>
-            </router-link>
-          </template>
-        </el-table-column>
         <el-table-column prop="lackParamsCnt" label="少参数" align="center" fit>
           <template slot-scope="scope">
             <router-link :to="{
-              path: '/biz/aa/statistics/history', query: {
+              path: '/biz/aa/statistics/particulars', query: {
                 dtRange: queryParams.dtRange,
                 factoryName: scope.row.factoryName === '总计' ? '' : scope.row.factoryName,
                 groupName: scope.row.groupName === '小计' ? '' : scope.row.groupName,
@@ -133,7 +119,7 @@
         <el-table-column prop="unsuitableCnt" label="值异常" align="center" fit>
           <template slot-scope="scope">
             <router-link :to="{
-              path: '/biz/aa/statistics/history', query: {
+              path: '/biz/aa/statistics/particulars', query: {
                 dtRange: queryParams.dtRange,
                 factoryName: scope.row.factoryName === '总计' ? '' : scope.row.factoryName,
                 groupName: scope.row.groupName === '小计' ? '' : scope.row.groupName,
@@ -147,7 +133,7 @@
         <el-table-column prop="overflowCnt" label="多参数" align="center" fit>
           <template slot-scope="scope">
             <router-link :to="{
-              path: '/biz/aa/statistics/history', query: {
+              path: '/biz/aa/statistics/particulars', query: {
                 dtRange: queryParams.dtRange,
                 factoryName: scope.row.factoryName === '总计' ? '' : scope.row.factoryName,
                 groupName: scope.row.groupName === '小计' ? '' : scope.row.groupName,
@@ -161,7 +147,7 @@
         <el-table-column prop="compErrCnt" label="复合异常" align="center" fit>
           <template slot-scope="scope">
             <router-link :to="{
-              path: '/biz/aa/statistics/history', query: {
+              path: '/biz/aa/statistics/particulars', query: {
                 dtRange: queryParams.dtRange,
                 factoryName: scope.row.factoryName === '总计' ? '' : scope.row.factoryName,
                 groupName: scope.row.groupName === '小计' ? '' : scope.row.groupName,
@@ -175,15 +161,15 @@
         <el-table-column label="模版异常" align="center" fit>
           <template slot-scope="scope">
             <router-link :to="{
-              path: '/biz/aa/statistics/history', query: {
+              path: '/biz/aa/statistics/particulars', query: {
                 dtRange: queryParams.dtRange,
                 factoryName: scope.row.factoryName === '总计' ? '' : scope.row.factoryName,
                 groupName: scope.row.groupName === '小计' ? '' : scope.row.groupName,
                 flag: 'tplErr'
               }
             }">
-              <span v-if="(scope.row.offlineTplCnt + scope.row.lackTplDetailCnt) > 0">{{
-                numberToCurrencyNo(scope.row.offlineTplCnt + scope.row.lackTplDetailCnt) }}</span>
+              <span v-if="(scope.row.offlineTplCnt + scope.row.lackTplDetailCnt + scope.row.noTplCnt) > 0">{{
+                numberToCurrencyNo(scope.row.offlineTplCnt + scope.row.lackTplDetailCnt + scope.row.noTplCnt) }}</span>
             </router-link>
           </template>
         </el-table-column>
@@ -418,12 +404,13 @@ export default {
         return 'background: #FFBB00; color: #FFFFFF; font-size: 19px; font-weight: bolder; text-decoration: underline;'
       } else if (columnIndex === 6 && row[column.property] > 0) {
         return 'background:#228B22; color: #FFFFFF; font-size: 19px; font-weight: bolder; text-decoration: underline;'
-
       } else if (columnIndex === 7 && row[column.property] > 0) {
         return 'background: orangered; color: #FFFFFF; font-size: 19px; font-weight: bolder; text-decoration: underline;'
-      } else if ((columnIndex > 7 && columnIndex < 15) && row[column.property] > 0) {
+      } else if ((columnIndex > 7 && columnIndex < 12) && row[column.property] > 0) {
         return 'font-size: 19px; font-weight: bolder; text-decoration: underline;'
-      } else if (columnIndex === 15 && row[column.property] > 0) {
+      } else if (columnIndex === 12 && (row.offlineTplCnt + row.lackTplDetailCnt + row.noTplCnt) > 0) {
+        return 'font-size: 19px; font-weight: bolder; text-decoration: underline;'
+      } else if (columnIndex === 13 && row[column.property] > 0) {
         return 'color: red; font-size: 19px; font-weight: bolder;'
       } else {
         return 'font-size: 20px; font-weight: bolder;'
@@ -500,10 +487,6 @@ export default {
   },
 
   created() {
-    // const dtRange = this.$route.query.dtRange
-    // if (checkDtRange(dtRange)) {
-    //   this.queryParams.dtRange = dtRange
-    // }
     this.$set(this.queryParams, 'dtRange', [dateToStr(new Date(new Date().setHours(0, 0, 0).valueOf())),
     dateToStr(new Date(new Date().setHours(23, 59, 59).valueOf()))])
   },
@@ -539,6 +522,38 @@ export default {
 ::v-deep .el-form-item {
   margin-top: 5px;
   margin-bottom: 5px !important;
+}
+
+/*.table-content-font {
+  font-size: 20px;
+  color: #ff007b;
+}*/
+
+.table-link-font {
+  font-size: 19px;
+  font-weight: bolder;
+}
+
+a:link {
+  /*text-decoration: underline;*/
+  /*color: brown;*/
+}
+
+a:visited {
+  /*下划线*/
+  /*text-decoration: none;*/
+  /*color: brown;*/
+}
+
+a:hover {
+  font-size: 25px;
+  /*text-decoration: none;*/
+  /*color: #00afff;*/
+}
+
+a:active {
+  /*text-decoration: none;*/
+  color: black;
 }
 </style>
 

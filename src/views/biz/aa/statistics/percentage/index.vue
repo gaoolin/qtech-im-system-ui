@@ -10,13 +10,13 @@
              :rules="rules">
       <el-form-item label="厂区" prop="factoryName">
         <el-select v-model="queryParams.factoryName" placeholder="请选择厂区" @change="handleFactoryChange"
-                   @blur="checkPreInput" clearable filterable :disabled="disabled">
+                   clearable filterable :disabled="disabled">
           <el-option v-for="item in factoryNameOptions" :key="item.id" :label="item.name" :value="item.name">
           </el-option>
         </el-select>
       </el-form-item>
       <el-form-item label="车间" prop="groupName">
-        <el-select v-model="queryParams.groupName" placeholder="请选择车间" @change="handleQuery" clearable filterable
+        <el-select v-model="queryParams.groupName" placeholder="请选择车间" @focus="checkPreInput" @change="handleQuery" clearable filterable
                    :disabled="disabled">
           <el-option v-for="item in groupNameOptions" :key="item.id" :label="item.name" :value="item.name">
           </el-option>
@@ -48,36 +48,75 @@
     </el-form>
     <el-row :gutter="10" class="mb8">
       <el-col :span="12">
-        <el-button type="primary" icon="el-icon-download" size="mini" @click="handleExport"
-                   v-hasPermi="['wb:olp:percentage:export']">导出
-        </el-button>
+        <el-button type="warning" icon="el-icon-download" size="mini" @click="handleExport">导出</el-button>
       </el-col>
       <el-col :span="12">
         <right-toolbar :showSearch.sync="showSearch" @queryTable="getList"></right-toolbar>
       </el-col>
     </el-row>
 
-    <el-table v-loading="loading" :data="tableData" :row-class-name="arraySpanMethod" :cell-style="bodyCellStyle"
-              :header-cell-style="headerCellStyle" :row-key="getBit" :max-height="tableHeight"
-              :span-method="arraySpanMethod" :border="true" style="width: 100%;" :style="tableStyle()">
-<!--      <el-table-column type="expand">-->
-<!--        <template slot-scope="props">-->
-<!--          <el-table :data="props.row.eqId" :row-key="getBit" :cell-style="bodyCellStyle"-->
-<!--                    :header-cell-style="headerCellStyle" :row-class-name="arraySpanMethod" :border="true"-->
-<!--                    :span-method="arraySpanMethod" :max-height="tableHeight" style="width: 100%;">-->
-<!--          </el-table>-->
-<!--        </template>-->
-<!--      </el-table-column>-->
-      <el-table-column type="index" :label="'序号'" width="60" align="center"></el-table-column>
+    <el-table v-loading="loading" :data="tableData" :cell-style="bodyCellStyle()"
+              :header-cell-style="headerCellStyle()" :style="tableStyle()" :span-method="arraySpanMethod" class="table-hover">
       <el-table-column prop="factoryName" label="厂区" ></el-table-column>
       <el-table-column prop="groupName" label="车间" ></el-table-column>
       <el-table-column prop="eqId" label="设备编号" ></el-table-column>
       <el-table-column prop="mcId" label="机台号" ></el-table-column>
       <el-table-column prop="prodType" label="机型" ></el-table-column>
       <el-table-column prop="totalCnt" label="点检次数" ></el-table-column>
-      <el-table-column prop="okCnt" label="合格次数" ></el-table-column>
-      <el-table-column prop="ngCnt" label="不合格次数" ></el-table-column>
-      <el-table-column prop="errRatio" label="异常比率" ></el-table-column>
+      <el-table-column prop="okCnt" label="合格次数" align="center" fit>
+        <template slot-scope="scope">
+          <router-link :to="{
+            path: '/biz/aa/statistics/particulars', query: {
+              dtRange: queryParams.dtRange,
+              factoryName: scope.row.factoryName === '总计' ? '' : scope.row.factoryName,
+              groupName: scope.row.groupName === '小计' ? '' : scope.row.groupName,
+              eqId: scope.row.eqId,
+              prodType: scope.row.prodType,
+              flag: 'ok'
+              }
+            }">
+            <template v-if="scope.row.okCnt === 0">
+              -
+            </template>
+            <template v-else>
+              {{ numberToCurrencyNo(scope.row.okCnt) }}
+            </template>
+          </router-link>
+          <!-- 调试信息 -->
+<!--          <div v-if="logTotalCnt(scope.row.okCnt)"></div>-->
+        </template>
+      </el-table-column>
+      <el-table-column prop="ngCnt" label="不合格次数" align="center" fit>
+        <template slot-scope="scope">
+          <router-link :to="{
+            path: '/biz/aa/statistics/particulars', query: {
+              dtRange: queryParams.dtRange,
+              factoryName: scope.row.factoryName === '总计' ? '' : scope.row.factoryName,
+              groupName: scope.row.groupName === '小计' ? '' : scope.row.groupName,
+              eqId: scope.row.eqId,
+              prodType: scope.row.prodType,
+              flag:'err'
+            }
+          }">
+            <template v-if="scope.row.ngCnt === 0">
+              -
+            </template>
+            <template v-else>
+              {{ numberToCurrencyNo(scope.row.ngCnt) }}
+            </template>
+          </router-link>
+        </template>
+      </el-table-column>
+      <el-table-column prop="errRatio" label="异常比率" >
+        <template slot-scope="scope">
+          <template v-if="scope.row.errRatio === 0">
+            -
+          </template>
+          <template v-else>
+            {{ toPercent(getBit(scope.row.errRatio, 6), 2) }}
+          </template>
+        </template>
+      </el-table-column>
     </el-table>
 
     <pagination v-show="total > 0" :total="total" :page.sync="queryParams.pageNum" :limit.sync="queryParams.pageSize"
@@ -176,7 +215,7 @@ export default {
         if (valid) {
           this.loading = true;
           this.queryParams.params = {}
-          this.queryParams.params['startTime'] = this.queryParams.dtRange[0]
+          this.queryParams.params['beginTime'] = this.queryParams.dtRange[0]
           this.queryParams.params['endTime'] = this.queryParams.dtRange[1]
           listPercentage(this.queryParams).then(response => {
             this.tableData = response.rows
@@ -187,6 +226,12 @@ export default {
         }
       })
     },
+
+    logTotalCnt(value) {
+      console.log('totalCnt:', value);
+      return false; // 确保不会影响渲染
+    },
+
     /** 搜索按钮操作 */
     handleQuery() {
       this.queryParams.pageNum = 1;
@@ -201,6 +246,7 @@ export default {
       }
       this.handleQuery();
     },
+
     /** 重置查询参数（resetForm是重置为初始值，此处重置为空值） */
     reset() {
       this.queryParams = {
@@ -307,7 +353,7 @@ export default {
 
     /** 导出 */
     handleExport() {
-      this.download('wb/olp/percentage/export', {
+      this.download('aa/statistics/percentage/export', {
         ...this.queryParams
       }, `AA参数机台比对正确率_${new Date().getTime()}.xlsx`)
     },
@@ -337,6 +383,9 @@ export default {
     this.queryParams.mcId = this.$route.query.mcId
     this.queryParams.prodType = this.$route.query.prodType
     this.queryParams.flag = this.$route.query.flag
+
+    console.log(this.$route.query)
+    console.log(this.queryParams)
   },
 
   mounted() {
