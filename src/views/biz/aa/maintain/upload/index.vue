@@ -645,58 +645,43 @@
                 </el-collapse-item>
                 <el-collapse-item class="prop-label" title="mtfCheck" name="7">
                   <el-descriptions :column="1" border class="prop-label">
-                    <el-descriptions-item label="Cc">
-                      {{ convertNull(scope.row.mtfCheckFc) }}
-                    </el-descriptions-item>
-                    <el-descriptions-item label="F1">
-                      {{ convertNull(scope.row.mtfCheckF1) }}
-                    </el-descriptions-item>
-                    <el-descriptions-item label="F2">
-                      {{ convertNull(scope.row.mtfCheckF2) }}
-                    </el-descriptions-item>
-                    <el-descriptions-item label="F3">
-                      {{ convertNull(scope.row.mtfCheckF3) }}
-                    </el-descriptions-item>
-                    <el-descriptions-item label="F4">
-                      {{ convertNull(scope.row.mtfCheckF4) }}
+                    <el-descriptions-item label="Result">
+                      <el-tooltip class="item" effect="dark" placement="top">
+                        <!-- Tooltip 内容：显示完整 JSON 数据 -->
+                        <div slot="content" style="max-width: 400px; white-space: pre-wrap;">
+                          {{ formatJSON(scope.row.mtfCheckF) }}
+                        </div>
+                        <!-- 省略展示：分行显示前 2 个键值对 -->
+                        <span class="json-ellipsis">{{ formatShortJSON(scope.row.mtfCheckF, scope) }}</span>
+                      </el-tooltip>
                     </el-descriptions-item>
                   </el-descriptions>
                 </el-collapse-item>
                 <el-collapse-item class="prop-label" title="mtfCheck1" name="8">
                   <el-descriptions :column="1" border class="prop-label">
-                    <el-descriptions-item label="Cc">
-                      {{ convertNull(scope.row.mtfCheck1Fc) }}
-                    </el-descriptions-item>
-                    <el-descriptions-item label="F1">
-                      {{ convertNull(scope.row.mtfCheck1F1) }}
-                    </el-descriptions-item>
-                    <el-descriptions-item label="F2">
-                      {{ convertNull(scope.row.mtfCheck1F2) }}
-                    </el-descriptions-item>
-                    <el-descriptions-item label="F3">
-                      {{ convertNull(scope.row.mtfCheck1F3) }}
-                    </el-descriptions-item>
-                    <el-descriptions-item label="F4">
-                      {{ convertNull(scope.row.mtfCheck1F4) }}
+                    <el-descriptions-item label="Result">
+                      <el-tooltip class="item" effect="dark" placement="top">
+                        <!-- Tooltip 内容：显示完整 JSON 数据 -->
+                        <div slot="content" style="max-width: 400px; white-space: pre-wrap;">
+                          {{ formatJSON(scope.row.mtfCheck1F) }}
+                        </div>
+                        <!-- 省略展示：分行显示前 2 个键值对 -->
+                        <span class="json-ellipsis">{{ formatShortJSON(scope.row.mtfCheck1F, scope) }}</span>
+                      </el-tooltip>
                     </el-descriptions-item>
                   </el-descriptions>
                 </el-collapse-item>
                 <el-collapse-item class="prop-label" title="mtfCheck2" name="9">
                   <el-descriptions :column="1" border class="prop-label">
-                    <el-descriptions-item label="Cc">
-                      {{ convertNull(scope.row.mtfCheck2Fc) }}
-                    </el-descriptions-item>
-                    <el-descriptions-item label="F1">
-                      {{ convertNull(scope.row.mtfCheck2F1) }}
-                    </el-descriptions-item>
-                    <el-descriptions-item label="F2">
-                      {{ convertNull(scope.row.mtfCheck2F2) }}
-                    </el-descriptions-item>
-                    <el-descriptions-item label="F3">
-                      {{ convertNull(scope.row.mtfCheck2F3) }}
-                    </el-descriptions-item>
-                    <el-descriptions-item label="F4">
-                      {{ convertNull(scope.row.mtfCheck2F4) }}
+                    <el-descriptions-item label="Result">
+                      <el-tooltip class="item" effect="dark" placement="top">
+                        <!-- Tooltip 内容：显示完整 JSON 数据 -->
+                        <div slot="content" style="max-width: 400px; white-space: pre-wrap;">
+                          {{ formatJSON(scope.row.mtfCheck2F) }}
+                        </div>
+                        <!-- 省略展示：分行显示前 2 个键值对 -->
+                        <span class="json-ellipsis">{{ formatShortJSON(scope.row.mtfCheck2F, scope) }}</span>
+                      </el-tooltip>
                     </el-descriptions-item>
                   </el-descriptions>
                 </el-collapse-item>
@@ -1192,73 +1177,24 @@
                       <el-input v-model="editForm.chartAlignment2YResMax" @input="handleInputChange('chartAlignment2YResMax')"></el-input>
                     </el-form-item>
                   </el-collapse-item>
-
                   <el-collapse-item class="sub-item" title="mtfCheck" name="13">
-                    <el-form-item label="CC" prop="mtfCheckFc">
-                      <el-input v-model="editForm.mtfCheckFc" @input="handleInputChange('mtfCheckFc')"></el-input>
-                    </el-form-item>
-                    <el-form-item label="F1" prop="mtfCheckF1">
-                      <el-input v-model="editForm.mtfCheckF1" @input="handleInputChange('mtfCheckF1')"></el-input>
-                    </el-form-item>
-                    <el-form-item label="F2" prop="mtfCheckF2">
-                      <el-input v-model="editForm.mtfCheckF2" @input="handleInputChange('mtfCheckF2')"></el-input>
-                    </el-form-item>
-                    <el-form-item label="F3" prop="mtfCheckF3">
-                      <el-input v-model="editForm.mtfCheckF3" @input="handleInputChange('mtfCheckF3')"></el-input>
-                    </el-form-item>
-                    <el-form-item label="F4" prop="mtfCheckF4">
-                      <el-input v-model="editForm.mtfCheckF4" @input="handleInputChange('mtfCheckF4')"></el-input>
+                    <el-form-item label="mtfCheck" prop="mtfCheckF">
+                      <el-input v-model="editForm.mtfCheckF" @input="handleInputChange('mtfCheckF')"></el-input>
                     </el-form-item>
                   </el-collapse-item>
                   <el-collapse-item class="sub-item" title="mtfCheck1" name="14">
-                    <el-form-item label="FC" prop="mtfCheck1Fc">
-                      <el-input v-model="editForm.mtfCheck1Fc" @input="handleInputChange('mtfCheck1Fc')"></el-input>
-                    </el-form-item>
-                    <el-form-item label="F1" prop="mtfCheck1F1">
-                      <el-input v-model="editForm.mtfCheck1F1" @input="handleInputChange('mtfCheck1F1')"></el-input>
-                    </el-form-item>
-                    <el-form-item label="F2" prop="mtfCheck1F2">
-                      <el-input v-model="editForm.mtfCheck1F2" @input="handleInputChange('mtfCheck1F2')"></el-input>
-                    </el-form-item>
-                    <el-form-item label="F3" prop="mtfCheck1F3">
-                      <el-input v-model="editForm.mtfCheck1F3" @input="handleInputChange('mtfCheck1F3')"></el-input>
-                    </el-form-item>
-                    <el-form-item label="F4" prop="mtfCheck2F4">
-                      <el-input v-model="editForm.mtfCheck2F4" @input="handleInputChange('mtfCheck2F4')"></el-input>
+                    <el-form-item label="mtfCheck1" prop="mtfCheck1F">
+                      <el-input v-model="editForm.mtfCheck1F" @input="handleInputChange('mtfCheck1F')"></el-input>
                     </el-form-item>
                   </el-collapse-item>
                   <el-collapse-item class="sub-item" title="mtfCheck2" name="15">
-                    <el-form-item label="CC" prop="mtfCheck2Fc">
-                      <el-input v-model="editForm.mtfCheck2Fc" @input="handleInputChange('mtfCheck2Fc')"></el-input>
-                    </el-form-item>
-                    <el-form-item label="F1" prop="mtfCheck2F1">
-                      <el-input v-model="editForm.mtfCheck2F1" @input="handleInputChange('mtfCheck2F1')"></el-input>
-                    </el-form-item>
-                    <el-form-item label="F2" prop="mtfCheck2F2">
-                      <el-input v-model="editForm.mtfCheck2F2" @input="handleInputChange('mtfCheck2F2')"></el-input>
-                    </el-form-item>
-                    <el-form-item label="F3" prop="mtfCheck2F3">
-                      <el-input v-model="editForm.mtfCheck2F3" @input="handleInputChange('mtfCheck2F3')"></el-input>
-                    </el-form-item>
-                    <el-form-item label="F4" prop="mtfCheck2F4">
-                      <el-input v-model="editForm.mtfCheck2F4" @input="handleInputChange('mtfCheck2F4')"></el-input>
+                    <el-form-item label="mtfCheck2" prop="mtfCheck2F">
+                      <el-input v-model="editForm.mtfCheck2F" @input="handleInputChange('mtfCheck2F')"></el-input>
                     </el-form-item>
                   </el-collapse-item>
                   <el-collapse-item class="sub-item" title="mtfCheck3" name="16">
-                    <el-form-item label="CC" prop="mtfCheck3Fc">
-                      <el-input v-model="editForm.mtfCheck3Fc" @input="handleInputChange('mtfCheck3Fc')"></el-input>
-                    </el-form-item>
-                    <el-form-item label="F1" prop="mtfCheck3F1">
-                      <el-input v-model="editForm.mtfCheck3F1" @input="handleInputChange('mtfCheck3F1')"></el-input>
-                    </el-form-item>
-                    <el-form-item label="F2" prop="mtfCheck3F2">
-                      <el-input v-model="editForm.mtfCheck3F2" @input="handleInputChange('mtfCheck3F2')"></el-input>
-                    </el-form-item>
-                    <el-form-item label="F3" prop="mtfCheck3F3">
-                      <el-input v-model="editForm.mtfCheck3F3" @input="handleInputChange('mtfCheck3F3')"></el-input>
-                    </el-form-item>
-                    <el-form-item label="F4" prop="mtfCheck3F4">
-                      <el-input v-model="editForm.mtfCheck3F4" @input="handleInputChange('mtfCheck3F4')"></el-input>
+                    <el-form-item label="mtfCheck3" prop="mtfCheck3F">
+                      <el-input v-model="editForm.mtfCheck3F" @input="handleInputChange('mtfCheck3F')"></el-input>
                     </el-form-item>
                   </el-collapse-item>
 
@@ -1309,12 +1245,19 @@
 </template>
 
 <script>
-import { getToken } from '@/utils/auth'
-import { addAaParamsModel, getAaParamsParsed } from '@/api/biz/aa/maintain/models'
-import { checkPermi, checkRole } from '@/utils/permission'
-import { pickerOptionsSet8 } from '@/views/biz/common/js/pickerOptionsConfig'
-import { bodyCellStyle, headerCellStyle, tableStyle } from '@/views/biz/common/js/tableStyles'
-import { checkNumericOrEmpty, checkParamsRule, checkStringOrEmpty, convertNull, formatDt, checkDtRange, dateToStr } from '@/views/biz/common/js/utils'
+import {getToken} from '@/utils/auth'
+import {addAaParamsModel, getAaParamsParsed} from '@/api/biz/aa/maintain/models'
+import {checkPermi, checkRole} from '@/utils/permission'
+import {pickerOptionsSet8} from '@/views/biz/common/js/pickerOptionsConfig'
+import {bodyCellStyle, headerCellStyle, tableStyle} from '@/views/biz/common/js/tableStyles'
+import {
+  checkDtRange,
+  checkNumericOrEmpty,
+  checkParamsRule,
+  checkStringOrEmpty,
+  convertNull,
+  formatDt
+} from '@/views/biz/common/js/utils'
 
 export default {
   name: 'index',
@@ -1464,29 +1407,13 @@ export default {
         aa3GoldenGlueThicknessMin: [{ validator: this.checkNumericOrEmpty, trigger: 'blur' }],
         aa3GoldenGlueThicknessMax: [{ validator: this.checkNumericOrEmpty, trigger: 'blur' }],
 
-        mtfCheckFc: [{ validator: this.checkNumericOrEmpty, trigger: 'blur' }],
-        mtfCheckF1: [{ validator: this.checkNumericOrEmpty, trigger: 'blur' }],
-        mtfCheckF2: [{ validator: this.checkNumericOrEmpty, trigger: 'blur' }],
-        mtfCheckF3: [{ validator: this.checkNumericOrEmpty, trigger: 'blur' }],
-        mtfCheckF4: [{ validator: this.checkNumericOrEmpty, trigger: 'blur' }],
+        mtfCheckF: [{ validator: this.checkJsonFormat, trigger: 'blur' }],
 
-        mtfCheck1Fc: [{ validator: this.checkNumericOrEmpty, trigger: 'blur' }],
-        mtfCheck1F1: [{ validator: this.checkNumericOrEmpty, trigger: 'blur' }],
-        mtfCheck1F2: [{ validator: this.checkNumericOrEmpty, trigger: 'blur' }],
-        mtfCheck1F3: [{ validator: this.checkNumericOrEmpty, trigger: 'blur' }],
-        mtfCheck1F4: [{ validator: this.checkNumericOrEmpty, trigger: 'blur' }],
+        mtfCheck1F: [{ validator: this.checkJsonFormat, trigger: 'blur' }],
 
-        mtfCheck2Fc: [{ validator: this.checkNumericOrEmpty, trigger: 'blur' }],
-        mtfCheck2F1: [{ validator: this.checkNumericOrEmpty, trigger: 'blur' }],
-        mtfCheck2F2: [{ validator: this.checkNumericOrEmpty, trigger: 'blur' }],
-        mtfCheck2F3: [{ validator: this.checkNumericOrEmpty, trigger: 'blur' }],
-        mtfCheck2F4: [{ validator: this.checkNumericOrEmpty, trigger: 'blur' }],
+        mtfCheck2F: [{ validator: this.checkJsonFormat, trigger: 'blur' }],
 
-        mtfCheck3Fc: [{ validator: this.checkNumericOrEmpty, trigger: 'blur' }],
-        mtfCheck3F1: [{ validator: this.checkNumericOrEmpty, trigger: 'blur' }],
-        mtfCheck3F2: [{ validator: this.checkNumericOrEmpty, trigger: 'blur' }],
-        mtfCheck3F3: [{ validator: this.checkNumericOrEmpty, trigger: 'blur' }],
-        mtfCheck3F4: [{ validator: this.checkNumericOrEmpty, trigger: 'blur' }],
+        mtfCheck3F: [{ validator: this.checkJsonFormat, trigger: 'blur' }],
 
         chartAlignmentXResMin: [{ validator: this.checkNumericOrEmpty, trigger: 'blur' }],
         chartAlignmentXResMax: [{ validator: this.checkNumericOrEmpty, trigger: 'blur' }],
@@ -1614,6 +1541,7 @@ export default {
               endTime: this.queryParams.dtRange[1]
             }
             getAaParamsParsed(this.queryParams).then(response => {
+              console.log(response)
               this.resultList = response.rows
               this.total = response.total
               this.loading = false
@@ -1690,7 +1618,44 @@ export default {
       if (this.editForm[field] === '') {
         this.$set(this.editForm, field, null)
       }
-    }
+    },
+
+    // 格式化完整 JSON 数据为字符串
+    formatJSON(jsonString) {
+      if (convertNull(jsonString) === '--') {
+        return '--';
+      }
+
+      try {
+        const json = JSON.parse(jsonString);
+        const keys = Object.keys(json);
+
+        // 改为分行显示
+        return keys.map(key => `${key}: ${json[key]}`).join("\n")
+      } catch (e) {
+        return '无效的 JSON 字符串';
+      }
+    },
+    // 格式化 JSON 数据，仅展示前 1-2 个键值对（用于省略显示）
+    formatShortJSON(jsonString, scope) {
+      if (convertNull(jsonString) === '--') {
+        return '--';
+      }
+
+      try {
+        const json = JSON.parse(jsonString);
+        const keys = Object.keys(json);
+
+        // 获取前 2 个键值对，改为分行显示
+        const shortData = keys.slice(0, 2).map(key => `${key}: ${json[key]}`).join("\n");
+
+        // 判断是否还有更多数据
+        return keys.length > 2 ? shortData + "\n..." : shortData;
+      } catch (e) {
+        return "无效的 JSON 字符串";
+      }
+    },
+
   },
 
   mounted() {
@@ -1889,6 +1854,19 @@ export default {
 
 .custom-descriptions-item .el-descriptions__content {
   width: 50% !important;
+}
+
+/* 省略号样式：限制单行显示 */
+.json-ellipsis {
+  display: inline-block;
+  max-width: 150px; /* 最大宽度限制 */
+  white-space: pre-line; /* 保持换行 */
+  word-wrap: break-word; /* 允许单词换行 */
+  overflow: hidden; /* 隐藏超出部分 */
+  text-overflow: ellipsis;
+  font-size: 12px;
+  line-height: 1.5; /* 调整行距 */
+  color: #606266; /* 字体颜色 */
 }
 
 </style>

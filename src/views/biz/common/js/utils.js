@@ -84,11 +84,11 @@ export function checkDtRange(rule, value, callback, intervalValue = 30, unit = '
 
 /**
  * 必填项校验方法
- * 
+ *
  * @param {Object} rule - 校验规则对象，通常由表单验证框架提供
  * @param {any} value - 当前输入的值
  * @param {Function} callback - 回调函数，用于返回校验结果
- * 
+ *
  * @example
  * rules: [
  *   { required: true, validator: requiredValidator, trigger: 'blur' }
@@ -278,6 +278,27 @@ export function checkNumericOrEmpty(rule, value, callback) {
     callback(new Error('请输入数字或留空'))
   }
 }
+
+/**
+ * 校验字符串是否符合 JSON 格式
+ * @param rule
+ * @param value
+ * @param callback
+ */
+export function checkJsonFormat(rule, value, callback) {
+  if (!value) {
+    // 如果值为空，则校验通过（视为可选）
+    callback();
+  } else {
+    try {
+      JSON.parse(value);
+      callback();
+    } catch (e) {
+      callback(new Error('请输入有效的 JSON 格式字符串'));
+    }
+  }
+}
+
 
 /**
  * 校验输入值是否为非数字的字符串或为空
