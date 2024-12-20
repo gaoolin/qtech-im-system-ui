@@ -754,7 +754,7 @@
               <el-collapse-item class="prop-label" title="EpoxyInspectionAuto" name="12"
                 v-if="convertNull(scope.row.epoxyInspectionInterval) !== '--'">
                 <el-descriptions :column="1" border>
-                  <el-descriptions-item label="EpoxyInspection">
+                  <el-descriptions-item label="胶检频率">
                     {{ convertNull(scope.row.epoxyInspectionInterval) }}
                   </el-descriptions-item>
                 </el-descriptions>
