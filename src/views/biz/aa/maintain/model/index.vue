@@ -25,14 +25,14 @@
       <el-table v-loading="loading" :data="resultList" :key="refreshKey" border :header-cell-style="headerCellStyle()"
         :cell-style="bodyCellStyle()" :style="tableStyle()">
         <!-- 产品信息 -->
-        <el-table-column label="机型" align="center"  min-width="60" fixed>
+        <el-table-column label="机型" align="center"  min-width="80" fixed>
           <template slot-scope="scope">
             <span class="prop-label">{{ scope.row.prodType }}</span>
           </template>
         </el-table-column>
 
         <!-- 初始化和重置 -->
-        <el-table-column label="初始化和重置" align="left" min-width="200">
+        <el-table-column label="初始化和重置" align="left" min-width="160">
           <template slot-scope="scope">
             <div class="prop-container" v-if="convertNull(scope.row.init) !== '--'">
               <span class="prop-label">
