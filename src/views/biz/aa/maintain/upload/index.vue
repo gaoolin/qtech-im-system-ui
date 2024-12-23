@@ -114,7 +114,7 @@
                   :style="tableStyle()" v-if="activeTab === 'online'"
         >
           <!-- 产品信息 -->
-          <el-table-column label="机型相关" align="left">
+          <el-table-column label="机型相关" align="left" min-width="80">
             <template slot-scope="scope">
               <div class="prop-container">
                 <span class="prop-label">
@@ -144,7 +144,7 @@
           </el-table-column>
 
           <!-- 初始化和重置 -->
-          <el-table-column label="初始化和重置" align="left">
+          <el-table-column label="初始化和重置" align="left" min-width="70">
             <template slot-scope="scope">
               <div class="prop-container">
               <span class="prop-label">
@@ -190,7 +190,7 @@
           </el-table-column>
 
           <!-- 光学对齐和处理（LP） -->
-          <el-table-column label="光学对齐和处理（LP）" align="left">
+          <el-table-column label="光学对齐和处理（LP）" align="left" min-width="80">
             <template slot-scope="scope">
               <div class="prop-container">
               <span class="prop-label">
@@ -284,7 +284,7 @@
           </el-table-column>
 
           <!-- VCM（音圈电机）相关 -->
-          <el-table-column label="VCM相关" align="left">
+          <el-table-column label="VCM相关" align="left" min-width="80">
             <template slot-scope="scope">
               <div class="prop-container">
               <span class="prop-label">
@@ -361,7 +361,7 @@
           </el-table-column>
 
           <!-- 检查和检测 -->
-          <el-table-column label="检查和检测" align="left">
+          <el-table-column label="检查和检测" align="left" min-width="60">
             <template slot-scope="scope">
               <div class="prop-container">
               <span class="prop-label">
@@ -377,7 +377,7 @@
           </el-table-column>
 
           <!-- 其他操作和记录 -->
-          <el-table-column label="其他操作和记录" align="left">
+          <el-table-column label="其他操作和记录" align="left" min-width="100">
             <template slot-scope="scope">
               <div class="prop-container">
               <span class="prop-label">
@@ -457,13 +457,13 @@
               <div class="prop-container">
               <span class="prop-label">
                 yLevel:
-                <span class="prop-value" :class="{'enabled': convertNull(scope.row.yLevel) === 'Enable', 'disabled': convertNull(scope.row.yLevel) === 'Disable'}">{{ convertNull(scope.row.yLevel) }}</span></span>
+                <span class="prop-value" :class="{'enabled': convertNull(scope.row.ylevel) === 'Enable', 'disabled': convertNull(scope.row.ylevel) === 'Disable'}">{{ convertNull(scope.row.ylevel) }}</span></span>
               </div>
             </template>
           </el-table-column>
 
           <!-- Item参数管控详情 -->
-          <el-table-column label="Item参数管控详情" align="left" width="250">
+          <el-table-column label="Item参数管控详情" align="left" min-width="90">
             <template slot-scope="scope">
               <el-collapse accordion>
                 <el-collapse-item class="prop-label" title="AA1" extra="AA1-AA1" name="1">

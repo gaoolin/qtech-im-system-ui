@@ -482,12 +482,12 @@
                     convertNull(scope.row.uvoff) }}</span>
               </span>
             </div>
-            <div class="prop-container" v-if="convertNull(scope.row.yLevel) !== '--'">
+            <div class="prop-container" v-if="convertNull(scope.row.ylevel) !== '--'">
               <span class="prop-label">
                 yLevel:
                 <span class="prop-value"
-                  :class="{ 'enabled': convertNull(scope.row.yLevel) === 'Enable', 'disabled': convertNull(scope.row.yLevel) === 'Disable' }">{{
-                    convertNull(scope.row.yLevel) }}</span>
+                  :class="{ 'enabled': convertNull(scope.row.ylevel) === 'Enable', 'disabled': convertNull(scope.row.ylevel) === 'Disable' }">{{
+                    convertNull(scope.row.ylevel) }}</span>
               </span>
             </div>
           </template>
