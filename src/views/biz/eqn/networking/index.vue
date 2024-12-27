@@ -362,7 +362,7 @@ export default {
 
     /** 导出 */
     handleExport() {
-      this.download('/eqn/status/export', {
+      this.download('/eqn/eq/export', {
         ...this.queryParams
       }, `设备联网情况明细_${new Date().getTime()}.xlsx`)
     },

@@ -244,7 +244,7 @@ export default {
     },
 
     handleExport() {
-      this.download('qcp/params/export', {...this.queryParams}, `qcp参数概览_${new Date().getTime()}.xlsx`);
+      this.download('qcp/control/export', {...this.queryParams}, `qcp参数概览_${new Date().getTime()}.xlsx`);
     },
 
   },

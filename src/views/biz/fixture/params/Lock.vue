@@ -162,7 +162,7 @@
         icon="el-icon-plus"
         size="mini"
         @click="handleAddAndUpdateFixture(null, 1)"
-        v-hasPermi="['fixture:params:lock:ops']"
+        v-hasPermi="['fixture:control:lock:ops']"
       >新增料号
       </el-button>
     </el-col>
@@ -172,7 +172,7 @@
         plain
         size="mini"
         @click="handleFixtureCategoryManage"
-        v-hasPermi="['fixture:params:lock:ops']"
+        v-hasPermi="['fixture:control:lock:ops']"
       >
         <span>管理治具类型</span>
       </el-button>
@@ -184,7 +184,7 @@
         icon="el-icon-download"
         size="mini"
         @click="handleExport"
-        v-hasPermi="['fixture:params:lock:export']"
+        v-hasPermi="['fixture:control:lock:export']"
       >导出
       </el-button>
     </el-col>
@@ -599,7 +599,7 @@ export default {
 
     /** 导出按钮操作 */
     handleExport() {
-      this.download('/fixture/params/lock/export', {
+      this.download('/fixture/control/lock/export', {
         ...this.queryParams
       }, `锁附治具因子_${new Date().getTime()}.xlsx`)
       this.reset()

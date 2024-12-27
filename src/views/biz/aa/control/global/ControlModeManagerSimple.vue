@@ -23,7 +23,7 @@
 
       <!-- 更新按钮 -->
       <div class="control-mode-action">
-        <button class="update-button" @click="updateControlMode" v-hasPermi="['aa:params:mode:ctrl']">更新</button>
+        <button class="update-button" @click="updateControlMode" v-hasPermi="['aa:control:mode:ctrl']">更新</button>
       </div>
     </div>
 

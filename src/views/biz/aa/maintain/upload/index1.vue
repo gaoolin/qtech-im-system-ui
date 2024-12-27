@@ -410,7 +410,7 @@ export default {
       this.fileSelected = fileList.length > 0
     },
     importTemplate() {
-      this.download('/aa/params/model/detail/importTemplate', {}, 'AA List参数标准模版.xlsx')
+      this.download('/aa/control/model/detail/importTemplate', {}, 'AA List参数标准模版.xlsx')
     },
     submitData() {
       this.$refs.upload.submit()
@@ -462,7 +462,7 @@ export default {
     /** 修改按钮操作 */
     handleEdit(row) {
       this.editForm = { ...row }
-      // if (checkPermi('aa:params:model:upload')) {
+      // if (checkPermi('aa:control:model:upload')) {
       // }
       this.editDialogVisible = true
       this.title = '修改List参数模版信息'

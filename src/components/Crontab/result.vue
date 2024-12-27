@@ -494,7 +494,7 @@ export default {
 		},
 		// 根据规则返回一个具有周期性的数组
 		getCycleArr(rule, limit, status) {
-			// status--表示是否从0开始（则从1开始）
+			// eq--表示是否从0开始（则从1开始）
 			let arr = [];
 			let cycleArr = rule.split('-');
 			let min = Number(cycleArr[0]);

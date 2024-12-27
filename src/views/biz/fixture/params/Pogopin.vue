@@ -244,7 +244,7 @@
             icon="el-icon-plus"
             size="mini"
             @click="handleAddAndUpdateFixture(null, 1)"
-            v-hasPermi="['fixture:params:pogopin:ops']"
+            v-hasPermi="['fixture:control:pogopin:ops']"
         >新增料号
         </el-button>
       </el-col>
@@ -254,7 +254,7 @@
             plain
             size="mini"
             @click="handleFixtureCategoryManage"
-            v-hasPermi="['fixture:params:pogopin:ops']"
+            v-hasPermi="['fixture:control:pogopin:ops']"
         >
           <span>管理治具类型</span>
         </el-button>
@@ -266,7 +266,7 @@
             icon="el-icon-download"
             size="mini"
             @click="handleExport"
-            v-hasPermi="['fixture:params:pogopin:export']"
+            v-hasPermi="['fixture:control:pogopin:export']"
         >导出
         </el-button>
       </el-col>
@@ -786,7 +786,7 @@ export default {
 
     /** 导出按钮操作 */
     handleExport() {
-      this.download('/fixture/params/pogopin/export', {
+      this.download('/fixture/control/pogopin/export', {
         ...this.queryParams
       }, `pogopin治具因子_${new Date().getTime()}.xlsx`)
       console.log('reset 2...')

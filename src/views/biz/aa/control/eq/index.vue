@@ -187,7 +187,7 @@ export default {
     },
     /** 导出 */
     handleExport() {
-      this.download('/aa/params/eq/export', {
+      this.download('/aa/control/eq/export', {
         ...this.queryParams
       }, `AA-List管控设备状态_${new Date().getTime()}.xlsx`)
     },

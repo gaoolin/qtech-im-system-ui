@@ -325,7 +325,7 @@ export default {
     },
 
     handleExport() {
-      this.download('/aa/params/index/export', {
+      this.download('/aa/control/index/export', {
         ...this.queryParams
       }, `AA参数点检概览_${new Date().getTime()}.xlsx`)
     },

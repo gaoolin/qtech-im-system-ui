@@ -227,7 +227,7 @@ export default {
       }
 
       listAaProgramInfo(this.queryParams).then(res => {
-        // 遍历 res.rows，将 status 属性转换为字符串类型
+        // 遍历 res.rows，将 eq 属性转换为字符串类型
         this.fileList = res.rows.map(item => {
           return {
             ...item,

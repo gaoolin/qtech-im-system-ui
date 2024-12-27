@@ -258,7 +258,7 @@ export default {
     },
 
     handleExport() {
-      this.download('aa/params/latest/status/export', {
+      this.download('aa/control/latest/eq/export', {
         ...this.queryParams
       }, `AA参数反控机台状态_${new Date().getTime()}.xlsx`)
     },

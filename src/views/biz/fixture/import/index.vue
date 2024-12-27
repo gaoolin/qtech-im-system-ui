@@ -33,7 +33,7 @@
 
     <el-row :gutter="20" class="mb8">
       <div class="upload-div">
-        <div class="div" v-hasPermi="['fixture:params:pogopin:upload']">
+        <div class="div" v-hasPermi="['fixture:control:pogopin:upload']">
           <h2 class="body">PogoPin治具因子数据上传</h2>
           <el-upload
             ref="UploadParamsPogopin"
@@ -64,7 +64,7 @@
           </div>
         </div>
 
-        <div class="div" v-hasPermi="['fixture:params:aa:upload']">
+        <div class="div" v-hasPermi="['fixture:control:aa:upload']">
           <h2 class="body">AA治具因子数据上传</h2>
           <el-upload
             ref="UploadParamsAa"
@@ -95,7 +95,7 @@
           </div>
         </div>
 
-        <div class="div" v-hasPermi="['fixture:params:Lock:upload']">
+        <div class="div" v-hasPermi="['fixture:control:Lock:upload']">
           <h2 class="body">锁附治具因子数据上传</h2>
           <el-upload
             ref="UploadParamsLock"
@@ -195,13 +195,13 @@ export default {
     },
     /** 下载模板操作 */
     importTemplateParamsPoGoPin() {
-      this.download('/fixture/params/pogopin/importTemplate', {}, `Pogopin因子导入模板.xlsx`)
+      this.download('/fixture/control/pogopin/importTemplate', {}, `Pogopin因子导入模板.xlsx`)
     },
     importTemplateParamsAa() {
-      this.download('/fixture/params/aa/importTemplate', {}, `AA因子导入模板.xlsx`)
+      this.download('/fixture/control/aa/importTemplate', {}, `AA因子导入模板.xlsx`)
     },
     importTemplateParamsLock() {
-      this.download('/fixture/params/lock/importTemplate', {}, `锁附因子导入模板.xlsx`)
+      this.download('/fixture/control/lock/importTemplate', {}, `锁附因子导入模板.xlsx`)
     },
     // 文件上传中处理
     handleFileUploadProgress(event, file, fileList) {
