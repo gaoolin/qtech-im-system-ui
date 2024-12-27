@@ -201,7 +201,7 @@ export default {
     },
 
     handleExport() {
-      this.download('/aa/control/model/info/export', {
+      this.download('/aa/params/model/info/export', {
         ...this.queryParams
       }, `AA-List参数模版信息_${new Date().getTime()}.xlsx`)
     },
