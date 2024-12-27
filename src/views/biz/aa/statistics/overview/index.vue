@@ -105,20 +105,6 @@
             </router-link>
           </template>
         </el-table-column>
-        <el-table-column prop="lackParamsCnt" label="少参数" align="center" fit>
-          <template slot-scope="scope">
-            <router-link :to="{
-              path: '/biz/aa/statistics/particulars', query: {
-                dtRange: queryParams.dtRange,
-                factoryName: scope.row.factoryName === '总计' ? '' : scope.row.factoryName,
-                groupName: scope.row.groupName === '小计' ? '' : scope.row.groupName,
-                statusCode: 2
-              }
-            }">
-              <span v-if="scope.row.lackParamsCnt > 0">{{ numberToCurrencyNo(scope.row.lackParamsCnt) }}</span>
-            </router-link>
-          </template>
-        </el-table-column>
         <el-table-column prop="unsuitableCnt" label="值异常" align="center" fit>
           <template slot-scope="scope">
             <router-link :to="{
@@ -130,6 +116,20 @@
               }
             }">
               <span v-if="scope.row.unsuitableCnt > 0">{{ numberToCurrencyNo(scope.row.unsuitableCnt) }}</span>
+            </router-link>
+          </template>
+        </el-table-column>
+        <el-table-column prop="lackParamsCnt" label="少参数" align="center" fit>
+          <template slot-scope="scope">
+            <router-link :to="{
+              path: '/biz/aa/statistics/particulars', query: {
+                dtRange: queryParams.dtRange,
+                factoryName: scope.row.factoryName === '总计' ? '' : scope.row.factoryName,
+                groupName: scope.row.groupName === '小计' ? '' : scope.row.groupName,
+                statusCode: 2
+              }
+            }">
+              <span v-if="scope.row.lackParamsCnt > 0">{{ numberToCurrencyNo(scope.row.lackParamsCnt) }}</span>
             </router-link>
           </template>
         </el-table-column>

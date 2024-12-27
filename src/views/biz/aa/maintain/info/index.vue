@@ -1,5 +1,8 @@
 <template>
   <div class="app-container center">
+    <!-- 控制模式组件 -->
+    <ControlModeManager />
+
     <el-form :model="queryParams" ref="queryForm" :inline="true" v-show="showSearch" label-width="68px">
       <el-form-item label="机型" prop="prodType">
         <el-input
@@ -136,8 +139,10 @@
 <script>
 import { headerCellStyle, bodyCellStyle, tableStyle } from '@/views/biz/common/js/tableStyles';
 import { deleteAaParamsModelInfo, getAaParamsModelInfo, updateAaParamsModelInfo } from '@/api/biz/aa/maintain/models'
+import ControlModeManager from './ControlModeManager.vue';
 export default {
   name: 'index.vue',
+  components: { ControlModeManager },
   data() {
     return {
       // 遮罩层

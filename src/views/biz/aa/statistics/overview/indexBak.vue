@@ -188,7 +188,7 @@ export default {
 .chart-container {
   margin-top: 20px;
   width: 100%;
-  height: 400px;
+  height: 200px;
   position: relative;
 }
 </style>
