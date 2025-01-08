@@ -53,7 +53,7 @@
 
     <!-- Copyright 信息 -->
     <div class="copyright-info">
-      © 2024 智能制造管理系统. All rights reserved.
+      © 2025 智能制造管理系统. All rights reserved.
     </div>
 
   </div>
