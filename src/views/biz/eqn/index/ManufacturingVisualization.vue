@@ -1,319 +1,201 @@
 <template>
   <div class="visualization-container" ref="visualizationContainer">
-    <div class="toolbar">
-      <button @click="resetView">重置视角</button>
-      <button @click="toggleWireframe">切换线框</button>
+    <!-- 显示鼠标指针所指向的三维坐标 -->
+    <div class="coordinate-display" ref="coordinateDisplay">
+      X: {{ coordinates.x.toFixed(2) }},
+      Y: {{ coordinates.y.toFixed(2) }},
+      Z: {{ coordinates.z.toFixed(2) }}
     </div>
-    <canvas ref="canvas"></canvas>
   </div>
 </template>
 
 <script>
-import * as THREE from "three";
-import { OrbitControls } from "three/examples/jsm/controls/OrbitControls";
+import * as THREE from "three"; // 引入 Three.js 库
+import { OrbitControls } from "three/examples/jsm/controls/OrbitControls"; // 引入 OrbitControls 控件
 
 export default {
+  name: "WireBondingVisualization",
   props: {
     wireData: {
       type: Array,
       required: true,
-      default: () => []
-    }
+      default: () => [],
+    },
   },
   data() {
     return {
-      scene: null,
-      camera: null,
-      renderer: null,
-      controls: null,
-      raycaster: new THREE.Raycaster(),
-      mouse: new THREE.Vector2(),
-      coordinates: null,
-      sceneInitialized: false,
+      scene: null, // 场景对象
+      camera: null, // 摄像机对象
+      renderer: null, // 渲染器对象
+      controls: null, // 轨道控制器
+      raycaster: null, // 光线投射器，用于鼠标拾取
+      mouse: new THREE.Vector2(), // 鼠标在二维屏幕上的位置
+      coordinates: {
+        x: 0, // 鼠标拾取点的 X 坐标
+        y: 0, // 鼠标拾取点的 Y 坐标
+        z: 0, // 鼠标拾取点的 Z 坐标
+      },
+      animationId: null, // 动画帧请求的 ID
+      normalizedWireData: [], // 存储归一化后的数据
     };
   },
-
   mounted() {
-    console.log('Mounted, initializing scene...');
-    this.initScene();
-    this.renderScene();  // 一开始渲染数据
+    this.normalizedWireData = this.normalizeWireData(this.wireData); // 归一化数据
+    this.initScene(); // 初始化 Three.js 场景
+    this.createLighting(); // 创建光源
+    this.createAxesHelper(); // 添加坐标轴辅助器
+    this.createPCB(); // 创建电路板
+    this.createChip(); // 创建晶圆
+    this.createWires(); // 创建金线
+    this.animate(); // 开始动画渲染
+
+    // 设置 OrbitControls 的目标点为 PCB 中心
+    this.controls.target.set(0, 0, 0);
+
+    // 添加窗口大小改变和鼠标移动事件监听
     window.addEventListener("resize", this.onWindowResize);
-    this.$refs.visualizationContainer.addEventListener("mousemove", this.onMouseMove);
-
-    // 初始化 OrbitControls 确保控制器生效
-    this.controls = new OrbitControls(this.camera, this.renderer.domElement);
-    this.controls.enableDamping = true; // 开启阻尼效果，增加流畅感
-    this.controls.dampingFactor = 0.25; // 阻尼因子
-    this.controls.screenSpacePanning = false; // 禁用平移
-    this.controls.maxPolarAngle = Math.PI / 2; // 限制上下旋转角度
   },
-
-  updated() {
-    if (this.wireData && this.wireData.length) {
-      this.updateScene(this.wireData);
-    }
-  },
-
   beforeDestroy() {
+    // 清理动画帧、事件监听和场景资源
+    window.cancelAnimationFrame(this.animationId);
     window.removeEventListener("resize", this.onWindowResize);
-    this.$refs.visualizationContainer.removeEventListener("mousemove", this.onMouseMove);
-    this.disposeScene(); // 清理资源
+    this.renderer.dispose();
+    this.scene = null;
   },
-
   methods: {
-    // 初始化场景、相机、渲染器等
+    // 归一化数据
+    normalizeWireData(wireData) {
+      const leadXValues = wireData.map(d => d.leadX);
+      const leadYValues = wireData.map(d => d.leadY);
+      const padXValues = wireData.map(d => d.padX);
+      const padYValues = wireData.map(d => d.padY);
+
+      const centerX = (Math.min(...leadXValues.concat(padXValues)) + Math.max(...leadXValues.concat(padXValues))) / 2;
+      const centerY = (Math.min(...leadYValues.concat(padYValues)) + Math.max(...leadYValues.concat(padYValues))) / 2;
+
+      return wireData.map(d => ({
+        line: d.line,
+        leadX: d.leadX - centerX,
+        leadY: d.leadY - centerY,
+        padX: d.padX - centerX,
+        padY: d.padY - centerY,
+      }));
+    },
+
+    // 初始化 Three.js 场景
     initScene() {
       const container = this.$refs.visualizationContainer;
+      const width = container.clientWidth;
+      const height = container.clientHeight;
 
-      // 创建 Three.js 场景
-      this.scene = new THREE.Scene();
+      this.scene = new THREE.Scene(); // 创建场景
+      this.camera = new THREE.PerspectiveCamera(45, width / height, 1, 1000); // 创建透视摄像机
+      this.camera.position.set(0, 150, 200); // 设置摄像机位置
+      this.camera.lookAt(0, 0, 0); // 设置摄像机的观察点
 
-      // 创建摄像机
-      const aspect = container.clientWidth / container.clientHeight;
-      this.camera = new THREE.PerspectiveCamera(75, aspect, 0.1, 1000);
-      this.camera.position.set(0, 150, 300); // 调整摄像机位置
-      this.camera.lookAt(0, 0, 0); // 确保摄像机对准场景中心
+      this.renderer = new THREE.WebGLRenderer({ antialias: true }); // 创建渲染器并启用抗锯齿
+      this.renderer.setSize(width, height); // 设置渲染器大小
+      this.renderer.shadowMap.enabled = true; // 启用阴影映射
+      container.appendChild(this.renderer.domElement); // 将渲染器的 DOM 元素添加到容器中
 
-      // 创建渲染器
-      this.renderer = new THREE.WebGLRenderer({ canvas: this.$refs.canvas });
-      this.renderer.setSize(container.clientWidth, container.clientHeight);
-      container.appendChild(this.renderer.domElement);
-
-      // 创建光源
-      const ambientLight = new THREE.AmbientLight(0xffffff, 0.8);
-      const pointLight = new THREE.PointLight(0xffffff, 0.8);
-      pointLight.position.set(50, 150, 50);
-      this.scene.add(ambientLight, pointLight);
-
-      // 初始化 OrbitControls 确保控制器生效
-      this.controls = new OrbitControls(this.camera, this.renderer.domElement);
+      this.controls = new OrbitControls(this.camera, this.renderer.domElement); // 创建轨道控制器
+      this.controls.enableDamping = true; // 启用阻尼效果
+      this.controls.enableZoom = true; // 启用缩放
+      this.controls.maxDistance = 500; // 最大距离
+      this.controls.minDistance = 100; // 最小距离
+      this.controls.target.set(0, 0, 0); // 将旋转中心设置为 PCB 中心
+      this.controls.update(); // 更新控制器
     },
 
-    // 根据传入的数据渲染场景
-    renderScene() {
-      if (this.wireData && this.wireData.length) {
-        // 计算缩放比例
-        const scale = this.calculateScale(this.wireData);
+    // 创建光源
+    createLighting() {
+      const ambientLight = new THREE.AmbientLight(0xffffff, 0.6); // 创建环境光
+      this.scene.add(ambientLight);
 
-        // 渲染金线和焊点
-        this.wireData.forEach(item => {
-          const { leadX, leadY, padX, padY } = item;
-          const scaledLeadX = leadX * scale;
-          const scaledLeadY = leadY * scale;
-          const scaledPadX = padX * scale;
-          const scaledPadY = padY * scale;
-
-          const start = new THREE.Vector3(scaledLeadX, 5, scaledLeadY);
-          const end = new THREE.Vector3(scaledPadX, 9, scaledPadY);
-          const control = new THREE.Vector3(
-            (scaledLeadX + scaledPadX) / 2,
-            12,
-            (scaledLeadY + scaledPadY) / 2
-          );
-
-          // 创建金线
-          this.createGoldWire(start, control, end);
-
-          // 创建焊点
-          this.createWeldingPoint(start);
-          this.createWeldingPoint(end);
-        });
-
-        // 创建电路板和晶圆
-        this.createPCB(this.wireData, scale);
-        this.createChip(this.wireData, scale);
-      }
-      this.animate();
+      const directionalLight = new THREE.DirectionalLight(0xffffff, 0.8); // 创建方向光
+      directionalLight.position.set(100, 200, 100); // 设置方向光位置
+      directionalLight.castShadow = true; // 启用阴影投射
+      this.scene.add(directionalLight);
     },
 
-    // 计算缩放比例
-    calculateScale(wireData) {
-      const allX = wireData.flatMap(item => [item.leadX, item.padX]);
-      const allY = wireData.flatMap(item => [item.leadY, item.padY]);
-
-      const minX = Math.min(...allX);
-      const maxX = Math.max(...allX);
-      const minY = Math.min(...allY);
-      const maxY = Math.max(...allY);
-
-      const width = maxX - minX;
-      const height = maxY - minY;
-
-      // 动态计算缩放比例，使得模组占据屏幕的 80%
-      const container = this.$refs.visualizationContainer;
-      const containerWidth = container.clientWidth;
-      const containerHeight = container.clientHeight;
-
-      const scaleX = width > 0 ? (containerWidth * 0.8) / width : 1;
-      const scaleY = height > 0 ? (containerHeight * 0.8) / height : 1;
-      // const scaleX = width > 0 ? 240 / width : 1; // 80% 的屏幕宽度
-      // const scaleY = height > 0 ? 240 / height : 1; // 80% 的屏幕高度
-
-      return Math.min(scaleX, scaleY);
+    // 显示坐标系辅助工具
+    createAxesHelper() {
+      const axesHelper = new THREE.AxesHelper(100); // 创建坐标轴辅助器
+      this.scene.add(axesHelper);
     },
 
-    // 创建金线
-    createGoldWire(start, control, end) {
-      const material = new THREE.LineBasicMaterial({ color: 0xffcc00 });
-      const geometry = new THREE.BufferGeometry().setFromPoints([start, control, end]);
-      const curve = new THREE.Line(geometry, material);
-      this.scene.add(curve);
-    },
+    // 创建电路板
+// 创建电路板
+    createPCB() {
+      const xMin = Math.min(...this.normalizedWireData.map(d => d.padX));
+      const xMax = Math.max(...this.normalizedWireData.map(d => d.padX));
+      const yMin = Math.min(...this.normalizedWireData.map(d => d.padY));
+      const yMax = Math.max(...this.normalizedWireData.map(d => d.padY));
 
-    // 创建焊点
-    createWeldingPoint(position) {
-      const geometry = new THREE.SphereGeometry(0.5);
-      const material = new THREE.MeshBasicMaterial({ color: 0xff0000 });
-      const weldingPoint = new THREE.Mesh(geometry, material);
-      weldingPoint.position.set(position.x, position.y, position.z);
-      this.scene.add(weldingPoint);
-    },
+      const pcbWidth = (xMax - xMin) * 0.02;
+      const pcbHeight = (yMax - yMin) * 0.02;
 
-    // 创建电路板（PCB）
-    createPCB(wireData, scale) {
-      let minX = Math.min(...wireData.map(data => data.leadX));
-      let maxX = Math.max(...wireData.map(data => data.leadX));
-      let minY = Math.min(...wireData.map(data => data.leadY));
-      let maxY = Math.max(...wireData.map(data => data.leadY));
+      const pcbGeometry = new THREE.BoxGeometry(pcbWidth, 5, pcbHeight); // 电路板的几何形状
+      const pcbMaterial = new THREE.MeshStandardMaterial({ color: 0x006600 }); // 电路板的材质
+      const pcb = new THREE.Mesh(pcbGeometry, pcbMaterial); // 创建电路板网格对象
 
-      const pcbWidth = (maxX - minX) * scale;
-      const pcbDepth = (maxY - minY) * scale;
-      const pcbHeight = 5;
-
-      const pcbGeometry = new THREE.BoxGeometry(pcbWidth, pcbHeight, pcbDepth);
-      const pcbMaterial = new THREE.MeshStandardMaterial({ color: 0x006600 });
-      const pcb = new THREE.Mesh(pcbGeometry, pcbMaterial);
-
-      const pcbCenterX = (minX + maxX) / 2 * scale;
-      const pcbCenterY = 2.5;
-      const pcbCenterZ = (minY + maxY) / 2 * scale;
-
-      pcb.position.set(pcbCenterX, pcbCenterY, pcbCenterZ);
-      pcb.receiveShadow = true;
+      // 设置电路板位置，确保中心对齐到原点
+      pcb.position.set((xMin + xMax) / 2 * 0.02, 2.5, (yMin + yMax) / 2 * 0.02);
+      pcb.receiveShadow = true; // 启用接收阴影
       this.scene.add(pcb);
     },
 
-    // 创建晶圆（Chip）
-    createChip(wireData, scale) {
-      let minPadX = Math.min(...wireData.map(data => data.padX));
-      let maxPadX = Math.max(...wireData.map(data => data.padX));
-      let minPadY = Math.min(...wireData.map(data => data.padY));
-      let maxPadY = Math.max(...wireData.map(data => data.padY));
+// 创建晶圆
+    createChip() {
+      const xMin = Math.min(...this.normalizedWireData.map(d => d.leadX));
+      const xMax = Math.max(...this.normalizedWireData.map(d => d.leadX));
+      const yMin = Math.min(...this.normalizedWireData.map(d => d.leadY));
+      const yMax = Math.max(...this.normalizedWireData.map(d => d.leadY));
 
-      const chipWidth = (maxPadX - minPadX) * scale;
-      const chipDepth = (maxPadY - minPadY) * scale;
-      const chipHeight = 4;
+      const chipWidth = (xMax - xMin) * 0.02;
+      const chipHeight = (yMax - yMin) * 0.02;
 
-      const chipGeometry = new THREE.BoxGeometry(chipWidth, chipHeight, chipDepth);
-      const chipMaterial = new THREE.MeshStandardMaterial({ color: 0x333333 });
-      const chip = new THREE.Mesh(chipGeometry, chipMaterial);
+      const chipGeometry = new THREE.BoxGeometry(chipWidth, 4, chipHeight); // 晶圆的几何形状
+      const chipMaterial = new THREE.MeshStandardMaterial({ color: 0x333333 }); // 晶圆的材质
+      const chip = new THREE.Mesh(chipGeometry, chipMaterial); // 创建晶圆网格对象
 
-      const chipCenterX = (minPadX + maxPadX) / 2 * scale;
-      const chipCenterY = 7;
-      const chipCenterZ = (minPadY + maxPadY) / 2 * scale;
-
-      chip.position.set(chipCenterX, chipCenterY, chipCenterZ);
-      chip.castShadow = true;
+      // 设置晶圆位置，确保中心对齐到电路板中心
+      chip.position.set((xMin + xMax) / 2 * 0.02, 7, (yMin + yMax) / 2 * 0.02);
+      chip.castShadow = true; // 启用阴影投射
       this.scene.add(chip);
     },
 
-    // 重置视角
-    resetView() {
-      // 获取容器大小
-      const container = this.$refs.visualizationContainer;
-      const containerWidth = container.clientWidth;
-      const containerHeight = container.clientHeight;
 
-      // 获取模组的边界
-      const wireData = this.wireData; // 假设你有传入 wireData 数据
-      const allX = wireData.flatMap(item => [item.leadX, item.padX]);
-      const allY = wireData.flatMap(item => [item.leadY, item.padY]);
 
-      const minX = Math.min(...allX);
-      const maxX = Math.max(...allX);
-      const minY = Math.min(...allY);
-      const maxY = Math.max(...allY);
-
-      const width = maxX - minX;
-      const height = maxY - minY;
-
-      // 动态计算缩放比例
-      const scaleX = width > 0 ? (containerWidth * 0.8) / width : 1; // 80% 宽度
-      const scaleY = height > 0 ? (containerHeight * 0.8) / height : 1; // 80% 高度
-      const scale = Math.min(scaleX, scaleY);
-
-      // 计算相机位置，确保整个模组显示在屏幕上，并且视角是从顶部看
-      const centerX = (minX + maxX) / 2;
-      const centerY = (minY + maxY) / 2;
-      const distance = Math.max(width, height) * scale / 2; // 距离与模组大小成比例
-
-      // 设置相机的位置
-      this.camera.position.set(centerX, distance, centerY * 2); // 让相机在模组的正上方
-      this.camera.lookAt(centerX, centerY, 0); // 确保相机指向模组的中心
-
-      // 让轨道控制器重置
-      this.controls.reset();
-      this.controls.target.set(centerX, centerY, 0); // 确保控制器的目标位置也为模组的中心
-    },
-
-    // 切换线框模式
-    toggleWireframe() {
-      this.scene.traverse(object => {
-        if (object.isMesh) {
-          object.material.wireframe = !object.material.wireframe;
-        }
+    // 创建金线
+    createWires() {
+      const wireMaterial = new THREE.MeshStandardMaterial({ color: 0xffd700 });
+      this.normalizedWireData.forEach(d => {
+        const controlPoints = [
+          new THREE.Vector3(d.leadX, 3.5, d.leadY),
+          new THREE.Vector3(d.padX, 10, d.padY),
+          new THREE.Vector3(d.leadX, 8.5, d.leadY),
+        ];
+        const curve = new THREE.CatmullRomCurve3(controlPoints);
+        const wireGeometry = new THREE.TubeGeometry(curve, 64, 0.2, 8, false);
+        const wire = new THREE.Mesh(wireGeometry, wireMaterial);
+        this.scene.add(wire);
       });
     },
 
-    // 处理窗口尺寸变化
+    // 动画渲染循环
+    animate() {
+      this.animationId = requestAnimationFrame(this.animate);
+      this.controls.update(); // 更新控制器
+      this.renderer.render(this.scene, this.camera);
+    },
+
+    // 窗口尺寸改变事件
     onWindowResize() {
       const container = this.$refs.visualizationContainer;
       this.camera.aspect = container.clientWidth / container.clientHeight;
       this.camera.updateProjectionMatrix();
       this.renderer.setSize(container.clientWidth, container.clientHeight);
-    },
-
-    // 处理鼠标移动事件
-    onMouseMove(event) {
-      // 获取画布的边界矩形
-      const rect = this.$refs.canvas.getBoundingClientRect();
-
-      // 计算鼠标在屏幕上的位置并转换为标准化设备坐标 (-1 到 1)
-      this.mouse.x = (event.clientX - rect.left) / rect.width * 2 - 1;
-      this.mouse.y = -(event.clientY - rect.top) / rect.height * 2 + 1;
-
-      // 使用相机和鼠标位置更新射线
-      this.raycaster.setFromCamera(this.mouse, this.camera);
-
-      // 检测交互
-      const intersects = this.raycaster.intersectObjects(this.scene.children);
-      if (intersects.length > 0) {
-        const object = intersects[0].object;
-        // 执行与对象相关的交互操作
-        console.log('Object hovered: ', object);
-      }
-    },
-
-    // 动画循环
-    animate() {
-      this.controls.update();
-      this.renderer.render(this.scene, this.camera);
-      requestAnimationFrame(this.animate);
-    },
-
-    disposeScene() {
-      if (this.scene) {
-        this.scene.traverse((object) => {
-          if (object.geometry) object.geometry.dispose();
-          if (object.material) {
-            if (object.material.map) object.material.map.dispose();
-            object.material.dispose();
-          }
-        });
-      }
-      if (this.renderer) {
-        this.renderer.dispose();
-      }
     },
   },
 };
@@ -321,20 +203,20 @@ export default {
 
 <style scoped>
 .visualization-container {
-  position: relative;
   width: 100%;
-  height: 600px;
-  overflow: hidden;
+  height: 800px;
+  background: #1a1a1a;
+  position: relative;
 }
 
-.toolbar {
+.coordinate-display {
   position: absolute;
-  top: 10px;
+  bottom: 10px;
   left: 10px;
-  z-index: 1;
-}
-
-canvas {
-  display: block;
+  color: white;
+  background: rgba(0, 0, 0, 0.5);
+  padding: 5px 10px;
+  border-radius: 5px;
+  font-size: 14px;
 }
 </style>

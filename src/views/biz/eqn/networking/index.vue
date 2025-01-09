@@ -102,7 +102,13 @@
       <el-table-column prop="simId" label="盒子号" align="center" min-width="160" fit></el-table-column>
       <el-table-column prop="mcId" label="机台号" align="center" min-width="120" fit></el-table-column>
       <el-table-column prop="dt" label="最后采集时间" align="center" min-width="160" fit></el-table-column>
-      <el-table-column prop="netStatus" label="联网状态" align="center" min-width="80" fit>
+      <el-table-column prop="netStatus" label="联网状态" align="center" min-width="80">
+        <template slot="header">
+          <span>联网状态</span>
+          <el-tooltip class="item" effect="dark" placement="top-start" content="超过5分钟无采集数据判定为设备离线。">
+            <i class="el-icon-question" style="color:#272728; margin-left:2px;'"> </i>
+          </el-tooltip>
+        </template>
         <template slot-scope="scope">
           <span
             :style="getNetStatusStyle(scope.row.netStatus)"
