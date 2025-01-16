@@ -285,9 +285,9 @@ export default {
     },
 
     handleExport() {
-      this.download('/aa/control/history/eq/export', {
+      this.download('/aa/params/history/status/export', {
         ...this.queryParams
-      }, `AA参数反控机台状态_${new Date().getTime()}.xlsx`)
+      }, `AA参数反控机台点检明细_${new Date().getTime()}.xlsx`)
     },
 
     getStatusCodeStyle(status) {

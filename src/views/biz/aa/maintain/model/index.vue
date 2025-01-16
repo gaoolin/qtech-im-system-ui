@@ -41,6 +41,27 @@
                 >{{ convertNull(scope.row.init) }}</span>
               </span>
             </div>
+            <div class="prop-container" v-if="convertNull(scope.row.init1) !== '--'">
+              <span class="prop-label">
+                init1:
+                <span class="prop-value" :class="{'enabled': convertNull(scope.row.init1) === 'Enable', 'disabled': convertNull(scope.row.init1) === 'Disable'}"
+                >{{ convertNull(scope.row.init1) }}</span>
+              </span>
+            </div>
+            <div class="prop-container" v-if="convertNull(scope.row.init2) !== '--'">
+              <span class="prop-label">
+                init2:
+                <span class="prop-value" :class="{'enabled': convertNull(scope.row.init2) === 'Enable', 'disabled': convertNull(scope.row.init2) === 'Disable'}"
+                >{{ convertNull(scope.row.init2) }}</span>
+              </span>
+            </div>
+            <div class="prop-container" v-if="convertNull(scope.row.init3) !== '--'">
+              <span class="prop-label">
+                init3:
+                <span class="prop-value" :class="{'enabled': convertNull(scope.row.init3) === 'Enable', 'disabled': convertNull(scope.row.init3) === 'Disable'}"
+                >{{ convertNull(scope.row.init3) }}</span>
+              </span>
+            </div>
             <div class="prop-container" v-if="convertNull(scope.row.reInit) !== '--'">
               <span class="prop-label">
                 reInit:
@@ -151,6 +172,14 @@
                     convertNull(scope.row.lpOff) }}</span>
               </span>
             </div>
+            <div class="prop-container" v-if="convertNull(scope.row.lpIntensity) !== '--'">
+              <span class="prop-label">
+                lpIntensity:
+                <span class="prop-value"
+                      :class="{ 'enabled': convertNull(scope.row.lpIntensity) === 'Enable', 'disabled': convertNull(scope.row.lpIntensity) === 'Disable' }">{{
+                    convertNull(scope.row.lpIntensity) }}</span>
+              </span>
+            </div>
             <div class="prop-container" v-if="convertNull(scope.row.lpOc) !== '--'">
               <span class="prop-label">
                 lpOc:
@@ -183,12 +212,20 @@
                     convertNull(scope.row.lpBlemish) }}</span>
               </span>
             </div>
-            <div class="prop-container" v-if="convertNull(scope.row.blemish) !== '--'">
+            <div class="prop-container" v-if="convertNull(scope.row.blemish1) !== '--'">
               <span class="prop-label">
-                blemish:
+                blemish1:
                 <span class="prop-value"
-                  :class="{ 'enabled': convertNull(scope.row.blemish) === 'Enable', 'disabled': convertNull(scope.row.blemish) === 'Disable' }">{{
-                    convertNull(scope.row.blemish) }}</span>
+                  :class="{ 'enabled': convertNull(scope.row.blemish1) === 'Enable', 'disabled': convertNull(scope.row.blemish1) === 'Disable' }">{{
+                    convertNull(scope.row.blemish1) }}</span>
+              </span>
+            </div>
+            <div class="prop-container" v-if="convertNull(scope.row.blemish2) !== '--'">
+              <span class="prop-label">
+                blemish2:
+                <span class="prop-value"
+                      :class="{ 'enabled': convertNull(scope.row.blemish2) === 'Enable', 'disabled': convertNull(scope.row.blemish2) === 'Disable' }">{{
+                    convertNull(scope.row.blemish2) }}</span>
               </span>
             </div>
             <div class="prop-container" v-if="convertNull(scope.row.chartAlignment) !== '--'">
@@ -348,14 +385,6 @@
                     convertNull(scope.row.openCheck) }}</span>
               </span>
             </div>
-            <div class="prop-container" v-if="convertNull(scope.row.ocCheck) !== '--'">
-              <span class="prop-label">
-                ocCheck:
-                <span class="prop-value"
-                  :class="{ 'enabled': convertNull(scope.row.ocCheck) === 'Enable', 'disabled': convertNull(scope.row.ocCheck) === 'Disable' }">{{
-                    convertNull(scope.row.ocCheck) }}</span>
-              </span>
-            </div>
           </template>
         </el-table-column>
 
@@ -402,6 +431,22 @@
                     convertNull(scope.row.dispense) }}</span>
               </span>
             </div>
+            <div class="prop-container" v-if="convertNull(scope.row.dispense1) !== '--'">
+              <span class="prop-label">
+                dispense1:
+                <span class="prop-value"
+                      :class="{ 'enabled': convertNull(scope.row.dispense1) === 'Enable', 'disabled': convertNull(scope.row.dispense1) === 'Disable' }">{{
+                    convertNull(scope.row.dispense1) }}</span>
+              </span>
+            </div>
+            <div class="prop-container" v-if="convertNull(scope.row.dispense2) !== '--'">
+              <span class="prop-label">
+                dispense2:
+                <span class="prop-value"
+                      :class="{ 'enabled': convertNull(scope.row.dispense2) === 'Enable', 'disabled': convertNull(scope.row.dispense2) === 'Disable' }">{{
+                    convertNull(scope.row.dispense2) }}</span>
+              </span>
+            </div>
             <div class="prop-container" v-if="convertNull(scope.row.epoxyInspectionAuto) !== '--'">
               <span class="prop-label">
                 epoxyInspectionAuto:
@@ -424,6 +469,22 @@
                 <span class="prop-value"
                   :class="{ 'enabled': convertNull(scope.row.grab) === 'Enable', 'disabled': convertNull(scope.row.grab) === 'Disable' }">{{
                     convertNull(scope.row.grab) }}</span>
+              </span>
+            </div>
+            <div class="prop-container" v-if="convertNull(scope.row.grab1) !== '--'">
+              <span class="prop-label">
+                grab1:
+                <span class="prop-value"
+                      :class="{ 'enabled': convertNull(scope.row.grab1) === 'Enable', 'disabled': convertNull(scope.row.grab1) === 'Disable' }">{{
+                    convertNull(scope.row.grab1) }}</span>
+              </span>
+            </div>
+            <div class="prop-container" v-if="convertNull(scope.row.grab2) !== '--'">
+              <span class="prop-label">
+                grab2:
+                <span class="prop-value"
+                      :class="{ 'enabled': convertNull(scope.row.grab2) === 'Enable', 'disabled': convertNull(scope.row.grab2) === 'Disable' }">{{
+                    convertNull(scope.row.grab2) }}</span>
               </span>
             </div>
             <div class="prop-container" v-if="convertNull(scope.row.gripperOpen) !== '--'">
@@ -499,19 +560,19 @@
             <el-collapse accordion>
               <el-collapse-item class="prop-label" title="AA1" name="1" v-if="convertNull(scope.row.aa1RoiCc) !== '--'">
                 <el-descriptions :column="1" border class="prop-label">
-                  <el-descriptions-item label="Cc">
+                  <el-descriptions-item label="中心">
                     {{ convertNull(scope.row.aa1RoiCc) }}
                   </el-descriptions-item>
-                  <el-descriptions-item label="Ul">
+                  <el-descriptions-item label="左上">
                     {{ convertNull(scope.row.aa1RoiUl) }}
                   </el-descriptions-item>
-                  <el-descriptions-item label="Ur">
+                  <el-descriptions-item label="右上">
                     {{ convertNull(scope.row.aa1RoiUr) }}
                   </el-descriptions-item>
-                  <el-descriptions-item label="Lr">
+                  <el-descriptions-item label="左下">
                     {{ convertNull(scope.row.aa1RoiLr) }}
                   </el-descriptions-item>
-                  <el-descriptions-item label="Lr">
+                  <el-descriptions-item label="右下">
                     {{ convertNull(scope.row.aa1RoiLr) }}
                   </el-descriptions-item>
                   <el-descriptions-item label="'AA'模式">
@@ -542,19 +603,19 @@
               </el-collapse-item>
               <el-collapse-item class="prop-label" title="AA2" name="2" v-if="convertNull(scope.row.aa2RoiCc) !== '--'">
                 <el-descriptions :column="1" border class="prop-label">
-                  <el-descriptions-item label="Cc">
+                  <el-descriptions-item label="中心">
                     {{ convertNull(scope.row.aa2RoiCc) }}
                   </el-descriptions-item>
-                  <el-descriptions-item label="Ul">
+                  <el-descriptions-item label="左上">
                     {{ convertNull(scope.row.aa2RoiUl) }}
                   </el-descriptions-item>
-                  <el-descriptions-item label="Ur">
+                  <el-descriptions-item label="右上">
                     {{ convertNull(scope.row.aa2RoiUr) }}
                   </el-descriptions-item>
-                  <el-descriptions-item label="Ll">
+                  <el-descriptions-item label="左下">
                     {{ convertNull(scope.row.aa2RoiLl) }}
                   </el-descriptions-item>
-                  <el-descriptions-item label="Lr">
+                  <el-descriptions-item label="右下">
                     {{ convertNull(scope.row.aa2RoiLr) }}
                   </el-descriptions-item>
                   <el-descriptions-item label="'AA'模式">
@@ -585,19 +646,19 @@
               </el-collapse-item>
               <el-collapse-item class="prop-label" title="AA3" name="3" v-if="convertNull(scope.row.aa3RoiCc) !== '--'">
                 <el-descriptions :column="1" border class="prop-label">
-                  <el-descriptions-item label="Cc">
+                  <el-descriptions-item label="中心">
                     {{ convertNull(scope.row.aa3RoiCc) }}
                   </el-descriptions-item>
-                  <el-descriptions-item label="Ul">
+                  <el-descriptions-item label="左上">
                     {{ convertNull(scope.row.aa3RoiUl) }}
                   </el-descriptions-item>
-                  <el-descriptions-item label="Ur">
+                  <el-descriptions-item label="右上">
                     {{ convertNull(scope.row.aa3RoiUr) }}
                   </el-descriptions-item>
-                  <el-descriptions-item label="Ll">
+                  <el-descriptions-item label="左下">
                     {{ convertNull(scope.row.aa3RoiLl) }}
                   </el-descriptions-item>
-                  <el-descriptions-item label="Lr">
+                  <el-descriptions-item label="右下">
                     {{ convertNull(scope.row.aa3RoiLr) }}
                   </el-descriptions-item>
                   <el-descriptions-item label="'AA'模式">
@@ -629,51 +690,51 @@
               <el-collapse-item class="prop-label" title="chartAlignment" name="4"
                 v-if="convertNull(scope.row.chartAlignmentXResMin) !== '--'">
                 <el-descriptions :column="1" border>
-                  <el-descriptions-item label="xMin">
-                    {{ convertNull(scope.row.chartAlignmentXResMin) }}
-                  </el-descriptions-item>
-                  <el-descriptions-item label="xMax">
+                  <el-descriptions-item label="x上限">
                     {{ convertNull(scope.row.chartAlignmentXResMax) }}
                   </el-descriptions-item>
-                  <el-descriptions-item label="yMin">
-                    {{ convertNull(scope.row.chartAlignmentYResMin) }}
+                  <el-descriptions-item label="x下限">
+                    {{ convertNull(scope.row.chartAlignmentXResMin) }}
                   </el-descriptions-item>
-                  <el-descriptions-item label="yMax">
+                  <el-descriptions-item label="y上限">
                     {{ convertNull(scope.row.chartAlignmentYResMax) }}
+                  </el-descriptions-item>
+                  <el-descriptions-item label="y下限">
+                    {{ convertNull(scope.row.chartAlignmentYResMin) }}
                   </el-descriptions-item>
                 </el-descriptions>
               </el-collapse-item>
               <el-collapse-item class="prop-label" title="chartAlignment1" name="5"
                 v-if="convertNull(scope.row.chartAlignment1XResMin) !== '--'">
                 <el-descriptions :column="1" border>
-                  <el-descriptions-item label="xMin">
-                    {{ convertNull(scope.row.chartAlignment1XResMin) }}
-                  </el-descriptions-item>
-                  <el-descriptions-item label="xMax">
+                  <el-descriptions-item label="x上限">
                     {{ convertNull(scope.row.chartAlignment1XResMax) }}
                   </el-descriptions-item>
-                  <el-descriptions-item label="yMin">
-                    {{ convertNull(scope.row.chartAlignment1YResMin) }}
+                  <el-descriptions-item label="x下限">
+                    {{ convertNull(scope.row.chartAlignment1XResMin) }}
                   </el-descriptions-item>
-                  <el-descriptions-item label="yMax">
+                  <el-descriptions-item label="y上限">
                     {{ convertNull(scope.row.chartAlignment1YResMax) }}
+                  </el-descriptions-item>
+                  <el-descriptions-item label="y下限">
+                    {{ convertNull(scope.row.chartAlignment1YResMin) }}
                   </el-descriptions-item>
                 </el-descriptions>
               </el-collapse-item>
               <el-collapse-item class="prop-label" title="chartAlignment2" name="6"
                 v-if="convertNull(scope.row.chartAlignment2XResMin) !== '--'">
                 <el-descriptions :column="1" border>
-                  <el-descriptions-item label="xMin">
-                    {{ convertNull(scope.row.chartAlignment2XResMin) }}
-                  </el-descriptions-item>
-                  <el-descriptions-item label="xMax">
+                  <el-descriptions-item label="x上限">
                     {{ convertNull(scope.row.chartAlignment2XResMax) }}
                   </el-descriptions-item>
-                  <el-descriptions-item label="yMin">
-                    {{ convertNull(scope.row.chartAlignment2YResMin) }}
+                  <el-descriptions-item label="x下限">
+                    {{ convertNull(scope.row.chartAlignment2XResMin) }}
                   </el-descriptions-item>
-                  <el-descriptions-item label="yMax">
+                  <el-descriptions-item label="y上限">
                     {{ convertNull(scope.row.chartAlignment2YResMax) }}
+                  </el-descriptions-item>
+                  <el-descriptions-item label="y下限">
+                    {{ convertNull(scope.row.chartAlignment2YResMin) }}
                   </el-descriptions-item>
                 </el-descriptions>
               </el-collapse-item>
@@ -732,29 +793,37 @@
                   </el-descriptions-item>
                 </el-descriptions>
               </el-collapse-item>-->
-              <el-collapse-item class="prop-label" title="RecordPosition" name="10"
-                v-if="convertNull(scope.row.recordPositionUtXyzMove) !== '--'">
+              <el-collapse-item class="prop-label" title="上抬下拉" name="10"
+                                v-if="convertNull(scope.row.utXyzMoveVal) !== '--'">
                 <el-descriptions :column="1" border>
                   <el-descriptions-item label="utXyzMove">
-                    {{ convertNull(scope.row.recordPositionUtXyzMove) }}
+                    {{ convertNull(scope.row.utXyzMoveVal) }}
+                  </el-descriptions-item>
+                </el-descriptions>
+              </el-collapse-item>
+              <el-collapse-item class="prop-label" title="记录位置" name="10"
+                v-if="convertNull(scope.row.recordPositionName) !== '--'">
+                <el-descriptions :column="1" border>
+                  <el-descriptions-item label="recordPosition">
+                    {{ convertNull(scope.row.recordPositionName) }}
                   </el-descriptions-item>
                 </el-descriptions>
               </el-collapse-item>
               <el-collapse-item class="prop-label" title="SaveMtf" name="11"
                 v-if="convertNull(scope.row.saveMtfCcMin) !== '--'">
                 <el-descriptions :column="1" border>
-                  <el-descriptions-item label="ccMin">
-                    {{ convertNull(scope.row.saveMtfCcMin) }}
-                  </el-descriptions-item>
-                  <el-descriptions-item label="ccMax">
+                  <el-descriptions-item label="cc上限">
                     {{ convertNull(scope.row.saveMtfCcMax) }}
+                  </el-descriptions-item>
+                  <el-descriptions-item label="cc下限">
+                    {{ convertNull(scope.row.saveMtfCcMin) }}
                   </el-descriptions-item>
                 </el-descriptions>
               </el-collapse-item>
-              <el-collapse-item class="prop-label" title="EpoxyInspectionAuto" name="12"
+              <el-collapse-item class="prop-label" title="胶检频率" name="12"
                 v-if="convertNull(scope.row.epoxyInspectionInterval) !== '--'">
                 <el-descriptions :column="1" border>
-                  <el-descriptions-item label="胶检频率">
+                  <el-descriptions-item label="EpoxyInspectionAuto">
                     {{ convertNull(scope.row.epoxyInspectionInterval) }}
                   </el-descriptions-item>
                 </el-descriptions>
@@ -866,6 +935,12 @@
               <el-select v-model="editForm.lpOff" placeholder="请选择" clearable @clear="handleClear('lpOff')">
                 <el-option v-for="dict in dict.type.aa_list_params_power" :key="dict.value" :label="dict.label"
                   :value="dict.value" />
+              </el-select>
+            </el-form-item>
+            <el-form-item label="lpIntensity" prop="lpIntensity">
+              <el-select v-model="editForm.lpIntensity" placeholder="请选择" clearable @clear="handleClear('lpIntensity')">
+                <el-option v-for="dict in dict.type.aa_list_params_power" :key="dict.value" :label="dict.label"
+                           :value="dict.value" />
               </el-select>
             </el-form-item>
             <el-form-item label="lpOc" prop="lpOc">
@@ -1015,8 +1090,26 @@
                   :value="dict.value" />
               </el-select>
             </el-form-item>
-            <el-form-item label="ocCheck" prop="ocCheck">
-              <el-select v-model="editForm.ocCheck" placeholder="请选择" clearable @clear="handleClear('ocCheck')">
+            <el-form-item label="openCheck1" prop="openCheck1">
+              <el-select v-model="editForm.openCheck1" placeholder="请选择" clearable @clear="handleClear('openCheck1')">
+                <el-option v-for="dict in dict.type.aa_list_params_power" :key="dict.value" :label="dict.label"
+                           :value="dict.value" />
+              </el-select>
+            </el-form-item>
+            <el-form-item label="openCheck2" prop="openCheck">
+              <el-select v-model="editForm.openCheck2" placeholder="请选择" clearable @clear="handleClear('openCheck2')">
+                <el-option v-for="dict in dict.type.aa_list_params_power" :key="dict.value" :label="dict.label"
+                           :value="dict.value" />
+              </el-select>
+            </el-form-item>
+            <el-form-item label="openCheck3" prop="openCheck3">
+              <el-select v-model="editForm.openCheck3" placeholder="请选择" clearable @clear="handleClear('openCheck3')">
+                <el-option v-for="dict in dict.type.aa_list_params_power" :key="dict.value" :label="dict.label"
+                           :value="dict.value" />
+              </el-select>
+            </el-form-item>
+            <el-form-item label="prToBond" prop="prToBond">
+              <el-select v-model="editForm.prToBond" placeholder="请选择" clearable @clear="handleClear('prToBond')">
                 <el-option v-for="dict in dict.type.aa_list_params_power" :key="dict.value" :label="dict.label"
                   :value="dict.value" />
               </el-select>
@@ -1048,33 +1141,33 @@
                   :value="dict.value" />
               </el-select>
             </el-form-item>
-            <el-form-item label="dispense" prop="dispense">
+            <el-form-item label="画胶(dispense)" prop="dispense">
               <el-select v-model="editForm.dispense" placeholder="请选择" clearable @clear="handleClear('dispense')">
                 <el-option v-for="dict in dict.type.aa_list_params_power" :key="dict.value" :label="dict.label"
                   :value="dict.value" />
               </el-select>
             </el-form-item>
-            <el-form-item label="epoxyInspectionAuto" prop="epoxyInspectionAuto">
+            <el-form-item label="胶检频率" prop="epoxyInspectionAuto">
               <el-select v-model="editForm.epoxyInspectionAuto" placeholder="请选择" clearable
                 @clear="handleClear('epoxyInspectionAuto')">
                 <el-option v-for="dict in dict.type.aa_list_params_power" :key="dict.value" :label="dict.label"
                   :value="dict.value" />
               </el-select>
             </el-form-item>
-            <el-form-item label="epoxyInspection" prop="epoxyInspection">
+            <el-form-item label="胶检" prop="epoxyInspection">
               <el-select v-model="editForm.epoxyInspection" placeholder="请选择" clearable
                 @clear="handleClear('epoxyInspection')">
                 <el-option v-for="dict in dict.type.aa_list_params_power" :key="dict.value" :label="dict.label"
                   :value="dict.value" />
               </el-select>
             </el-form-item>
-            <el-form-item label="grab" prop="grab">
+            <el-form-item label="抓取(grab)" prop="grab">
               <el-select v-model="editForm.grab" placeholder="请选择" clearable @clear="handleClear('grab')">
                 <el-option v-for="dict in dict.type.aa_list_params_power" :key="dict.value" :label="dict.label"
                   :value="dict.value" />
               </el-select>
             </el-form-item>
-            <el-form-item label="gripperOpen" prop="gripperOpen">
+            <el-form-item label="夹爪打开(gripperOpen)" prop="gripperOpen">
               <el-select v-model="editForm.gripperOpen" placeholder="请选择" clearable @clear="handleClear('gripperOpen')">
                 <el-option v-for="dict in dict.type.aa_list_params_power" :key="dict.value" :label="dict.label"
                   :value="dict.value" />
@@ -1087,7 +1180,14 @@
                   :value="dict.value" />
               </el-select>
             </el-form-item>
-            <el-form-item label="recordPosition" prop="recordPosition">
+            <el-form-item label="上抬下拉" prop="utXyzMove">
+              <el-select v-model="editForm.utXyzMove" placeholder="请选择" clearable
+                         @clear="handleClear('utXyzMove')">
+                <el-option v-for="dict in dict.type.aa_list_params_power" :key="dict.value" :label="dict.label"
+                           :value="dict.value" />
+              </el-select>
+            </el-form-item>
+            <el-form-item label="记录位置" prop="recordPosition">
               <el-select v-model="editForm.recordPosition" placeholder="请选择" clearable
                 @clear="handleClear('recordPosition')">
                 <el-option v-for="dict in dict.type.aa_list_params_power" :key="dict.value" :label="dict.label"
@@ -1106,13 +1206,13 @@
                   :value="dict.value" />
               </el-select>
             </el-form-item>
-            <el-form-item label="uvon" prop="uvon">
+            <el-form-item label="UV开" prop="uvon">
               <el-select v-model="editForm.uvon" placeholder="请选择" clearable @clear="handleClear('uvon')">
                 <el-option v-for="dict in dict.type.aa_list_params_power" :key="dict.value" :label="dict.label"
                   :value="dict.value" />
               </el-select>
             </el-form-item>
-            <el-form-item label="uvoff" prop="uvoff">
+            <el-form-item label="UV关" prop="uvoff">
               <el-select v-model="editForm.uvoff" placeholder="请选择" clearable @clear="handleClear('uvoff')">
                 <el-option v-for="dict in dict.type.aa_list_params_power" :key="dict.value" :label="dict.label"
                   :value="dict.value" />
@@ -1128,19 +1228,19 @@
           <el-collapse-item class="main-item" title="Item参数管控详情" name="6">
             <el-collapse v-model="innerActiveNames" accordion>
               <el-collapse-item class="sub-item" title="AA1" name="7">
-                <el-form-item label="Cc" prop="aa1RoiCc">
+                <el-form-item label="中心" prop="aa1RoiCc">
                   <el-input v-model="editForm.aa1RoiCc" @input="handleInputChange('Cc')"></el-input>
                 </el-form-item>
-                <el-form-item label="Ul" prop="aa1RoiUl">
+                <el-form-item label="左上" prop="aa1RoiUl">
                   <el-input v-model="editForm.aa1RoiUl" @input="handleInputChange('Ul')"></el-input>
                 </el-form-item>
-                <el-form-item label="Ur" prop="aa1RoiUr">
+                <el-form-item label="右上" prop="aa1RoiUr">
                   <el-input v-model="editForm.aa1RoiUr" @input="handleInputChange('Ur')"></el-input>
                 </el-form-item>
-                <el-form-item label="Ll" prop="aa1RoiLl">
+                <el-form-item label="左下" prop="aa1RoiLl">
                   <el-input v-model="editForm.aa1RoiLl" @input="handleInputChange('Ll')"></el-input>
                 </el-form-item>
-                <el-form-item label="Lr" prop="aa1RoiLr">
+                <el-form-item label="右下" prop="aa1RoiLr">
                   <el-input v-model="editForm.aa1RoiLr" @input="handleInputChange('Lr')"></el-input>
                 </el-form-item>
                 <el-form-item label="'AA'模式" prop="aa1Target">
@@ -1174,19 +1274,19 @@
                 </el-form-item>
               </el-collapse-item>
               <el-collapse-item class="sub-item" title="AA2" name="8">
-                <el-form-item label="Cc" prop="aa2RoiCc">
+                <el-form-item label="中心" prop="aa2RoiCc">
                   <el-input v-model="editForm.aa2RoiCc" @input="handleInputChange('Cc')"></el-input>
                 </el-form-item>
-                <el-form-item label="Ul" prop="aa2RoiUl">
+                <el-form-item label="左上" prop="aa2RoiUl">
                   <el-input v-model="editForm.aa2RoiUl" @input="handleInputChange('Ul')"></el-input>
                 </el-form-item>
-                <el-form-item label="Ur" prop="aa2RoiUr">
+                <el-form-item label="右上" prop="aa2RoiUr">
                   <el-input v-model="editForm.aa2RoiUr" @input="handleInputChange('Ur')"></el-input>
                 </el-form-item>
-                <el-form-item label="Ll" prop="aa2RoiLl">
+                <el-form-item label="左下" prop="aa2RoiLl">
                   <el-input v-model="editForm.aa2RoiLl" @input="handleInputChange('Ll')"></el-input>
                 </el-form-item>
-                <el-form-item label="Lr" prop="aa2RoiLr">
+                <el-form-item label="右下" prop="aa2RoiLr">
                   <el-input v-model="editForm.aa2RoiLr" @input="handleInputChange('Lr')"></el-input>
                 </el-form-item>
                 <el-form-item label="'AA'模式" prop="aa2Target">
@@ -1220,19 +1320,19 @@
                 </el-form-item>
               </el-collapse-item>
               <el-collapse-item class="sub-item" title="AA3" name="9">
-                <el-form-item label="Cc" prop="aa3RoiCc">
+                <el-form-item label="中心" prop="aa3RoiCc">
                   <el-input v-model="editForm.aa3RoiCc" @input="handleInputChange('Cc')"></el-input>
                 </el-form-item>
-                <el-form-item label="Ul" prop="aa3RoiUl">
+                <el-form-item label="左上" prop="aa3RoiUl">
                   <el-input v-model="editForm.aa3RoiUl" @input="handleInputChange('Ul')"></el-input>
                 </el-form-item>
-                <el-form-item label="Ur" prop="aa3RoiUr">
+                <el-form-item label="右上" prop="aa3RoiUr">
                   <el-input v-model="editForm.aa3RoiUr" @input="handleInputChange('Ur')"></el-input>
                 </el-form-item>
-                <el-form-item label="aa3RoiLl" prop="aa3RoiLl">
+                <el-form-item label="左下" prop="aa3RoiLl">
                   <el-input v-model="editForm.aa3RoiLl" @input="handleInputChange('Ll')"></el-input>
                 </el-form-item>
-                <el-form-item label="Lr" prop="aa3RoiLr">
+                <el-form-item label="右下" prop="aa3RoiLr">
                   <el-input v-model="editForm.aa3RoiLr" @input="handleInputChange('Lr')"></el-input>
                 </el-form-item>
                 <el-form-item label="'AA'模式" prop="aa3Target">
@@ -1267,57 +1367,57 @@
               </el-collapse-item>
 
               <el-collapse-item class="sub-item" title="chartAlignment" name="10">
-                <el-form-item label="xResMin" prop="chartAlignmentXResMin">
-                  <el-input v-model="editForm.chartAlignmentXResMin"
-                    @input="handleInputChange('chartAlignmentXResMin')"></el-input>
-                </el-form-item>
-                <el-form-item label="xResMax" prop="chartAlignmentXResMax">
+                <el-form-item label="xRes上限" prop="chartAlignmentXResMax">
                   <el-input v-model="editForm.chartAlignmentXResMax"
                     @input="handleInputChange('chartAlignmentXResMax')"></el-input>
                 </el-form-item>
-                <el-form-item label="yResMin" prop="chartAlignmentYResMin">
-                  <el-input v-model="editForm.chartAlignmentYResMin"
-                    @input="handleInputChange('chartAlignmentYResMin')"></el-input>
+                <el-form-item label="xRes下限" prop="chartAlignmentXResMin">
+                  <el-input v-model="editForm.chartAlignmentXResMin"
+                            @input="handleInputChange('chartAlignmentXResMin')"></el-input>
                 </el-form-item>
-                <el-form-item label="yResMax" prop="chartAlignmentYResMax">
+                <el-form-item label="yRes上限" prop="chartAlignmentYResMax">
                   <el-input v-model="editForm.chartAlignmentYResMax"
                     @input="handleInputChange('chartAlignmentYResMax')"></el-input>
                 </el-form-item>
+                <el-form-item label="yRes下限" prop="chartAlignmentYResMin">
+                  <el-input v-model="editForm.chartAlignmentYResMin"
+                            @input="handleInputChange('chartAlignmentYResMin')"></el-input>
+                </el-form-item>
               </el-collapse-item>
               <el-collapse-item class="sub-item" title="chartAlignment1" name="11">
-                <el-form-item label="xResMin" prop="chartAlignment1XResMin">
-                  <el-input v-model="editForm.chartAlignment1XResMin"
-                    @input="handleInputChange('chartAlignment1XResMin')"></el-input>
-                </el-form-item>
-                <el-form-item label="xResMax" prop="chartAlignment1XResMax">
+                <el-form-item label="xRes上限" prop="chartAlignment1XResMax">
                   <el-input v-model="editForm.chartAlignment1XResMax"
                     @input="handleInputChange('chartAlignment1XResMax')"></el-input>
                 </el-form-item>
-                <el-form-item label="yResMin" prop="chartAlignment1YResMin">
-                  <el-input v-model="editForm.chartAlignment1YResMin"
-                    @input="handleInputChange('chartAlignment1YResMin')"></el-input>
+                <el-form-item label="xRes下限" prop="chartAlignment1XResMin">
+                  <el-input v-model="editForm.chartAlignment1XResMin"
+                            @input="handleInputChange('chartAlignment1XResMin')"></el-input>
                 </el-form-item>
-                <el-form-item label="yResMax" prop="chartAlignment1YResMax">
+                <el-form-item label="yRes上限" prop="chartAlignment1YResMax">
                   <el-input v-model="editForm.chartAlignment1YResMax"
                     @input="handleInputChange('chartAlignment1YResMax')"></el-input>
                 </el-form-item>
+                <el-form-item label="yRes下限" prop="chartAlignment1YResMin">
+                  <el-input v-model="editForm.chartAlignment1YResMin"
+                            @input="handleInputChange('chartAlignment1YResMin')"></el-input>
+                </el-form-item>
               </el-collapse-item>
               <el-collapse-item class="sub-item" title="chartAlignment2" name="12">
-                <el-form-item label="xResMin" prop="chartAlignment2XResMin">
-                  <el-input v-model="editForm.chartAlignment2XResMin"
-                    @input="handleInputChange('chartAlignment2XResMin')"></el-input>
-                </el-form-item>
-                <el-form-item label="xResMax" prop="chartAlignment2XResMax">
+                <el-form-item label="xRes上限" prop="chartAlignment2XResMax">
                   <el-input v-model="editForm.chartAlignment2XResMax"
                     @input="handleInputChange('chartAlignment2XResMax')"></el-input>
                 </el-form-item>
-                <el-form-item label="yResMin" prop="chartAlignment2YResMin">
-                  <el-input v-model="editForm.chartAlignment2YResMin"
-                    @input="handleInputChange('chartAlignment2YResMin')"></el-input>
+                <el-form-item label="xRes下限" prop="chartAlignment2XResMin">
+                  <el-input v-model="editForm.chartAlignment2XResMin"
+                            @input="handleInputChange('chartAlignment2XResMin')"></el-input>
                 </el-form-item>
-                <el-form-item label="yResMax" prop="chartAlignment2YResMax">
+                <el-form-item label="yRes上限" prop="chartAlignment2YResMax">
                   <el-input v-model="editForm.chartAlignment2YResMax"
                     @input="handleInputChange('chartAlignment2YResMax')"></el-input>
+                </el-form-item>
+                <el-form-item label="yRes下限" prop="chartAlignment2YResMin">
+                  <el-input v-model="editForm.chartAlignment2YResMin"
+                            @input="handleInputChange('chartAlignment2YResMin')"></el-input>
                 </el-form-item>
               </el-collapse-item>
 
@@ -1341,25 +1441,30 @@
                   <el-input v-model="editForm.mtfCheck3F" @input="handleInputChange('mtfCheck3F')"></el-input>
                 </el-form-item>
               </el-collapse-item>
-
-              <el-collapse-item class="sub-item" title="recordPosition" name="17">
-                <el-form-item label="utXyzMove" prop="recordPositionUtXyzMove">
-                  <el-input v-model="editForm.recordPositionUtXyzMove"
-                    @input="handleInputChange('recordPositionUtXyzMove')"></el-input>
+              <el-collapse-item class="sub-item" title="上抬下拉" name="17">
+                <el-form-item label="utXyzMove" prop="utXyzMoveVal">
+                  <el-input v-model="editForm.utXyzMoveVal"
+                            @input="handleInputChange('utXyzMoveVal')"></el-input>
+                </el-form-item>
+              </el-collapse-item>
+              <el-collapse-item class="sub-item" title="记录位置" name="17">
+                <el-form-item label="recordPosition" prop="recordPositionName">
+                  <el-input v-model="editForm.recordPositionName"
+                    @input="handleInputChange('recordPositionName')"></el-input>
                 </el-form-item>
               </el-collapse-item>
 
               <el-collapse-item class="sub-item" title="saveMtf" name="18">
-                <el-form-item label="ccMin" prop="saveMtfCcMin">
-                  <el-input v-model="editForm.saveMtfCcMin" @input="handleInputChange('saveMtfCcMin')"></el-input>
-                </el-form-item>
-                <el-form-item label="ccMax" prop="saveMtfCcMax">
+                <el-form-item label="cc上限" prop="saveMtfCcMax">
                   <el-input v-model="editForm.saveMtfCcMax" @input="handleInputChange('saveMtfCcMax')"></el-input>
+                </el-form-item>
+                <el-form-item label="cc下限" prop="saveMtfCcMin">
+                  <el-input v-model="editForm.saveMtfCcMin" @input="handleInputChange('saveMtfCcMin')"></el-input>
                 </el-form-item>
               </el-collapse-item>
 
-              <el-collapse-item class="sub-item" title="EpoxyInspectionAuto" name="20">
-                <el-form-item label="胶检频率" prop="epoxyInspectionInterval">
+              <el-collapse-item class="sub-item" title="胶检频率" name="20">
+                <el-form-item label="EpoxyInspectionAuto" prop="epoxyInspectionInterval">
                   <el-input v-model="editForm.epoxyInspectionInterval"
                     @input="handleInputChange('epoxyInspectionInterval')"></el-input>
                 </el-form-item>
@@ -1433,6 +1538,8 @@ export default {
         AA3: [{ validator: this.checkParamsRule, trigger: 'blur' }],
         backToPosition: [{ validator: this.checkParamsRule, trigger: 'blur' }],
         blemish: [{ validator: this.checkParamsRule, trigger: 'blur' }],
+        blemish1: [{ validator: this.checkParamsRule, trigger: 'blur' }],
+        blemish2: [{ validator: this.checkParamsRule, trigger: 'blur' }],
         clampOnOff: [{ validator: this.checkParamsRule, trigger: 'blur' }],
         chartAlignment: [{ validator: this.checkParamsRule, trigger: 'blur' }],
         chartAlignment1: [{ validator: this.checkParamsRule, trigger: 'blur' }],
@@ -1441,24 +1548,35 @@ export default {
         destroy: [{ validator: this.checkParamsRule, trigger: 'blur' }],
         destroyStart: [{ validator: this.checkParamsRule, trigger: 'blur' }],
         dispense: [{ validator: this.checkParamsRule, trigger: 'blur' }],
+        dispense1: [{ validator: this.checkParamsRule, trigger: 'blur' }],
+        dispense2: [{ validator: this.checkParamsRule, trigger: 'blur' }],
         epoxyInspection: [{ validator: this.checkParamsRule, trigger: 'blur' }],
         epoxyInspectionAuto: [{ validator: this.checkParamsRule, trigger: 'blur' }],
         grab: [{ validator: this.checkParamsRule, trigger: 'blur' }],
+        grab1: [{ validator: this.checkParamsRule, trigger: 'blur' }],
+        grab2: [{ validator: this.checkParamsRule, trigger: 'blur' }],
         gripperOpen: [{ validator: this.checkParamsRule, trigger: 'blur' }],
         init: [{ validator: this.checkParamsRule, trigger: 'blur' }],
+        init1: [{ validator: this.checkParamsRule, trigger: 'blur' }],
+        init2: [{ validator: this.checkParamsRule, trigger: 'blur' }],
+        init3: [{ validator: this.checkParamsRule, trigger: 'blur' }],
         lpBlemish: [{ validator: this.checkParamsRule, trigger: 'blur' }],
         lpOc: [{ validator: this.checkParamsRule, trigger: 'blur' }],
         lpOcCheck: [{ validator: this.checkParamsRule, trigger: 'blur' }],
         lpOn: [{ validator: this.checkParamsRule, trigger: 'blur' }],
         lpOnBlemish: [{ validator: this.checkParamsRule, trigger: 'blur' }],
         lpOff: [{ validator: this.checkParamsRule, trigger: 'blur' }],
+        lpIntensity: [{ validator: this.checkParamsRule, trigger: 'blur' }],
         moveToBlemishPos: [{ validator: this.checkParamsRule, trigger: 'blur' }],
         mtfCheck: [{ validator: this.checkParamsRule, trigger: 'blur' }],
         mtfCheck1: [{ validator: this.checkParamsRule, trigger: 'blur' }],
         mtfCheck2: [{ validator: this.checkParamsRule, trigger: 'blur' }],
         mtfCheck3: [{ validator: this.checkParamsRule, trigger: 'blur' }],
         openCheck: [{ validator: this.checkParamsRule, trigger: 'blur' }],
-        ocCheck: [{ validator: this.checkParamsRule, trigger: 'blur' }],
+        openCheck1: [{ validator: this.checkParamsRule, trigger: 'blur' }],
+        openCheck2: [{ validator: this.checkParamsRule, trigger: 'blur' }],
+        openCheck3: [{ validator: this.checkParamsRule, trigger: 'blur' }],
+        utXyzMove: [{ validator: this.checkParamsRule, trigger: 'blur' }],
         recordPosition: [{ validator: this.checkParamsRule, trigger: 'blur' }],
         reInit: [{ validator: this.checkParamsRule, trigger: 'blur' }],
         saveOc: [{ validator: this.checkParamsRule, trigger: 'blur' }],
@@ -1488,18 +1606,42 @@ export default {
         aa1RoiUr: [{ validator: this.checkNumericOrEmpty, trigger: 'blur' }],
         aa1RoiLr: [{ validator: this.checkNumericOrEmpty, trigger: 'blur' }],
         aa1RoiLl: [{ validator: this.checkNumericOrEmpty, trigger: 'blur' }],
+        aa1Target: [{ validator: this.checkStringOrEmpty, trigger: 'blur' }],
+        aa1CcToCornerLimit: [{ validator: this.checkNumericOrEmpty, trigger: 'blur' }],
+        aa1CcToCornerLimitMin: [{ validator: this.checkNumericOrEmpty, trigger: 'blur' }],
+        aa1CornerScoreDifferenceRejectValue: [{ validator: this.checkNumericOrEmpty, trigger: 'blur' }],
+        aa1ZRef: [{ validator: this.checkStringOrEmpty, trigger: 'blur' }],
+        aa1SrchStep: [{ validator: this.checkNumericOrEmpty, trigger: 'blur' }],
+        aa1GoldenGlueThicknessMin: [{ validator: this.checkNumericOrEmpty, trigger: 'blur' }],
+        aa1GoldenGlueThicknessMax: [{ validator: this.checkNumericOrEmpty, trigger: 'blur' }],
 
         aa2RoiCc: [{ validator: this.checkNumericOrEmpty, trigger: 'blur' }],
         aa2RoiUl: [{ validator: this.checkNumericOrEmpty, trigger: 'blur' }],
         aa2RoiUr: [{ validator: this.checkNumericOrEmpty, trigger: 'blur' }],
         aa2RoiLr: [{ validator: this.checkNumericOrEmpty, trigger: 'blur' }],
         aa2RoiLl: [{ validator: this.checkNumericOrEmpty, trigger: 'blur' }],
+        aa2Target: [{ validator: this.checkStringOrEmpty, trigger: 'blur' }],
+        aa2CcToCornerLimit: [{ validator: this.checkNumericOrEmpty, trigger: 'blur' }],
+        aa2CcToCornerLimitMin: [{ validator: this.checkNumericOrEmpty, trigger: 'blur'}],
+        aa2CornerScoreDifferenceRejectValue: [{ validator: this.checkNumericOrEmpty, trigger: 'blur' }],
+        aa2ZRef: [{ validator: this.checkStringOrEmpty, trigger: 'blur' }],
+        aa2SrchStep: [{ validator: this.checkNumericOrEmpty, trigger: 'blur' }],
+        aa2GoldenGlueThicknessMin: [{ validator: this.checkNumericOrEmpty, trigger: 'blur' }],
+        aa2GoldenGlueThicknessMax: [{ validator: this.checkNumericOrEmpty, trigger: 'blur' }],
 
         aa3RoiCc: [{ validator: this.checkNumericOrEmpty, trigger: 'blur' }],
         aa3RoiUl: [{ validator: this.checkNumericOrEmpty, trigger: 'blur' }],
         aa3RoiUr: [{ validator: this.checkNumericOrEmpty, trigger: 'blur' }],
         aa3RoiLr: [{ validator: this.checkNumericOrEmpty, trigger: 'blur' }],
         aa3RoiLl: [{ validator: this.checkNumericOrEmpty, trigger: 'blur' }],
+        aa3Target: [{ validator: this.checkStringOrEmpty, trigger: 'blur' }],
+        aa3CcToCornerLimit: [{ validator: this.checkNumericOrEmpty, trigger: 'blur' }],
+        aa3CcToCornerLimitMin: [{ validator: this.checkNumericOrEmpty, trigger: 'blur' }],
+        aa3CornerScoreDifferenceRejectValue: [{ validator: this.checkNumericOrEmpty, trigger: 'blur' }],
+        aa3ZRef: [{ validator: this.checkStringOrEmpty, trigger: 'blur' }],
+        aa3SrchStep: [{ validator: this.checkNumericOrEmpty, trigger: 'blur' }],
+        aa3GoldenGlueThicknessMin: [{ validator: this.checkNumericOrEmpty, trigger: 'blur' }],
+        aa3GoldenGlueThicknessMax: [{ validator: this.checkNumericOrEmpty, trigger: 'blur' }],
 
         mtfCheckF: [{ validator: this.checkJsonFormat, trigger: 'blur' }],
 
@@ -1529,12 +1671,8 @@ export default {
         vcmCheckResultCheckMin: [{ validator: this.checkNumericOrEmpty, trigger: 'blur' }],
         vcmCheckResultCheckMax: [{ validator: this.checkNumericOrEmpty, trigger: 'blur' }],
 
-        recordPositionUtXyzMove: [{ validator: this.checkNumericOrEmpty, trigger: 'blur' }],
-
-        ocCheckXOffsetMin: [{ validator: this.checkNumericOrEmpty, trigger: 'blur' }],
-        ocCheckXOffsetMax: [{ validator: this.checkNumericOrEmpty, trigger: 'blur' }],
-        ocCheckYOffsetMin: [{ validator: this.checkNumericOrEmpty, trigger: 'blur' }],
-        ocCheckYOffsetMax: [{ validator: this.checkNumericOrEmpty, trigger: 'blur' }],
+        utXyzMoveVal: [{ validator: this.checkNumericOrEmpty, trigger: 'blur' }],
+        recordPositionName: [{ validator: this.checkStringOrEmpty, trigger: 'blur' }],
 
         saveOcXOffsetMin: [{ validator: this.checkNumericOrEmpty, trigger: 'blur' }],
         saveOcXOffsetMax: [{ validator: this.checkNumericOrEmpty, trigger: 'blur' }],
@@ -1604,7 +1742,6 @@ export default {
         mtfCheck2: null,
         mtfCheck3: null,
         openCheck: null,
-        ocCheck: null,
         recordPosition: null,
         reInit: null,
         saveOc: null,
@@ -1674,11 +1811,6 @@ export default {
         vcmCheckResultCheckMax: null,
 
         recordPositionUtXyzMove: null,
-
-        ocCheckXOffsetMin: null,
-        ocCheckXOffsetMax: null,
-        ocCheckYOffsetMin: null,
-        ocCheckYOffsetMax: null,
 
         saveOcXOffsetMin: null,
         saveOcXOffsetMax: null,
