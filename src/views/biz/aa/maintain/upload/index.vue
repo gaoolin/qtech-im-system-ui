@@ -436,7 +436,7 @@
           </el-table-column>
 
           <!-- 其他操作和记录 -->
-          <el-table-column label="其他操作和记录" align="left" min-width="100">
+          <el-table-column label="其他操作和记录" align="left" min-width="90">
             <template slot-scope="scope">
               <div class="prop-container">
               <span class="prop-label">
