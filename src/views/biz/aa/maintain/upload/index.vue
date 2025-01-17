@@ -1075,12 +1075,7 @@
                 </el-form-item>
               </el-collapse-item>
               <el-collapse-item class="main-item" title="其他操作和记录" name="5">
-                <el-form-item label="上抬下拉" prop="utXyzMove">
-                  <el-select v-model="editForm.utXyzMove" placeholder="请选择" clearable @clear="handleClear('utXyzMove')">
-                    <el-option v-for="dict in dict.type.aa_list_params_power" :key="dict.value" :label="dict.label" :value="dict.value"/>
-                  </el-select>
-                </el-form-item>
-                <el-form-item label="记录位置" prop="backToPosition">
+                <el-form-item label="backToPosition" prop="backToPosition">
                   <el-select v-model="editForm.backToPosition" placeholder="请选择" clearable @clear="handleClear('backToPosition')">
                     <el-option v-for="dict in dict.type.aa_list_params_power" :key="dict.value" :label="dict.label" :value="dict.value"/>
                   </el-select>
@@ -1105,6 +1100,16 @@
                     <el-option v-for="dict in dict.type.aa_list_params_power" :key="dict.value" :label="dict.label" :value="dict.value"/>
                   </el-select>
                 </el-form-item>
+                <el-form-item label="画胶(dispense1)" prop="dispense1">
+                  <el-select v-model="editForm.dispense1" placeholder="请选择" clearable @clear="handleClear('dispense1')">
+                    <el-option v-for="dict in dict.type.aa_list_params_power" :key="dict.value" :label="dict.label" :value="dict.value"/>
+                  </el-select>
+                </el-form-item>
+                <el-form-item label="画胶(dispense2)" prop="dispense2">
+                  <el-select v-model="editForm.dispense2" placeholder="请选择" clearable @clear="handleClear('dispense2')">
+                    <el-option v-for="dict in dict.type.aa_list_params_power" :key="dict.value" :label="dict.label" :value="dict.value"/>
+                  </el-select>
+                </el-form-item>
                 <el-form-item label="胶检频率" prop="epoxyInspectionAuto">
                   <el-select v-model="editForm.epoxyInspectionAuto" placeholder="请选择" clearable @clear="handleClear('epoxyInspectionAuto')">
                     <el-option v-for="dict in dict.type.aa_list_params_power" :key="dict.value" :label="dict.label" :value="dict.value"/>
@@ -1120,6 +1125,16 @@
                     <el-option v-for="dict in dict.type.aa_list_params_power" :key="dict.value" :label="dict.label" :value="dict.value"/>
                   </el-select>
                 </el-form-item>
+                <el-form-item label="抓取(grab1)" prop="grab1">
+                  <el-select v-model="editForm.grab1" placeholder="请选择" clearable @clear="handleClear('grab1')">
+                    <el-option v-for="dict in dict.type.aa_list_params_power" :key="dict.value" :label="dict.label" :value="dict.value"/>
+                  </el-select>
+                </el-form-item>
+                <el-form-item label="抓取(grab2)" prop="grab2">
+                  <el-select v-model="editForm.grab2" placeholder="请选择" clearable @clear="handleClear('grab2')">
+                    <el-option v-for="dict in dict.type.aa_list_params_power" :key="dict.value" :label="dict.label" :value="dict.value"/>
+                  </el-select>
+                </el-form-item>
                 <el-form-item label="夹爪打开(gripperOpen)" prop="gripperOpen">
                   <el-select v-model="editForm.gripperOpen" placeholder="请选择" clearable @clear="handleClear('gripperOpen')">
                     <el-option v-for="dict in dict.type.aa_list_params_power" :key="dict.value" :label="dict.label" :value="dict.value"/>
@@ -1127,6 +1142,11 @@
                 </el-form-item>
                 <el-form-item label="moveToBlemishPos" prop="moveToBlemishPos">
                   <el-select v-model="editForm.moveToBlemishPos" placeholder="请选择" clearable @clear="handleClear('moveToBlemishPos')">
+                    <el-option v-for="dict in dict.type.aa_list_params_power" :key="dict.value" :label="dict.label" :value="dict.value"/>
+                  </el-select>
+                </el-form-item>
+                <el-form-item label="上抬下拉" prop="utXyzMove">
+                  <el-select v-model="editForm.utXyzMove" placeholder="请选择" clearable @clear="handleClear('utXyzMove')">
                     <el-option v-for="dict in dict.type.aa_list_params_power" :key="dict.value" :label="dict.label" :value="dict.value"/>
                   </el-select>
                 </el-form-item>
