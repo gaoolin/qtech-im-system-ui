@@ -588,7 +588,7 @@
                     </el-descriptions-item>
                   </el-descriptions>
                 </el-collapse-item>
-                <el-collapse-item class="prop-label" title="AA2" name="2">
+                <el-collapse-item class="prop-label" title="AA2" name="1">
                   <el-descriptions :column="1" border class="prop-label">
                     <el-descriptions-item label="中心">
                       {{ convertNull(scope.row.aa2RoiCc) }}
@@ -631,7 +631,7 @@
                     </el-descriptions-item>
                   </el-descriptions>
                 </el-collapse-item>
-                <el-collapse-item class="prop-label" title="AA3" name="3">
+                <el-collapse-item class="prop-label" title="AA3" name="1">
                   <el-descriptions :column="1" border class="prop-label">
                     <el-descriptions-item label="中心">
                       {{ convertNull(scope.row.aa3RoiCc) }}
@@ -674,7 +674,7 @@
                     </el-descriptions-item>
                   </el-descriptions>
                 </el-collapse-item>
-                <el-collapse-item class="prop-label" title="chartAlignment" name="4">
+                <el-collapse-item class="prop-label" title="chartAlignment" name="2">
                   <el-descriptions :column="1" border>
                     <el-descriptions-item label="x上限">
                       {{ convertNull(scope.row.chartAlignmentXResMax) }}
@@ -690,7 +690,7 @@
                     </el-descriptions-item>
                   </el-descriptions>
                 </el-collapse-item>
-                <el-collapse-item class="prop-label" title="chartAlignment1" name="5">
+                <el-collapse-item class="prop-label" title="chartAlignment1" name="2">
                   <el-descriptions :column="1" border>
                     <el-descriptions-item label="x上限">
                       {{ convertNull(scope.row.chartAlignment1XResMax) }}
@@ -706,7 +706,7 @@
                     </el-descriptions-item>
                   </el-descriptions>
                 </el-collapse-item>
-                <el-collapse-item class="prop-label" title="chartAlignment2" name="6">
+                <el-collapse-item class="prop-label" title="chartAlignment2" name="2">
                   <el-descriptions :column="1" border>
                     <el-descriptions-item label="x上限">
                       {{ convertNull(scope.row.chartAlignment2XResMax) }}
@@ -722,7 +722,7 @@
                     </el-descriptions-item>
                   </el-descriptions>
                 </el-collapse-item>
-                <el-collapse-item class="prop-label" title="mtfCheck" name="7">
+                <el-collapse-item class="prop-label" title="mtfCheck" name="3">
                   <el-descriptions :column="1" border class="prop-label">
                     <el-descriptions-item label="Result">
                       <el-tooltip class="item" effect="dark" placement="top">
@@ -736,7 +736,7 @@
                     </el-descriptions-item>
                   </el-descriptions>
                 </el-collapse-item>
-                <el-collapse-item class="prop-label" title="mtfCheck1" name="8">
+                <el-collapse-item class="prop-label" title="mtfCheck1" name="3">
                   <el-descriptions :column="1" border class="prop-label">
                     <el-descriptions-item label="Result">
                       <el-tooltip class="item" effect="dark" placement="top">
@@ -750,7 +750,7 @@
                     </el-descriptions-item>
                   </el-descriptions>
                 </el-collapse-item>
-                <el-collapse-item class="prop-label" title="mtfCheck2" name="9">
+                <el-collapse-item class="prop-label" title="mtfCheck2" name="3">
                   <el-descriptions :column="1" border class="prop-label">
                     <el-descriptions-item label="Result">
                       <el-tooltip class="item" effect="dark" placement="top">
@@ -764,21 +764,21 @@
                     </el-descriptions-item>
                   </el-descriptions>
                 </el-collapse-item>
-                <el-collapse-item class="prop-label" title="上抬下拉" name="10">
+                <el-collapse-item class="prop-label" title="上抬下拉" name="4">
                   <el-descriptions :column="1" border>
                     <el-descriptions-item label="UtXyzMove">
                       {{ convertNull(scope.row.utXyzMoveVal) }}
                     </el-descriptions-item>
                   </el-descriptions>
                 </el-collapse-item>
-                <el-collapse-item class="prop-label" title="记录位置" name="11">
+                <el-collapse-item class="prop-label" title="记录位置" name="4">
                   <el-descriptions :column="1" border>
                     <el-descriptions-item label="RecordPosition">
                       {{ convertNull(scope.row.recordPositionName) }}
                     </el-descriptions-item>
                   </el-descriptions>
                 </el-collapse-item>
-                <el-collapse-item class="prop-label" title="SaveOC" name="12">
+                <el-collapse-item class="prop-label" title="SaveOC" name="5">
                   <el-descriptions :column="1" border>
                     <el-descriptions-item label="XOffset上限">
                       {{ convertNull(scope.row.saveOcXOffsetMax) }}
@@ -794,7 +794,7 @@
                     </el-descriptions-item>
                   </el-descriptions>
                 </el-collapse-item>
-                <el-collapse-item class="prop-label" title="SaveMtf" name="13">
+                <el-collapse-item class="prop-label" title="SaveMtf" name="6">
                   <el-descriptions :column="1" border>
                     <el-descriptions-item label="CC上限">
                       {{ convertNull(scope.row.saveMtfCcMax) }}
@@ -804,7 +804,7 @@
                     </el-descriptions-item>
                   </el-descriptions>
                 </el-collapse-item>
-                <el-collapse-item class="prop-label" title="胶检频率" name="14">
+                <el-collapse-item class="prop-label" title="胶检频率" name="7">
                   <el-descriptions :column="1" border>
                     <el-descriptions-item label="胶检频率">
                       {{ convertNull(scope.row.epoxyInspectionInterval) }}
