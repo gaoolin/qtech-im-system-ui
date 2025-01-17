@@ -555,7 +555,7 @@
         </el-table-column>
 
         <!-- Item参数管控详情 -->
-        <el-table-column label="Item参数管控详情" align="left" min-width="180">
+        <el-table-column label="Item参数管控详情" align="left" min-width="150">
           <template slot-scope="scope">
             <el-collapse accordion>
               <el-collapse-item class="prop-label" title="AA1" name="1" v-if="convertNull(scope.row.aa1RoiCc) !== '--'">
@@ -849,7 +849,7 @@
         </el-table-column>
 
         <!-- 操作 -->
-        <el-table-column prop="option" label="操作" align="center" width="100" fixed="right">
+        <el-table-column prop="option" label="操作" align="center" width="80" fixed="right">
           <template slot-scope="scope">
             <el-button size="mini" type="text" class="btn-ops" @click="handleEdit(scope.row)">编辑</el-button>
           </template>
@@ -984,9 +984,21 @@
               </el-select>
             </el-form-item>
             <el-form-item label="blemish" prop="blemish">
-              <el-select v-model="editForm.blemish" placeholder="请选择" clearable @clear="handleClear('init')">
+              <el-select v-model="editForm.blemish" placeholder="请选择" clearable @clear="handleClear('blemish')">
                 <el-option v-for="dict in dict.type.aa_list_params_power" :key="dict.value" :label="dict.label"
                   :value="dict.value" />
+              </el-select>
+            </el-form-item>
+            <el-form-item label="blemish1" prop="blemish1">
+              <el-select v-model="editForm.blemish1" placeholder="请选择" clearable @clear="handleClear('blemish1')">
+                <el-option v-for="dict in dict.type.aa_list_params_power" :key="dict.value" :label="dict.label"
+                           :value="dict.value" />
+              </el-select>
+            </el-form-item>
+            <el-form-item label="blemish2" prop="blemish2">
+              <el-select v-model="editForm.blemish2" placeholder="请选择" clearable @clear="handleClear('blemish2')">
+                <el-option v-for="dict in dict.type.aa_list_params_power" :key="dict.value" :label="dict.label"
+                           :value="dict.value" />
               </el-select>
             </el-form-item>
             <el-form-item label="chartAlignment" prop="chartAlignment">

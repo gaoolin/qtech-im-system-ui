@@ -542,7 +542,7 @@
           </el-table-column>
 
           <!-- Item参数管控详情 -->
-          <el-table-column label="Item参数管控详情" align="left" min-width="90">
+          <el-table-column label="Item参数管控详情" align="left" min-width="70">
             <template slot-scope="scope">
               <el-collapse accordion>
                 <el-collapse-item class="prop-label" title="AA1" extra="AA1-AA1" name="1">
@@ -955,7 +955,7 @@
                   </el-select>
                 </el-form-item>
                 <el-form-item label="blemish" prop="blemish">
-                  <el-select v-model="editForm.blemish" placeholder="请选择" clearable @clear="handleClear('init')">
+                  <el-select v-model="editForm.blemish" placeholder="请选择" clearable @clear="handleClear('blemish')">
                     <el-option v-for="dict in dict.type.aa_list_params_power" :key="dict.value" :label="dict.label" :value="dict.value"/>
                   </el-select>
                 </el-form-item>
