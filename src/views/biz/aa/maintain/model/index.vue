@@ -212,6 +212,14 @@
                     convertNull(scope.row.lpBlemish) }}</span>
               </span>
             </div>
+            <div class="prop-container" v-if="convertNull(scope.row.blemish) !== '--'">
+              <span class="prop-label">
+                blemish:
+                <span class="prop-value"
+                      :class="{ 'enabled': convertNull(scope.row.blemish) === 'Enable', 'disabled': convertNull(scope.row.blemish) === 'Disable' }">{{
+                    convertNull(scope.row.blemish) }}</span>
+              </span>
+            </div>
             <div class="prop-container" v-if="convertNull(scope.row.blemish1) !== '--'">
               <span class="prop-label">
                 blemish1:
