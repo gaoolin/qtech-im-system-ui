@@ -881,6 +881,24 @@
                   :value="dict.value" />
               </el-select>
             </el-form-item>
+            <el-form-item label="init1" prop="init1">
+              <el-select v-model="editForm.init1" placeholder="请选择" clearable @clear="handleClear('init1')">
+                <el-option v-for="dict in dict.type.aa_list_params_power" :key="dict.value" :label="dict.label"
+                           :value="dict.value" />
+              </el-select>
+            </el-form-item>
+            <el-form-item label="init2" prop="init2">
+              <el-select v-model="editForm.init2" placeholder="请选择" clearable @clear="handleClear('init2')">
+                <el-option v-for="dict in dict.type.aa_list_params_power" :key="dict.value" :label="dict.label"
+                           :value="dict.value" />
+              </el-select>
+            </el-form-item>
+            <el-form-item label="init3" prop="init3">
+              <el-select v-model="editForm.init3" placeholder="请选择" clearable @clear="handleClear('init3')">
+                <el-option v-for="dict in dict.type.aa_list_params_power" :key="dict.value" :label="dict.label"
+                           :value="dict.value" />
+              </el-select>
+            </el-form-item>
             <el-form-item label="reInit" prop="reInit">
               <el-select v-model="editForm.reInit" placeholder="请选择" clearable @clear="handleClear('reInit')">
                 <el-option v-for="dict in dict.type.aa_list_params_power" :key="dict.value" :label="dict.label"
